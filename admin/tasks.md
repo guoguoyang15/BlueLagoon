@@ -1,4 +1,5 @@
 # COMP1110 Assignment 2 Group Tasks
+In Week4, let's meet in the common room of Floor 3, Building 165, YKB at 7pm, March 18th.
 
 For each task or sub-task, record who is responsible, the deadline, and any dependencies.
 Use the entries below as an example.

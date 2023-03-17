@@ -9,7 +9,7 @@ Let's meet at 4 p.m. on Saturdays.
 ## Week 4
 
 Everyone: create application skeleton - meeting 14:00 19 Mar
-Quoc Thai Le didn't show up in the lab. Zhou and Zhang had a meeting and created our own repo. We are familiar with the structure.
+Zhou and Zhang had a meeting and created our own repo. We are familiar with the structure.
 
 ## Week 5
 

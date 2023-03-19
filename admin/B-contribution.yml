@@ -3,13 +3,15 @@
  
 declaration: >-
   We declare that the work toward our submission of Stage B was distributed among the group members as follows:
+    Tyler finished the write-up for the skeleton and gave some ideas for the board coordinate system of the project during the meeting on 19 March.
+
 
 # State your contributions as integers out of 100. The total contribution should
 # be 100 or 99 (33/33/33 is fine).  (Remove entries if you have fewer than three
 # members).  
 contributions:
-  - uid: 
-    contribution: 
+  - uid: u7542691
+    contribution: 33
   - uid:
     contribution:
   - uid:
@@ -18,8 +20,8 @@ contributions:
 # Sign *your* name and uids here. (Remove entries if you have fewer
 # than three members)
 signatures:
-  - name:
-    uid:
+  - name: Quoc Thai Le (Tyler)
+    uid: u7542691
   - name:
     uid:
   - name:

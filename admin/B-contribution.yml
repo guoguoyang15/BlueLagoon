@@ -5,6 +5,7 @@ declaration: >-
   We declare that the work toward our submission of Stage B was distributed among the group members as follows:
     Tyler finished the write-up for the skeleton and gave some ideas for the board coordinate system of the project during the meeting on 19 March.
     Linsheng(Chris) constructed necessary classes which include Board, Spot and Player as well as their attached methods and data.
+    Zhang Zhining(Nick) recorded the idea in the form of a sketch and proposed a simplified modification in the selection of the coordinate system and the positioning of the origin
 
 # State your contributions as integers out of 100. The total contribution should
 # be 100 or 99 (33/33/33 is fine).  (Remove entries if you have fewer than three

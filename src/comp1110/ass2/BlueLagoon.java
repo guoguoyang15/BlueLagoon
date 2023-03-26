@@ -39,14 +39,21 @@ public class BlueLagoon {
      * @return true if moveString is well-formed and false otherwise
      */
     public static boolean isMoveStringWellFormed(String moveString){
+        //for empty string, return false
         if(moveString.length()==0){
             return false;
         }else{
+            //check the first character
             if(moveString.charAt(0)=='S'||moveString.charAt(0)=='T'){
+                //check whether the second character is space
                 if(moveString.charAt(1)==' '){
+                    //check if the string contains comma, rather than dot
                     if(moveString.contains(",")){
+                        //get the coordinate string like "2,3"
                         String coor=moveString.substring(2,moveString.length());
+                        //split the coordinate string to 2 substrings like "2" and "3"
                         String[] digit=coor.split(",");
+                        //examine if two substring contains other characters except for digits
                         for(int i=0;i<=1;i++){
                             for(int j=0;j<= digit[i].length()-1;j++){
                                 if(digit[i].charAt(j)<'0'||digit[i].charAt(j)>'9'){

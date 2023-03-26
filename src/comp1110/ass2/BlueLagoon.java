@@ -39,7 +39,34 @@ public class BlueLagoon {
      * @return true if moveString is well-formed and false otherwise
      */
     public static boolean isMoveStringWellFormed(String moveString){
-         return false; // FIXME Task 4
+        if(moveString.length()==0){
+            return false;
+        }else{
+            if(moveString.charAt(0)=='S'||moveString.charAt(0)=='T'){
+                if(moveString.charAt(1)==' '){
+                    if(moveString.contains(",")){
+                        String coor=moveString.substring(2,moveString.length());
+                        String[] digit=coor.split(",");
+                        for(int i=0;i<=1;i++){
+                            for(int j=0;j<= digit[i].length()-1;j++){
+                                if(digit[i].charAt(j)<'0'||digit[i].charAt(j)>'9'){
+                                    return false;
+                                }
+                            }
+                        }
+                        return true;
+                    }else {
+                        return false;
+                    }
+                }else {
+                    return false;
+                }
+            }
+            else {
+                return false;
+            }
+        }
+         //return false; // FIXME Task 4
     }
 
     /**

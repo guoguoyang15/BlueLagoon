@@ -1,6 +1,7 @@
 package comp1110.ass2;
 
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 public class BlueLagoon {
@@ -10,7 +11,7 @@ public class BlueLagoon {
     public static final String DEFAULT_GAME = "a 13 2; c 0 E; i 6 0,0 0,1 0,2 0,3 1,0 1,1 1,2 1,3 1,4 2,0 2,1; i 6 0,5 0,6 0,7 1,6 1,7 1,8 2,6 2,7 2,8 3,7 3,8; i 6 7,12 8,11 9,11 9,12 10,10 10,11 11,10 11,11 11,12 12,10 12,11; i 8 0,9 0,10 0,11 1,10 1,11 1,12 2,10 2,11 3,10 3,11 3,12 4,10 4,11 5,11 5,12; i 8 4,0 5,0 5,1 6,0 6,1 7,0 7,1 7,2 8,0 8,1 8,2 9,0 9,1 9,2; i 8 10,3 10,4 11,0 11,1 11,2 11,3 11,4 11,5 12,0 12,1 12,2 12,3 12,4 12,5; i 10 3,3 3,4 3,5 4,2 4,3 4,4 4,5 5,3 5,4 5,5 5,6 6,3 6,4 6,5 6,6 7,4 7,5 7,6 8,4 8,5; i 10 5,8 5,9 6,8 6,9 7,8 7,9 7,10 8,7 8,8 8,9 9,7 9,8 9,9 10,6 10,7 10,8 11,7 11,8 12,7 12,8; s 0,0 0,5 0,9 1,4 1,8 1,12 2,1 3,5 3,7 3,10 3,12 4,0 4,2 5,9 5,11 6,3 6,6 7,0 7,8 7,12 8,2 8,5 9,0 9,9 10,3 10,6 10,10 11,0 11,5 12,2 12,8 12,11; r C B W P S; p 0 0 0 0 0 0 0 S T; p 1 0 0 0 0 0 0 S T;";
     public static final String WHEELS_GAME = "a 13 2; c 0 E; i 5 0,1 0,2 0,3 0,4 1,1 1,5 2,0 2,5 3,0 3,6 4,0 4,5 5,1 5,5 6,1 6,2 6,3 6,4; i 5 0,8 0,9 0,10 1,8 1,11 2,7 2,11 3,8 3,11 4,8 4,9 4,10; i 7 8,8 8,9 8,10 9,8 9,11 10,7 10,11 11,8 11,11 12,8 12,9 12,10; i 7 10,0 10,1 10,4 10,5 11,0 11,2 11,3 11,4 11,6 12,0 12,1 12,4 12,5; i 9 2,2 2,3 3,2 3,4 4,2 4,3; i 9 2,9; i 9 6,6 6,7 6,8 6,9 6,10 6,11 7,6 8,0 8,1 8,2 8,3 8,4 8,5; i 9 10,9; s 0,1 0,4 0,10 2,2 2,3 2,9 2,11 3,0 3,2 3,4 3,6 4,2 4,3 4,10 6,1 6,4 6,6 6,11 8,0 8,5 8,8 8,10 10,0 10,5 10,7 10,9 10,11 11,3 12,1 12,4 12,8 12,10; r C B W P S; p 0 0 0 0 0 0 0 S T; p 1 0 0 0 0 0 0 S T;";
     public static final String FACE_GAME = "a 13 2; c 0 E; i 6 0,0 0,1 0,2 0,3 0,4 0,5 0,6 0,7 0,8 0,9 0,10 0,11 1,0 1,12 2,0 2,11 3,0 3,12 4,0 4,11 5,0 5,12 6,0 6,11 7,0 7,12 8,0 8,11 9,0 9,12 10,0 10,11 11,0 11,12 12,0 12,1 12,2 12,3 12,4 12,5 12,6 12,7 12,8 12,9 12,10 12,11; i 6 2,4 2,5 2,6 2,7; i 9 4,4 4,5 4,6 4,7; i 9 6,5 6,6 7,5 7,7 8,5 8,6; i 12 2,2 3,2 3,3 4,2 5,2 5,3 6,2 7,2 7,3; i 12 2,9 3,9 3,10 4,9 5,9 5,10 6,9 7,9 7,10; i 12 9,2 9,10 10,2 10,3 10,4 10,5 10,6 10,7 10,8 10,9; s 0,3 0,8 1,0 1,12 2,2 2,4 2,7 2,9 4,2 4,5 4,6 4,9 5,0 5,12 6,2 6,5 6,6 6,9 8,0 8,5 8,6 8,11 9,2 9,10 10,3 10,5 10,6 10,8 11,0 11,12 12,4 12,7; r C B W P S; p 0 0 0 0 0 0 0 S T; p 1 0 0 0 0 0 0 S T;";
-    public static final String SIDES_GAME =  "a 7 2; c 0 E; i 4 0,0 0,1 0,2 0,3 1,0 1,1 1,2 1,3 2,0 2,1 2,2 2,3 3,0 3,1 3,2 3,3 4,0 4,1 4,2 4,3 5,0 5,1 5,2 5,3 6,0 6,1 6,2 6,3; i 20 0,5 1,5 1,6 2,5 3,5 3,6 4,5 5,5 5,6 6,5; s 0,0 0,1 0,2 0,3 1,1 1,2 1,3 1,5 1,6 2,0 2,1 2,2 2,3 3,0 3,1 3,2 3,3 3,5 3,6 4,0 4,1 4,2 4,3 5,1 5,2 5,3 5,5 5,6 6,0 6,1 6,2 6,3; r C B W P S; p 0 0 0 0 0 0 0 S T; p 1 0 0 0 0 0 0 S T;";
+    public static final String SIDES_GAME = "a 7 2; c 0 E; i 4 0,0 0,1 0,2 0,3 1,0 1,1 1,2 1,3 2,0 2,1 2,2 2,3 3,0 3,1 3,2 3,3 4,0 4,1 4,2 4,3 5,0 5,1 5,2 5,3 6,0 6,1 6,2 6,3; i 20 0,5 1,5 1,6 2,5 3,5 3,6 4,5 5,5 5,6 6,5; s 0,0 0,1 0,2 0,3 1,1 1,2 1,3 1,5 1,6 2,0 2,1 2,2 2,3 3,0 3,1 3,2 3,3 3,5 3,6 4,0 4,1 4,2 4,3 5,1 5,2 5,3 5,5 5,6 6,0 6,1 6,2 6,3; r C B W P S; p 0 0 0 0 0 0 0 S T; p 1 0 0 0 0 0 0 S T;";
     public static final String SPACE_INVADERS_GAME = "a 23 2; c 0 E; i 6 0,2 0,7 1,3 1,7 2,2 2,3 2,4 2,5 2,6 2,7 3,2 3,4 3,5 3,6 3,8 4,0 4,1 4,2 4,3 4,4 4,5 4,6 4,7 4,8 4,9 5,0 5,1 5,3 5,4 5,5 5,6 5,7 5,9 5,10 6,0 6,2 6,7 6,9 7,3 7,4 7,6 7,7; i 6 0,14 0,19 1,15 1,19 2,14 2,15 2,16 2,17 2,18 2,19 3,14 3,16 3,17 3,18 3,20 4,12 4,13 4,14 4,15 4,16 4,17 4,18 4,19 4,20 4,21 5,12 5,13 5,15 5,16 5,17 5,18 5,19 5,21 5,22 6,12 6,14 6,19 6,21 7,15 7,16 7,18 7,19; i 6 17,9 18,8 18,9 19,6 19,7 19,8 19,9 19,10 19,11 19,12 20,5 20,6 20,7 20,8 20,9 20,10 20,11 20,12 21,5 21,6 21,7 21,8 21,9 21,10 21,11 21,12 21,13 22,5 22,6 22,7 22,8 22,9 22,10 22,11 22,12; i 8 12,3 12,5 13,3 13,4 13,5 13,6 14,1 14,2 14,3 14,4 14,5 15,1 15,2 15,3 16,1 16,2; i 8 12,17 12,18 12,19 13,17 13,18 13,19 13,20 14,17 14,18 14,19 14,20 15,19 15,20 15,21 16,19 16,20; i 8 13,14 14,13 14,14 15,13 15,14 15,15 16,13 16,14; i 8 14,7 15,7 15,8 16,7; i 10 8,9 9,9 10,9 11,9; i 10 8,12 9,13 10,12 11,13; i 10 9,1 10,1 11,1 12,1; i 10 9,22 10,21 11,22 12,21; i 10 13,10 14,10 15,10; i 10 17,0 18,0 19,0 20,0; i 10 17,16 18,16 19,16 20,16; s 0,2 0,7 0,14 0,19 3,5 3,17 6,0 6,9 6,12 6,21 7,4 7,6 7,16 7,18 11,9 11,13 12,1 12,19 12,21 13,10 15,2 15,8 15,14 15,20 17,9 18,8 18,9 20,0 20,16 21,6 21,9 21,12; r C B W P S; p 0 0 0 0 0 0 0 S T; p 1 0 0 0 0 0 0 S T;";
 
     /**
@@ -25,8 +26,8 @@ public class BlueLagoon {
      * @param stateString a string representing a game state
      * @return true if stateString is well-formed and false otherwise
      */
-    public static boolean isStateStringWellFormed(String stateString){
-         return false; // FIXME Task 3
+    public static boolean isStateStringWellFormed(String stateString) {
+        return true; // FIXME Task 3
     }
 
     /**
@@ -38,42 +39,41 @@ public class BlueLagoon {
      * @param moveString a string representing a player's move
      * @return true if moveString is well-formed and false otherwise
      */
-    public static boolean isMoveStringWellFormed(String moveString){
+    public static boolean isMoveStringWellFormed(String moveString) {
         //for empty string, return false
-        if(moveString.length()==0){
+        if (moveString.length() == 0) {
             return false;
-        }else{
+        } else {
             //check the first character
-            if(moveString.charAt(0)=='S'||moveString.charAt(0)=='T'){
+            if (moveString.charAt(0) == 'S' || moveString.charAt(0) == 'T') {
                 //check whether the second character is space
-                if(moveString.charAt(1)==' '){
+                if (moveString.charAt(1) == ' ') {
                     //check if the string contains comma, rather than dot
-                    if(moveString.contains(",")){
+                    if (moveString.contains(",")) {
                         //get the coordinate string like "2,3"
-                        String coor=moveString.substring(2,moveString.length());
+                        String coor = moveString.substring(2, moveString.length());
                         //split the coordinate string to 2 substrings like "2" and "3"
-                        String[] digit=coor.split(",");
+                        String[] digit = coor.split(",");
                         //examine if two substring contains other characters except for digits
-                        for(int i=0;i<=1;i++){
-                            for(int j=0;j<= digit[i].length()-1;j++){
-                                if(digit[i].charAt(j)<'0'||digit[i].charAt(j)>'9'){
+                        for (int i = 0; i <= 1; i++) {
+                            for (int j = 0; j <= digit[i].length() - 1; j++) {
+                                if (digit[i].charAt(j) < '0' || digit[i].charAt(j) > '9') {
                                     return false;
                                 }
                             }
                         }
                         return true;
-                    }else {
+                    } else {
                         return false;
                     }
-                }else {
+                } else {
                     return false;
                 }
-            }
-            else {
+            } else {
                 return false;
             }
         }
-         //return false; // FIXME Task 4
+        //return false; // FIXME Task 4
     }
 
     /**
@@ -94,8 +94,148 @@ public class BlueLagoon {
      * @param stateString a string representing a game state without resources distributed
      * @return a string of the game state with resources randomly distributed
      */
-    public static String distributeResources(String stateString){
-         return ""; // FIXME Task 6
+    public static String distributeResources(String stateString) {
+        //add a space at front to make shure that for every statement, the second char of the substring is the type of statement
+        stateString = " " + stateString;
+        String[] statement = stateString.split(";");
+        //store the index of stonecirlce statement
+        int stoneCircle = 0;
+        //store the index of resource statement
+        int resource = 0;
+        //search for the index of two statements
+        for (int i = 0; i <= statement.length - 1; i++) {
+            if (statement[i].charAt(1) == 's') {
+                stoneCircle = i;
+            }
+            if (statement[i].charAt(1) == 'r') {
+                resource = i;
+            }
+        }
+
+        //store the coordinates of 32 stonecircles
+        Coordinate[] coordinate = new Coordinate[32];
+        String[] stoneCoorString = statement[stoneCircle].split(" ");
+        int x;
+        int y;
+        for (int i = 0; i <= 31; i++) {
+            String[] xy = stoneCoorString[i + 2].split(",");//stoneCoorString[0]="" and stoneCoorString[1]="s"
+            x = Integer.parseInt(xy[0]);
+            y = Integer.parseInt(xy[1]);
+            coordinate[i] = new Coordinate(x, y);
+        }
+        //coordinates of resources
+        Coordinate[] bamboo = new Coordinate[6];
+        Coordinate[] coconut = new Coordinate[6];
+        Coordinate[] water = new Coordinate[6];
+        Coordinate[] preciousStone = new Coordinate[6];
+        Coordinate[] statuette = new Coordinate[8];
+        //numbers of resources allocated
+        int b = 0;
+        int c = 0;
+        int w = 0;
+        int p = 0;
+        int s = 0;
+        //index is the total number of resources allocated
+        int index = 0;
+        Random random = new Random();
+        //store the coordinates of stonecircles which have been occupied, true for occupation
+        int[] flag = new int[32];
+        while (index <= 31) {
+            int i = random.nextInt(16);
+            if (i == 0||i==1||i==2) {
+                if (b <= 5) {
+                    int r=random.nextInt(32);
+                    //if true and occupied, then search for another position which have yet been occupied. When false(not occupied), exit loop
+                    while (flag[r]==1) {
+                        r=random.nextInt(32);
+                    }
+                        bamboo[b] = coordinate[r];
+                        b++;
+                        index++;
+                        //set the coordinate of this stonecircle as occupied
+                        flag[r]=1;
+                }
+            } else if (i == 3||i==4||i==5) {
+                if (c <= 5) {
+                    int r=random.nextInt(32);
+                    while (flag[r]==1) {
+                        r=random.nextInt(32);
+                    }
+                    coconut[c] = coordinate[r];
+                    c++;
+                    index++;
+                    flag[r]=1;
+                }
+            } else if (i == 6||i==7||i==8) {
+                if (w <= 5) {
+                    int r=random.nextInt(32);
+                    while (flag[r]==1) {
+                        r=random.nextInt(32);
+                    }
+                    water[w] = coordinate[r];
+                    w++;
+                    index++;
+                    flag[r]=1;
+                }
+            } else if (i == 9||i==10||i==11) {
+                if (p <= 5) {
+                    int r=random.nextInt(32);
+                    while (flag[r]==1) {
+                        r=random.nextInt(32);
+                    }
+                    preciousStone[p] = coordinate[r];
+                    p++;
+                    index++;
+                    flag[r]=1;
+                }
+            } else {
+                if (s <= 7) {
+                    int r=random.nextInt(32);
+                    while (flag[r]==1) {
+                        r=random.nextInt(32);
+                    }
+                    statuette[s] = coordinate[r];
+                    s++;
+                    index++;
+                    flag[r]=1;
+                }
+            }
+        }
+        //create a new statement of resources
+        statement[resource] = " r";
+        statement[resource] += " " + "C";
+        for (int j = 0; j <= 5; j++) {
+            statement[resource] += " " + coconut[j].x + "," + coconut[j].y;
+        }
+        statement[resource] += " " + "B";
+        for (int j = 0; j <= 5; j++) {
+            statement[resource] += " " + bamboo[j].x + "," + bamboo[j].y;
+        }
+        statement[resource] += " " + "W";
+        for (int j = 0; j <= 5; j++) {
+            statement[resource] += " " + water[j].x + "," + water[j].y;
+        }
+        statement[resource] += " " + "P";
+        for (int j = 0; j <= 5; j++) {
+            statement[resource] += " " + preciousStone[j].x + "," + preciousStone[j].y;
+        }
+        statement[resource] += " " + "S";
+        for (int j = 0; j <= 7; j++) {
+            statement[resource] += " " + statuette[j].x + "," + statuette[j].y;
+        }
+        statement[resource] += ";";
+        //delete the first space of the arrangement statement
+        statement[0] = statement[0].substring(1, statement[0].length());
+        //assembly all statements
+        String after = "";
+        for (int k = 0; k <= statement.length - 1; k++) {
+            if (k == resource) {
+                after += statement[resource];
+            } else {
+                after += statement[k] + ";";
+            }
+        }
+        return after; // FIXME Task 6
     }
 
     /**
@@ -109,20 +249,20 @@ public class BlueLagoon {
      * In the Exploration Phase, the move must either be:
      * - A settler placed on any unoccupied sea space
      * - A settler or a village placed on any unoccupied land space
-     *   adjacent to one of the player's pieces.
+     * adjacent to one of the player's pieces.
      * <p>
      * In the Settlement Phase, the move must be:
      * - Only a settler placed on an unoccupied space adjacent to
-     *   one of the player's pieces.
+     * one of the player's pieces.
      * Importantly, players can now only play on the sea if it is
      * adjacent to a piece they already own.
      *
      * @param stateString a string representing a game state
-     * @param moveString a string representing the current player's move
+     * @param moveString  a string representing the current player's move
      * @return true if the current player can make the move and false otherwise
      */
-    public static boolean isMoveValid(String stateString, String moveString){
-         return false; // FIXME Task 7
+    public static boolean isMoveValid(String stateString, String moveString) {
+        return false; // FIXME Task 7
     }
 
     /**
@@ -134,8 +274,8 @@ public class BlueLagoon {
      * @param stateString a string representing a game state
      * @return a set of strings representing all moves the current player can play
      */
-    public static Set<String> generateAllValidMoves(String stateString){
-         return new HashSet<>(); // FIXME Task 8
+    public static Set<String> generateAllValidMoves(String stateString) {
+        return new HashSet<>(); // FIXME Task 8
     }
 
     /**
@@ -148,8 +288,8 @@ public class BlueLagoon {
      * @param stateString a string representing a game state
      * @return true if the state is at the end of either phase and false otherwise
      */
-    public static boolean isPhaseOver(String stateString){
-         return false; // FIXME Task 9
+    public static boolean isPhaseOver(String stateString) {
+        return false; // FIXME Task 9
     }
 
     /**
@@ -160,11 +300,11 @@ public class BlueLagoon {
      * Do not handle switching to the next player here.
      *
      * @param stateString a string representing a game state
-     * @param moveString a string representing the current player's move
+     * @param moveString  a string representing the current player's move
      * @return a new state string achieved by placing the move on the board
      */
-    public static String placePiece(String stateString, String moveString){
-         return ""; // FIXME Task 10
+    public static String placePiece(String stateString, String moveString) {
+        return ""; // FIXME Task 10
     }
 
     /**
@@ -182,8 +322,8 @@ public class BlueLagoon {
      * @return an integer array containing the calculated "Islands" portion of
      * the score for each player
      */
-    public static int[] calculateTotalIslandsScore(String stateString){
-         return new int[]{0, 0}; // FIXME Task 11
+    public static int[] calculateTotalIslandsScore(String stateString) {
+        return new int[]{0, 0}; // FIXME Task 11
     }
 
     /**
@@ -203,8 +343,8 @@ public class BlueLagoon {
      * @return an integer array containing the calculated "Links" portion of
      * the score for each player
      */
-    public static int[] calculateIslandLinksScore(String stateString){
-         return new int[]{0, 0}; // FIXME Task 11
+    public static int[] calculateIslandLinksScore(String stateString) {
+        return new int[]{0, 0}; // FIXME Task 11
     }
 
     /**
@@ -215,19 +355,19 @@ public class BlueLagoon {
      * <p>
      * The "Majorities" portion is calculated for each island as follows:
      * - The player with the most pieces on the island scores the number
-     *   of points that island is worth.
+     * of points that island is worth.
      * - In the event of a tie for pieces on an island, those points are
-     *   divided evenly between those players rounding down. For example,
-     *   if two players tied for an island worth 7 points, they would
-     *   receive 3 points each.
+     * divided evenly between those players rounding down. For example,
+     * if two players tied for an island worth 7 points, they would
+     * receive 3 points each.
      * - No points are awarded for islands without any pieces.
      *
      * @param stateString a string representing a game state
      * @return an integer array containing the calculated "Majorities" portion
      * of the score for each player
      */
-    public static int[] calculateIslandMajoritiesScore(String stateString){
-         return new int[]{0, 0}; // FIXME Task 11
+    public static int[] calculateIslandMajoritiesScore(String stateString) {
+        return new int[]{0, 0}; // FIXME Task 11
     }
 
     /**
@@ -253,8 +393,8 @@ public class BlueLagoon {
      * @return an integer array containing the calculated "Resources" and "Statuettes"
      * portions of the score for each player
      */
-    public static int[] calculateResourcesAndStatuettesScore(String stateString){
-         return new int[]{0, 0}; // FIXME Task 11
+    public static int[] calculateResourcesAndStatuettesScore(String stateString) {
+        return new int[]{0, 0}; // FIXME Task 11
     }
 
     /**
@@ -268,8 +408,8 @@ public class BlueLagoon {
      * @param stateString a string representing a game state
      * @return an integer array containing the calculated scores for each player
      */
-    public static int[] calculateScores(String stateString){
-         return new int[]{0, 0}; // FIXME Task 11
+    public static int[] calculateScores(String stateString) {
+        return new int[]{0, 0}; // FIXME Task 11
     }
 
     /**
@@ -281,7 +421,7 @@ public class BlueLagoon {
      * - The score is tallied for each player.
      * - All pieces are removed from the board excluding villages not on stone circles.
      * - All resources and statuettes remaining on the board are removed. All resources are then
-     *   randomly redistributed between the stone circles.
+     * randomly redistributed between the stone circles.
      * <p>
      * In the Settlement Phase, this means:
      * - Only the score is tallied and added on for each player.
@@ -289,8 +429,8 @@ public class BlueLagoon {
      * @param stateString a string representing a game state at the end of a phase
      * @return a string representing the new state achieved by following the end of phase rules
      */
-    public static String endPhase(String stateString){
-         return ""; // FIXME Task 12
+    public static String endPhase(String stateString) {
+        return ""; // FIXME Task 12
     }
 
     /**
@@ -302,11 +442,11 @@ public class BlueLagoon {
      * move they can make.
      *
      * @param stateString a string representing a game state
-     * @param moveString a string representing the current player's move
+     * @param moveString  a string representing the current player's move
      * @return a string representing the new state after the move is applied to the board
      */
-    public static String applyMove(String stateString, String moveString){
-         return ""; // FIXME Task 13
+    public static String applyMove(String stateString, String moveString) {
+        return ""; // FIXME Task 13
     }
 
     /**
@@ -322,7 +462,7 @@ public class BlueLagoon {
      * @param stateString a string representing a game state
      * @return a move string generated by an AI
      */
-    public static String generateAIMove(String stateString){
-         return ""; // FIXME Task 16
+    public static String generateAIMove(String stateString) {
+        return ""; // FIXME Task 16
     }
 }

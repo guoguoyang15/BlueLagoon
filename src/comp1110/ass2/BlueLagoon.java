@@ -262,7 +262,80 @@ public class BlueLagoon {
      * @return true if the current player can make the move and false otherwise
      */
     public static boolean isMoveValid(String stateString, String moveString) {
-        return false; // FIXME Task 7
+        stateString=" "+ stateString;
+        String[] statement=stateString.split(";");
+        char turn=statement[1].charAt(3);//which player is trying moving
+        int playerStringNum=0;//the statue of this player is stored in which statement
+        for(int i=0;i<=statement.length-1;i++){
+            if(statement[i].charAt(1)=='p'){
+                if(statement[i].charAt(3)==turn){
+                    playerStringNum=i;
+                }
+            }
+        }
+
+        //check how many villages and settlers the player have on board
+        String[] playerStatus=statement[playerStringNum].split(" ");
+        int settlerNum=0;
+        int villageNum=0;
+        for(int j=0;j<=playerStatus.length-1;j++){
+            if(playerStatus[j]=="S"){
+                while(playerStatus[j+1]!="T"){
+                    settlerNum++;
+                    j++;
+                }
+            }
+            if(playerStatus[j]=="T"){
+                while(j+1<=playerStatus.length-1){
+                    villageNum++;
+                    j++;
+                }
+            }
+        }
+        //check the limit for settlers and villages for each player
+        char playerNumber=statement[0].charAt(statement[0].length()-1);
+        int settlerLimit;
+        if(playerNumber=='2'){
+            settlerLimit=30;
+        } else if (playerNumber=='3') {
+            settlerLimit=25;
+        } else {
+            settlerLimit=20;
+        }
+        int villageLimit=5;
+
+
+        //check if the move is beyond the scale of the map
+        String[] arrangement=statement[0].split(" ");
+        int size=Integer.parseInt(arrangement[2]);
+        String[] move=moveString.split(" ");
+        String moveType=move[0];//moveType is either "S" or "T"
+        String[] moveXY=move[1].split(",");
+        int x=Integer.parseInt(moveXY[0]);
+        int y=Integer.parseInt(moveXY[1]);
+        if(x<0||x>size){
+            return false;
+        }else {
+            if(x%2==0){
+                if(y<0||y>size-1){
+                    return false;
+                }
+            }else{
+                if(y<0||y>size){
+                    return false;
+                }
+            }
+        }
+
+        char phase=statement[1].charAt(statement[1].length()-1);//The last character of Current State Statement
+        if(phase=='E'){//Exploration Phase
+            if(settlerNum==settlerLimit&&villageNum==villageLimit){
+                return false;
+            }
+        }else {//Settlement Phase
+
+        }
+        return true; // FIXME Task 7
     }
 
     /**

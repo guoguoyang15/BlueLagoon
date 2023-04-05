@@ -27,6 +27,12 @@ public class BlueLagoon {
      * @return true if stateString is well-formed and false otherwise
      */
     public static boolean isStateStringWellFormed(String stateString) {
+
+        String[] parts = stateString.split(";");
+        
+        String part1 = parts[0];
+        String part2 = parts[1];
+
         return true; // FIXME Task 3
     }
 

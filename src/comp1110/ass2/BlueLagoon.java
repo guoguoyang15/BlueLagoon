@@ -29,8 +29,18 @@ public class BlueLagoon {
     public static boolean isStateStringWellFormed(String stateString) {
         String[] parts = stateString.split(";");
 
-            if (parts[0].matches("a\\s\\d{1,2}\\s\\d")) {
-                return true;
+            if (parts[0].matches("a\\s[0-9]*[1-9][0-9]*\\s[1-9]")) {
+                if (parts[1].matches("\\sc\\s\\d\\s[E|S]")) {
+                    for (int i = 0; i < 8; i++) {
+                        if (parts[i+2].matches("\\si\\s[0-9]*[1-9][0-9]\\s[\\d,\\d\\s]*[\\d,\\d]")) {
+                            return false;
+                        }
+                        return true;
+                    }
+                }
+                else {
+                    return false;
+                }
             }
             else {
                 return false;

@@ -32,9 +32,34 @@ public class BlueLagoon {
         if (parts[0].matches("a\\s[0-9]*[1-9][0-9]*\\s[1-9]")) {
             if (parts[1].matches("\\sc\\s\\d\\s[E|S]")) {
                 int i1 = 0;
-                for (int i = 0; i < 8; i++) {
-                    if (parts[i+2].matches("\\si\\s[0-9]*[1-9][0-9]*\\s(\\d{1,2}\\,\\d{1,2}\\s)*(\\d{1,2}\\,\\d{1,2})")) {
-                        i1 = i1;
+                for (int i = 2; i < parts.length; i++) {
+                    if (parts[i].startsWith(" i")) {
+                        if (parts[i].matches("\\si\\s[0-9]*[1-9][0-9]*\\s(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})")) {
+                            i1 = i1;
+                        } else {
+                            i1 = i1 + 1;
+                        }
+                    }
+                    else if (parts[i].startsWith(" s")) {
+                        if (parts[i].matches("\\ss\\s(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})")) {
+                            i1 = i1;
+                        } else {
+                            i1 = i1 + 1;
+                        }
+                    }
+                    else if (parts[i].startsWith(" r")) {
+                        if (parts[i].matches("\\sr\\sC\\s(\\d{1,2},\\d{1,2}\\s)*B\\s(\\d{1,2},\\d{1,2}\\s)*W\\s(\\d{1,2},\\d{1,2}\\s)*P\\s(\\d{1,2},\\d{1,2}\\s)*S\\s(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})*")) {
+                            i1 = i1;
+                        } else {
+                            i1 = i1 + 1;
+                        }
+                    }
+                    else if (parts[i].startsWith(" p")) {
+                        if (parts[i].matches("\\sp\\s\\d\\s\\d{1,3}\\s\\d\\s\\d\\s\\d\\s\\d\\s\\d\\sS\\s(\\d{1,2},\\d{1,2}\\s)*T\\s(\\d{1,2},\\d{1,2}\\s)(\\d{1,2},\\d{1,2})*")) {
+                            i1 = i1;
+                        } else {
+                            i1 = i1 + 1;
+                        }
                     }
                     else {
                         i1 = i1 + 1;

@@ -386,6 +386,7 @@ public class BlueLagoon {
         //check if there are the player's own areas in adjacent spots
 
 
+        if(phase=='E'){
             if(spots[x][y].spotType== 0){
                 if(moveString.charAt(0)=='S'&&spots[x][y].occupiedByPlayer==100){
 
@@ -457,6 +458,68 @@ public class BlueLagoon {
                     return false;
                 }
             }
+        }else{
+            if(spots[x][y].occupiedByPlayer==100){
+                if(x%2==1){
+                    if((x-1)>=0&&(y-1)>=0&&spots[x-1][y-1].occupiedByPlayer==player){
+                        System.out.println(1);
+                        return true;
+                    }
+                    if ((x+1)<=size-1&&(y-1)>=0&&spots[x+1][y-1].occupiedByPlayer==player) {
+                        System.out.println(2);
+                        return true;
+                    }
+                    if ((y-1)>=0&&spots[x][y-1].occupiedByPlayer==player) {
+                        System.out.println(3);
+                        return true;
+                    }
+                    if ((x-1)>=0&&spots[x-1][y].occupiedByPlayer==player) {
+                        System.out.println(4);
+                        return true;
+                    }
+                    if ((x+1)<=size-1&&spots[x+1][y].occupiedByPlayer==player) {
+                        System.out.println(5);
+                        return true;
+                    }
+                    if ((y+1)<=size-1&&spots[x][y+1].occupiedByPlayer==player) {
+                        System.out.println(6);
+                        return true;
+                    }
+
+                    return false;
+                } else  {
+                    if((x-1)>=0&&(y+1)<=size-1&&spots[x-1][y+1].occupiedByPlayer==player){
+                        System.out.println(1);
+                        return true;
+                    }
+                    if ((x+1)<=size-1&&(y+1)<=size-1&&spots[x+1][y+1].occupiedByPlayer==player) {
+                        System.out.println(2);
+                        return true;
+                    }
+                    if ((y-1)>=0&&spots[x][y-1].occupiedByPlayer==player) {
+                        System.out.println(3);
+                        return true;
+                    }
+                    if ((x-1)>=0&&spots[x-1][y].occupiedByPlayer==player) {
+                        System.out.println(4);
+                        return true;
+                    }
+                    if ((x+1)<=size-1&&spots[x+1][y].occupiedByPlayer==player) {
+                        System.out.println(5);
+                        return true;
+                    }
+                    if ((y+1)<=size-1&&spots[x][y+1].occupiedByPlayer==player) {
+                        System.out.println(6);
+                        return true;
+                    }
+
+                    return false;
+                }
+
+            }else {
+                return false;
+            }
+        }
 
 
 

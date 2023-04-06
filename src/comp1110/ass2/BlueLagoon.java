@@ -29,11 +29,13 @@ public class BlueLagoon {
      */
     public static boolean isStateStringWellFormed(String stateString) {
         String[] parts = stateString.split(";");
-
+        // Checks if Game Arrangement Statement is formatted correctly.
         if (parts[0].matches("a\\s[0-9]*[1-9][0-9]*\\s[1-9]")) {
+            // Checks if Current State Statement is formatted correctly.
             if (parts[1].matches("\\sc\\s\\d\\s[E|S]")) {
                 int i1 = 0;
                 for (int i = 2; i < parts.length; i++) {
+                    // Checks if Island Statement is formatted correctly.
                     if (parts[i].startsWith(" i")) {
                         if (parts[i].matches("\\si\\s[0-9]*[1-9][0-9]*\\s(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})")) {
                             i1 = i1;
@@ -41,6 +43,7 @@ public class BlueLagoon {
                             i1 = i1 + 1;
                         }
                     }
+                    // Checks if Stones Statement is formatted correctly.
                     else if (parts[i].startsWith(" s")) {
                         if (parts[i].matches("\\ss\\s(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})")) {
                             i1 = i1;
@@ -48,6 +51,7 @@ public class BlueLagoon {
                             i1 = i1 + 1;
                         }
                     }
+                    // Checks if Unclaimed Resources and Statuettes Statement is formatted correctly.
                     else if (parts[i].startsWith(" r")) {
                         if (parts[i].matches("\\sr\\sC\\s(\\d{1,2},\\d{1,2}\\s)*B\\s(\\d{1,2},\\d{1,2}\\s)*W\\s(\\d{1,2},\\d{1,2}\\s)*P\\s(\\d{1,2},\\d{1,2}\\s)*S(\\s)??(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})*")) {
                             i1 = i1;
@@ -55,6 +59,7 @@ public class BlueLagoon {
                             i1 = i1 + 1;
                         }
                     }
+                    // Checks if Player Statement is formatted correctly.
                     else if (parts[i].startsWith(" p")) {
                         if (parts[i].matches("\\sp\\s\\d\\s\\d{1,3}\\s\\d\\s\\d\\s\\d\\s\\d\\s\\d\\sS\\s(\\d{1,2},\\d{1,2}\\s)*T(\\s)??(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})*")) {
                             i1 = i1;
@@ -66,6 +71,7 @@ public class BlueLagoon {
                         i1 = i1 + 1;
                     }
                 }
+                // Returns false if any errors are detected.
                 return (i1 == 0 && stateString.endsWith(";"));
             }
             else {

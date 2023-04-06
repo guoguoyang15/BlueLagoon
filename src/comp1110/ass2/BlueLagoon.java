@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+
+
 public class BlueLagoon {
     // The Game Strings for five maps have been created for you.
     // They have only been encoded for two players. However, they are
@@ -63,7 +65,7 @@ public class BlueLagoon {
      * @return a string of the game state with resources randomly distributed
      */
     public static String distributeResources(String stateString) {
-        //add a space at front to make shure that for every statement, the second char of the substring is the type of statement
+        //add a space at front to make shre that for every statement, the second char of the substring is the type of statement
         stateString = " " + stateString;
         String[] statement = stateString.split(";");
         //store the index of stonecirlce statement
@@ -233,11 +235,13 @@ public class BlueLagoon {
         stateString=" "+ stateString;
         String[] statement=stateString.split(";");
         char turn=statement[1].charAt(3);//which player is moving
+        char phase=statement[1].charAt(statement[1].length()-1);//which phase, E(xpolaration) or S(ettlement)
         int playerStringNum=0;//the statue of this player is stored in which statement
-        for(int i=0;i<=statement.length-1;i++){
+        for(int i=2;i<=statement.length-1;i++){
             if(statement[i].charAt(1)=='p'){
                 if(statement[i].charAt(3)==turn){//this player's status string
                     playerStringNum=i;
+                    break;
                 }
             }
         }
@@ -247,13 +251,13 @@ public class BlueLagoon {
         int settlerNum=0;
         int villageNum=0;
         for(int j=0;j<=playerStatus.length-1;j++){
-            if(playerStatus[j]=="S"){
-                while(playerStatus[j+1]!="T"){
+            if(playerStatus[j].equals("S")){
+                while(!playerStatus[j+1].equals("T")){
                     settlerNum++;
                     j++;
                 }
             }
-            if(playerStatus[j]=="T"){
+            if(playerStatus[j].equals("T")){
                 while(j+1<=playerStatus.length-1){
                     villageNum++;
                     j++;
@@ -272,39 +276,195 @@ public class BlueLagoon {
         }
         int villageLimit=5;
 
+        //check if the player is able to place items
+        if(phase=='E') {//in phase 1
+            if(moveString.charAt(0)=='S'){
+                if(settlerLimit<=settlerNum){
+                    return false;
+                }
+            }else {
+                if(villageLimit<=villageNum){
+                    return false;
+                }
+            }
+        }else {//in phase 2
+            if(moveString.charAt(0)=='S'){
+                if(settlerLimit<=settlerNum){
+                    return false;
+                }
+            }else {
+                return false;//because in settlement phase, player cannot place villages anymore
+            }
+        }
 
         //check if the move is beyond the scale of the map
         String[] arrangement=statement[0].split(" ");
         int size=Integer.parseInt(arrangement[2]);
         String[] move=moveString.split(" ");
-        String moveType=move[0];//moveType is either "S" or "T"
+
         String[] moveXY=move[1].split(",");
         int x=Integer.parseInt(moveXY[0]);
         int y=Integer.parseInt(moveXY[1]);
-        if(x<0||x>size){
+        if(x<0||x>=size){
             return false;
         }else {
             if(x%2==0){
-                if(y<0||y>size-1){
+                if(y<0||y>size-2){
                     return false;
                 }
             }else{
-                if(y<0||y>size){
+                if(y<0||y>size-1){
                     return false;
                 }
             }
         }
-
-        char phase=statement[1].charAt(statement[1].length()-1);//The last character of Current State Statement
-        if(phase=='E'){//Exploration Phase
-            if(settlerNum==settlerLimit&&villageNum==villageLimit){
-                return false;
+        //set up a map of spots
+        Spot[][] spots=new Spot[size][size];
+        for(int i=0;i<=size-1;i++){
+            for(int j=0;j<=size-1;j++){
+                spots[i][j]=new Spot();
             }
-        }else {//Settlement Phase
-
         }
-        return true; // FIXME Task 7
-    }
+
+        String[] land;
+        String[] landXY;
+        int landx;
+        int landy;
+        //initialize land spots on the map
+        for(int i=0;i<=statement.length-1;i++){
+            //when this statement is island string
+            if(statement[i].charAt(1)=='i'){
+                land=statement[i].split(" ");
+                for(int j=3;j<= land.length-1;j++){//land[0]="",land[1]="i",land[2]="6/8/10"
+                    landXY=land[j].split(",");
+                    landx=Integer.parseInt(landXY[0]);
+                    landy=Integer.parseInt(landXY[1]);
+                    spots[landx][landy].spotType=1;
+
+                }
+            }
+            if(statement[i].charAt(1)=='p'){
+                String[] playerPositions=statement[i].split(" ");
+                int whichplayer=Integer.parseInt(playerPositions[2]);//which player occupies these following spots
+                for(int j=0;j<= playerPositions.length-1;j++){
+                    if(playerPositions[j].equals("S")){
+                        while(!playerPositions[j+1].equals("T")){
+                            String[] setPos=playerPositions[j+1].split(",");
+                            int setx=Integer.parseInt(setPos[0]);
+                            int sety=Integer.parseInt(setPos[1]);
+                            spots[setx][sety].occupiedByPlayer=whichplayer;
+                            j++;
+                        }
+                    }
+                    if(playerPositions[j].equals("T")){
+                        while(j+1<=playerPositions.length-1){
+                            String[] vilPos=playerPositions[j+1].split(",");
+                            int vilx=Integer.parseInt(vilPos[0]);
+                            int vily=Integer.parseInt(vilPos[1]);
+                            spots[vilx][vily].occupiedByPlayer=whichplayer;
+                            j++;
+                        }
+                    }
+                }
+            }
+        }
+        int player=(int)turn-48;
+        System.out.println(player);
+        System.out.println(x+","+y);
+        System.out.println(spots[x][y].spotType);
+        System.out.println(moveString.substring(0,1));
+        System.out.println(spots[3][7].occupiedByPlayer);
+        System.out.println(settlerNum+","+villageNum);
+        for(int i=0;i<=size-1;i++){
+            for(int j=0;j<=size-1;j++){
+                if(spots[i][j].occupiedByPlayer==player){
+                    System.out.println(i+","+j);
+                }
+            }
+        }
+        System.out.println("");
+        //check if there are the player's own areas in adjacent spots
+
+
+            if(spots[x][y].spotType== 0){
+                if(moveString.charAt(0)=='S'&&spots[x][y].occupiedByPlayer==100){
+
+                    return true;
+
+                }else {
+
+                    return false;
+                }
+            }else{
+                if(spots[x][y].occupiedByPlayer==100){
+                    if(x%2==1){
+                        if((x-1)>=0&&(y-1)>=0&&spots[x-1][y-1].occupiedByPlayer==player){
+                            System.out.println(1);
+                            return true;
+                        }
+                        if ((x+1)<=size-1&&(y-1)>=0&&spots[x+1][y-1].occupiedByPlayer==player) {
+                            System.out.println(2);
+                            return true;
+                        }
+                        if ((y-1)>=0&&spots[x][y-1].occupiedByPlayer==player) {
+                            System.out.println(3);
+                            return true;
+                        }
+                        if ((x-1)>=0&&spots[x-1][y].occupiedByPlayer==player) {
+                            System.out.println(4);
+                            return true;
+                        }
+                        if ((x+1)<=size-1&&spots[x+1][y].occupiedByPlayer==player) {
+                            System.out.println(5);
+                            return true;
+                        }
+                        if ((y+1)<=size-1&&spots[x][y+1].occupiedByPlayer==player) {
+                            System.out.println(6);
+                            return true;
+                        }
+
+                        return false;
+                    } else  {
+                        if((x-1)>=0&&(y+1)<=size-1&&spots[x-1][y+1].occupiedByPlayer==player){
+                            System.out.println(1);
+                            return true;
+                        }
+                        if ((x+1)<=size-1&&(y+1)<=size-1&&spots[x+1][y+1].occupiedByPlayer==player) {
+                            System.out.println(2);
+                            return true;
+                        }
+                        if ((y-1)>=0&&spots[x][y-1].occupiedByPlayer==player) {
+                            System.out.println(3);
+                            return true;
+                        }
+                        if ((x-1)>=0&&spots[x-1][y].occupiedByPlayer==player) {
+                            System.out.println(4);
+                            return true;
+                        }
+                        if ((x+1)<=size-1&&spots[x+1][y].occupiedByPlayer==player) {
+                            System.out.println(5);
+                            return true;
+                        }
+                        if ((y+1)<=size-1&&spots[x][y+1].occupiedByPlayer==player) {
+                            System.out.println(6);
+                            return true;
+                        }
+
+                        return false;
+                    }
+
+                }else {
+                    return false;
+                }
+            }
+
+
+
+
+
+
+        //return true; // FIXME Task 7
+}
 
     /**
      * Given a state string, generate a set containing all move strings playable

@@ -50,14 +50,14 @@ public class BlueLagoon {
                         }
                     }
                     else if (parts[i].startsWith(" r")) {
-                        if (parts[i].matches("\\sr\\sC\\s(\\d{1,2},\\d{1,2}\\s)*B\\s(\\d{1,2},\\d{1,2}\\s)*W\\s(\\d{1,2},\\d{1,2}\\s)*P\\s(\\d{1,2},\\d{1,2}\\s)*S\\s(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})*")) {
+                        if (parts[i].matches("\\sr\\sC\\s(\\d{1,2},\\d{1,2}\\s)*B\\s(\\d{1,2},\\d{1,2}\\s)*W\\s(\\d{1,2},\\d{1,2}\\s)*P\\s(\\d{1,2},\\d{1,2}\\s)*S(\\s)??(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})*")) {
                             i1 = i1;
                         } else {
                             i1 = i1 + 1;
                         }
                     }
                     else if (parts[i].startsWith(" p")) {
-                        if (parts[i].matches("\\sp\\s\\d\\s\\d{1,3}\\s\\d\\s\\d\\s\\d\\s\\d\\s\\d\\sS\\s(\\d{1,2},\\d{1,2}\\s)*T\\s(\\d{1,2},\\d{1,2}\\s)(\\d{1,2},\\d{1,2})*")) {
+                        if (parts[i].matches("\\sp\\s\\d\\s\\d{1,3}\\s\\d\\s\\d\\s\\d\\s\\d\\s\\d\\sS\\s(\\d{1,2},\\d{1,2}\\s)*T(\\s)??(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})*")) {
                             i1 = i1;
                         } else {
                             i1 = i1 + 1;

@@ -40,40 +40,8 @@ public class BlueLagoon {
      * @return true if moveString is well-formed and false otherwise
      */
     public static boolean isMoveStringWellFormed(String moveString) {
-        //for empty string, return false
-        if (moveString.length() == 0) {
-            return false;
-        } else {
-            //check the first character
-            if (moveString.charAt(0) == 'S' || moveString.charAt(0) == 'T') {
-                //check whether the second character is space
-                if (moveString.charAt(1) == ' ') {
-                    //check if the string contains comma, rather than dot
-                    if (moveString.contains(",")) {
-                        //get the coordinate string like "2,3"
-                        String coor = moveString.substring(2, moveString.length());
-                        //split the coordinate string to 2 substrings like "2" and "3"
-                        String[] digit = coor.split(",");
-                        //examine if two substring contains other characters except for digits
-                        for (int i = 0; i <= 1; i++) {
-                            for (int j = 0; j <= digit[i].length() - 1; j++) {
-                                if (digit[i].charAt(j) < '0' || digit[i].charAt(j) > '9') {
-                                    return false;
-                                }
-                            }
-                        }
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else {
-                    return false;
-                }
-            } else {
-                return false;
-            }
-        }
-        //return false; // FIXME Task 4
+
+        return false; // FIXME Task 4
     }
 
     /**
@@ -264,11 +232,11 @@ public class BlueLagoon {
     public static boolean isMoveValid(String stateString, String moveString) {
         stateString=" "+ stateString;
         String[] statement=stateString.split(";");
-        char turn=statement[1].charAt(3);//which player is trying moving
+        char turn=statement[1].charAt(3);//which player is moving
         int playerStringNum=0;//the statue of this player is stored in which statement
         for(int i=0;i<=statement.length-1;i++){
             if(statement[i].charAt(1)=='p'){
-                if(statement[i].charAt(3)==turn){
+                if(statement[i].charAt(3)==turn){//this player's status string
                     playerStringNum=i;
                 }
             }

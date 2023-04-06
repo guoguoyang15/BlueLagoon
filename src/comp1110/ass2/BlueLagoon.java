@@ -67,7 +67,7 @@ public class BlueLagoon {
                         i1 = i1 + 1;
                     }
                 }
-                return i1 == 0;
+                return (i1 == 0 && stateString.endsWith(";"));
             }
             else {
                 return false;

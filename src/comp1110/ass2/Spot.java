@@ -1,24 +1,21 @@
 package comp1110.ass2;
 
 public class Spot {
-    public enum SpotType{
-        LAND,
-        SEA;
-    }
+
     public enum SettlerOrVillage{
         NULL,
         SETTLER,
         VILLAGE;
     }
     public int occupiedByPlayer;
-    public SpotType spotType;
+    public int spotType;
     public Resource resources;
     public int island;//No. of island the spot belongs to
     public SettlerOrVillage settlerOrVillage;
 
     public Spot() {
         this.occupiedByPlayer=100;//there are players 0~3, at first nobody occupies this spot
-        this.spotType=SpotType.SEA;//We can change it later, those are still not changed will be sea
+        this.spotType=0;//We can change it later, those are still not changed will be sea
         this.resources=Resource.NULL;
         this.island=100;//we change it later
         this.settlerOrVillage=SettlerOrVillage.NULL;//At first nothing this spot
@@ -32,11 +29,11 @@ public class Spot {
         this.occupiedByPlayer = occupiedByPlayer;
     }
 
-    public SpotType getSpotType() {
+    public int getSpotType() {
         return spotType;
     }
 
-    public void setSpotType(SpotType spotType) {
+    public void setSpotType(int spotType) {
         this.spotType = spotType;
     }
 

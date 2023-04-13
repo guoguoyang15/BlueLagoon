@@ -24,55 +24,57 @@ public class BlueLagoon {
      * A description of the state string will be included in README.md
      * in an update of the project after D2B is complete.
      *
-     * @param stateString a string representing a game state
+     * @param moveString a string representing a game state
      * @return true if stateString is well-formed and false otherwise
      */
+    public static boolean isMoveStringWellFormed(String moveString) {
+
+        return false;
+    }
     public static boolean isStateStringWellFormed(String stateString) {
         String[] parts = stateString.split(";");
-        // Checks if Game Arrangement Statement is formatted correctly.
+        // Separate strings into arrays of strings with the split function, using ";"
         if (parts[0].matches("a\\s[0-9]*[1-9][0-9]*\\s[1-9]")) {
-            // Checks if Current State Statement is formatted correctly.
+            // Check if the game arrangement declaration is correct by means of regular expressions
             if (parts[1].matches("\\sc\\s\\d\\s[E|S]")) {
-                int i1 = 0;
                 for (int i = 2; i < parts.length; i++) {
-                    // Checks if Island Statement is formatted correctly.
+                    // Iterate through the array to check if it is correct
                     if (parts[i].startsWith(" i")) {
                         if (parts[i].matches("\\si\\s[0-9]*[1-9][0-9]*\\s(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})")) {
-                            i1 = i1;
+
                         } else {
-                            i1 = i1 + 1;
+                            return false;
                         }
                     }
                     // Checks if Stones Statement is formatted correctly.
                     else if (parts[i].startsWith(" s")) {
                         if (parts[i].matches("\\ss\\s(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})")) {
-                            i1 = i1;
                         } else {
-                            i1 = i1 + 1;
+                            return false;
                         }
                     }
                     // Checks if Unclaimed Resources and Statuettes Statement is formatted correctly.
                     else if (parts[i].startsWith(" r")) {
                         if (parts[i].matches("\\sr\\sC\\s(\\d{1,2},\\d{1,2}\\s)*B\\s(\\d{1,2},\\d{1,2}\\s)*W\\s(\\d{1,2},\\d{1,2}\\s)*P\\s(\\d{1,2},\\d{1,2}\\s)*S(\\s)??(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})*")) {
-                            i1 = i1;
+
                         } else {
-                            i1 = i1 + 1;
+                            return false;
                         }
                     }
                     // Checks if Player Statement is formatted correctly.
                     else if (parts[i].startsWith(" p")) {
                         if (parts[i].matches("\\sp\\s\\d\\s\\d{1,3}\\s\\d\\s\\d\\s\\d\\s\\d\\s\\d\\sS\\s(\\d{1,2},\\d{1,2}\\s)*T(\\s)??(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})*")) {
-                            i1 = i1;
+
                         } else {
-                            i1 = i1 + 1;
+                            return false;
                         }
                     }
                     else {
-                        i1 = i1 + 1;
+                        return false;
                     }
                 }
                 // Returns false if any errors are detected.
-                return (i1 == 0 && stateString.endsWith(";"));
+                return (stateString.endsWith(";"));
             }
             else {
                 return false;
@@ -93,10 +95,7 @@ public class BlueLagoon {
      * @param moveString a string representing a player's move
      * @return true if moveString is well-formed and false otherwise
      */
-    public static boolean isMoveStringWellFormed(String moveString) {
 
-        return false; // FIXME Task 4
-    }
 
     /**
      * Given a state string which is yet to have resources distributed amongst the stone circles,
@@ -116,6 +115,8 @@ public class BlueLagoon {
      * @param stateString a string representing a game state without resources distributed
      * @return a string of the game state with resources randomly distributed
      */
+    // FIXME Task 4
+
     public static String distributeResources(String stateString) {
         //add a space at front to make shre that for every statement, the second char of the substring is the type of statement
         stateString = " " + stateString;

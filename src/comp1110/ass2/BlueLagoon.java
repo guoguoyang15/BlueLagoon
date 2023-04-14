@@ -63,7 +63,7 @@ public class BlueLagoon {
                     }
                     // Checks if Player Statement is formatted correctly.
                     else if (parts[i].startsWith(" p")) {
-                        if (parts[i].matches("\\sp\\s\\d\\s\\d{1,3}\\s\\d\\s\\d\\s\\d\\s\\d\\s\\d\\sS\\s(\\d{1,2},\\d{1,2}\\s)*T(\\s)??(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})*")) {
+                        if (parts[i].matches("\\sp\\s\\d\\s\\d{1,3}\\s(\\d\\s){5}S\\s(\\d{1,2},\\d{1,2}\\s)*T(\\s)??(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})*")) {
 
                         } else {
                             return false;

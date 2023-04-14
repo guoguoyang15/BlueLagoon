@@ -27,10 +27,7 @@ public class BlueLagoon {
      * @param moveString a string representing a game state
      * @return true if stateString is well-formed and false otherwise
      */
-    public static boolean isMoveStringWellFormed(String moveString) {
 
-        return false;
-    }
     public static boolean isStateStringWellFormed(String stateString) {
         String[] parts = stateString.split(";");
         // Separate strings into arrays of strings with the split function, using ";"
@@ -96,6 +93,15 @@ public class BlueLagoon {
      * @return true if moveString is well-formed and false otherwise
      */
 
+    public static boolean isMoveStringWellFormed(String moveString) {
+        // Checks if Move string is properly formatted
+        if (moveString.matches("[S|T]\s\\d{1,2},\\d{1,2}")) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
     /**
      * Given a state string which is yet to have resources distributed amongst the stone circles,
@@ -115,7 +121,6 @@ public class BlueLagoon {
      * @param stateString a string representing a game state without resources distributed
      * @return a string of the game state with resources randomly distributed
      */
-    // FIXME Task 4
 
     public static String distributeResources(String stateString) {
         //add a space at front to make shre that for every statement, the second char of the substring is the type of statement

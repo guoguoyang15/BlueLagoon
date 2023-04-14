@@ -140,7 +140,7 @@ public class BlueLagoon {
             }
         }
 
-        //store the coordinates of 32 stonecircles
+        //store the coordinates of 32 stone circles
         Coordinate[] coordinate = new Coordinate[32];
         String[] stoneCoorString = statement[stoneCircle].split(" ");
         int x;
@@ -229,7 +229,7 @@ public class BlueLagoon {
                 }
             }
         }
-        //create a new statement of resources
+        // Create a new statement for resources
         statement[resource] = " r";
         statement[resource] += " " + "C";
         for (int j = 0; j <= 5; j++) {
@@ -668,10 +668,10 @@ public class BlueLagoon {
                 }
             }
         }
-        //ID of this player
+        // ID of this player
         int player = (int) turn - 48;
 
-        //Generate movestrings
+        // Generate move strings
         if (phase == 'E' && firstStep) {
             for (int i = 0; i <= size - 1; i++) {
                 for (int j = 0; j <= size - 1; j++) {
@@ -874,7 +874,7 @@ public class BlueLagoon {
             }
 
 
-            //return stringSet; // FIXME Task 8
+            // return stringSet; // FIXME Task 8
         }
     }
 

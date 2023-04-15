@@ -9,7 +9,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
+
 
 public class Viewer extends Application {
 
@@ -30,9 +33,7 @@ public class Viewer extends Application {
      * @param stateString a string representing a game state
      */
     void displayState(String stateString) {
-        // FIXME Task 5
-    }
-
+    } // FIXME Task 5
     /**
      * Create a basic text field for input and a refresh button.
      */

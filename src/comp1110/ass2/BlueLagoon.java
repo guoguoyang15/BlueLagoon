@@ -24,7 +24,7 @@ public class BlueLagoon {
      * A description of the state string will be included in README.md
      * in an update of the project after D2B is complete.
      *
-     * @param moveString a string representing a game state
+     * @param stateString a string representing a game state
      * @return true if stateString is well-formed and false otherwise
      */
 
@@ -38,31 +38,32 @@ public class BlueLagoon {
                     // Iterate through the array to check if it is correct
                     if (parts[i].startsWith(" i")) {
                         if (parts[i].matches("\\si\\s[0-9]*[1-9][0-9]*\\s(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})")) {
-
-                        } else {
+                        }
+                        else {
                             return false;
                         }
                     }
                     // Checks if Stones Statement is formatted correctly.
                     else if (parts[i].startsWith(" s")) {
                         if (parts[i].matches("\\ss\\s(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})")) {
-                        } else {
+                        }
+                        else {
                             return false;
                         }
                     }
                     // Checks if Unclaimed Resources and Statuettes Statement is formatted correctly.
                     else if (parts[i].startsWith(" r")) {
                         if (parts[i].matches("\\sr\\sC\\s(\\d{1,2},\\d{1,2}\\s)*B\\s(\\d{1,2},\\d{1,2}\\s)*W\\s(\\d{1,2},\\d{1,2}\\s)*P\\s(\\d{1,2},\\d{1,2}\\s)*S(\\s)??(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})*")) {
-
-                        } else {
+                        }
+                        else {
                             return false;
                         }
                     }
                     // Checks if Player Statement is formatted correctly.
                     else if (parts[i].startsWith(" p")) {
                         if (parts[i].matches("\\sp\\s\\d\\s\\d{1,3}\\s(\\d\\s){5}S\\s(\\d{1,2},\\d{1,2}\\s)*T(\\s)??(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})*")) {
-
-                        } else {
+                        }
+                        else {
                             return false;
                         }
                     }
@@ -263,7 +264,7 @@ public class BlueLagoon {
                 after += statement[k] + ";";
             }
         }
-        return after; // FIXME Task 6
+        return after;
     }
 
     /**
@@ -515,7 +516,7 @@ public class BlueLagoon {
         }
 
 
-        //return true; // FIXME Task 7
+        //return true;
     }
 
     public static boolean isPosInIndex(int size, int x, int y) {

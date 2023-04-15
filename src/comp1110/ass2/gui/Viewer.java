@@ -33,7 +33,40 @@ public class Viewer extends Application {
      * @param stateString a string representing a game state
      */
     void displayState(String stateString) {
-    } // FIXME Task 5
+        String[] parts = stateString.split(";");
+        class Hex extends Application {
+            public void start(Stage stage) {
+                Polygon p = new Polygon();
+                p.getPoints().addAll(34.64, 0.0,
+                        0.0, 20.0,
+                        0.0, 60.0,
+                        34.64, 80.0,
+                        69.28, 60.0,
+                        69.28, 20.0);
+                p.setFill(Color.LIGHTGREY);
+
+                Group root = new Group(p);
+                Scene scene = new Scene(root, 600, 519);
+                root.setLayoutX(300.0);
+                root.setLayoutY(259.5);
+
+                stage.setTitle("Board");
+                stage.setScene(scene);
+                stage.show();
+            }
+        }
+
+        for (int i = 0; i < parts.length; i++) {
+            if (parts[i].startsWith(" i")) {
+                String[] islands = parts[i].split(" ");
+                for (int j = 2; j < parts[i].length(); j++) {
+                    if (islands[j].startsWith("[1|3|5|7|9|11]")) {
+
+                    }
+                }
+            }
+        }
+    }
     /**
      * Create a basic text field for input and a refresh button.
      */

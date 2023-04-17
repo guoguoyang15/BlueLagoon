@@ -890,7 +890,7 @@ public class BlueLagoon {
      * @return true if the state is at the end of either phase and false otherwise
      */
     public static boolean isPhaseOver(String stateString) {
-        //
+        //The first method as usual
         stateString = " " + stateString;
         String[] statement = stateString.split(";");
         int playerNumber=Integer.parseInt(statement[0].substring(statement[0].length()-1,statement[0].length()));

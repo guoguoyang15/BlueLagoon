@@ -13,6 +13,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -37,7 +39,7 @@ public class Viewer extends Application {
      */
     void displayState(String stateString) {
         String[] parts = stateString.split(";");
-        Polygon[] tiles = new Polygon[400];
+        Polygon[] tiles = new Polygon[200];
 
         for (int i = 0; i < parts.length; i++) {
 
@@ -127,10 +129,10 @@ public class Viewer extends Application {
                 }
                 while (c1 < 6) {
                         tiles[c1 + 146] = new Polygon();
-                        tiles[c1 + 146].getPoints().addAll(500.0, 10.0 + 10*c1,
-                                500.0, 20.0 + 10*c1,
-                                510.0, 20.0 + 10*c1,
-                                510.0, 10.0 + 10*c1);
+                        tiles[c1 + 146].getPoints().addAll(800.0, 10.0 + 10*c1,
+                                800.0, 20.0 + 10*c1,
+                                810.0, 20.0 + 10*c1,
+                                810.0, 10.0 + 10*c1);
                         tiles[c1 + 146].setFill(Color.BROWN);
                     c1++;
                 }
@@ -151,10 +153,10 @@ public class Viewer extends Application {
                 }
                 while (c2 < 6) {
                         tiles[c1 + 152] = new Polygon();
-                        tiles[c1 + 152].getPoints().addAll(500.0, 10.0 + 10*c2,
-                                500.0, 20.0 + 10*c2,
-                                510.0, 20.0 + 10*c2,
-                                510.0, 10.0 + 10*c2);
+                        tiles[c1 + 152].getPoints().addAll(850.0, 10.0 + 10*c2,
+                                850.0, 20.0 + 10*c2,
+                                860.0, 20.0 + 10*c2,
+                                860.0, 10.0 + 10*c2);
                         tiles[c1 + 152].setFill(Color.DARKOLIVEGREEN);
                         c2++;
                 }
@@ -176,10 +178,10 @@ public class Viewer extends Application {
                 }
                 while (c3 < 6) {
                     tiles[c3 + 158] = new Polygon();
-                    tiles[c3 + 158].getPoints().addAll(500.0, 10.0 + 10*c3,
-                            500.0, 20.0 + 10*c3,
-                            510.0, 20.0 + 10*c3,
-                            510.0, 10.0 + 10*c3);
+                    tiles[c3 + 158].getPoints().addAll(900.0, 10.0 + 10*c3,
+                            900.0, 20.0 + 10*c3,
+                            910.0, 20.0 + 10*c3,
+                            910.0, 10.0 + 10*c3);
                     tiles[c3 + 158].setFill(Color.BROWN);
                     c3++;
                 }
@@ -201,41 +203,45 @@ public class Viewer extends Application {
                 }
                 while (c4 < 6) {
                     tiles[c4 + 164] = new Polygon();
-                    tiles[c4 + 164].getPoints().addAll(500.0, 10.0 + 10*c4,
-                            500.0, 20.0 + 10*c4,
-                            510.0, 20.0 + 10*c4,
-                            510.0, 10.0 + 10*c4);
+                    tiles[c4 + 164].getPoints().addAll(950.0, 10.0 + 10*c4,
+                            950.0, 20.0 + 10*c4,
+                            960.0, 20.0 + 10*c4,
+                            960.0, 10.0 + 10*c4);
                     tiles[c4 + 164].setFill(Color.LIGHTBLUE);
                     c4++;
                 }
 
                 // Generates statuettes
-                String[] statuette = resources[5].split(" ");
                 int c5 = 0;
-                for (int j = 0; j < statuette.length; j++) {
-                    String[] coords = statuette[j].split(",");
-                    int x = Integer.parseInt(coords[0]);
-                    int y = Integer.parseInt(coords[1]);
-                    tiles[j + 172] = new Polygon();
-                    tiles[j + 172].getPoints().addAll(29.64 + 70.28 * y, 35.0 + 81 * x,
-                            39.64 + 70.28 * y, 35.0 + 81 * x,
-                            29.64 + 70.28 * y, 45.0 + 81 * x,
-                            39.64 + 70.28 * y, 45.0 + 81 * x);
-                    tiles[j + 172].setFill(Color.LIGHTBLUE);
-                    c5 = c5 + 1;
+                if (resources.length == 5) {
+                }
+                else {
+                    String[] statuette = resources[5].split(" ");
+                    for (int j = 0; j < statuette.length; j++) {
+                        String[] coords = statuette[j].split(",");
+                        int x = Integer.parseInt(coords[0]);
+                        int y = Integer.parseInt(coords[1]);
+                        tiles[j + 172] = new Polygon();
+                        tiles[j + 172].getPoints().addAll(29.64 + 70.28 * y, 35.0 + 81 * x,
+                                39.64 + 70.28 * y, 35.0 + 81 * x,
+                                29.64 + 70.28 * y, 45.0 + 81 * x,
+                                39.64 + 70.28 * y, 45.0 + 81 * x);
+                        tiles[j + 172].setFill(Color.MAROON);
+                        c5 = c5 + 1;
+                    }
                 }
                 while (c5 < 8) {
                     tiles[c5 + 172] = new Polygon();
-                    tiles[c5 + 172].getPoints().addAll(500.0, 10.0 + 10*c5,
-                            500.0, 20.0 + 10*c5,
-                            510.0, 20.0 + 10*c5,
-                            510.0, 10.0 + 10*c5);
-                    tiles[c5 + 172].setFill(Color.LIGHTBLUE);
+                    tiles[c5 + 172].getPoints().addAll(1000.0, 10.0 + 10*c5,
+                            1000.0, 20.0 + 10*c5,
+                            1010.0, 20.0 + 10*c5,
+                            1010.0, 10.0 + 10*c5);
+                    tiles[c5 + 172].setFill(Color.MAROON);
                     c5++;
                 }
             }
         }
-        List<Polygon> tilesList = Arrays.asList(tiles);
+        List<Polygon> tilesList = new ArrayList<>(Arrays.asList(tiles));
         root.getChildren().addAll(tilesList);
     }
     /**

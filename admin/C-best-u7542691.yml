@@ -20,6 +20,9 @@ method:
    - isStateStringWellFormed
    - isMoveStringWellFormed
 
+best:
+  - https://gitlab.cecs.anu.edu.au/u7630421/comp1110-ass2/-/blob/master/src/comp1110/ass2/BlueLagoon.java#L31-85
+
 # sign *your* name and uid here
 name: Quoc Thai Le (Tyler)
 uid: u7542691

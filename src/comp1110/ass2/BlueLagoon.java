@@ -38,47 +38,40 @@ public class BlueLagoon {
                     // Iterate through the array to check if it is correct
                     if (parts[i].startsWith(" i")) {
                         if (parts[i].matches("\\si\\s[0-9]*[1-9][0-9]*\\s(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})")) {
-                        }
-                        else {
+                        } else {
                             return false;
                         }
                     }
                     // Checks if Stones Statement is formatted correctly.
                     else if (parts[i].startsWith(" s")) {
                         if (parts[i].matches("\\ss\\s(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})")) {
-                        }
-                        else {
+                        } else {
                             return false;
                         }
                     }
                     // Checks if Unclaimed Resources and Statuettes Statement is formatted correctly.
                     else if (parts[i].startsWith(" r")) {
                         if (parts[i].matches("\\sr\\sC\\s(\\d{1,2},\\d{1,2}\\s)*B\\s(\\d{1,2},\\d{1,2}\\s)*W\\s(\\d{1,2},\\d{1,2}\\s)*P\\s(\\d{1,2},\\d{1,2}\\s)*S(\\s)??(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})*")) {
-                        }
-                        else {
+                        } else {
                             return false;
                         }
                     }
                     // Checks if Player Statement is formatted correctly.
                     else if (parts[i].startsWith(" p")) {
                         if (parts[i].matches("\\sp\\s\\d\\s\\d{1,3}\\s(\\d\\s){5}S\\s(\\d{1,2},\\d{1,2}\\s)*T(\\s)??(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})*")) {
-                        }
-                        else {
+                        } else {
                             return false;
                         }
-                    }
-                    else {
+                    } else {
                         return false;
                     }
                 }
                 // Returns false if any errors are detected.
                 return (stateString.endsWith(";"));
-            }
-            else {
+            } else {
                 return false;
             }
-        }
-        else {
+        } else {
             return false;
         }
 
@@ -98,8 +91,7 @@ public class BlueLagoon {
         // Checks if Move string is properly formatted
         if (moveString.matches("[S|T]\s\\d{1,2},\\d{1,2}")) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -454,56 +446,56 @@ public class BlueLagoon {
                 }
             }
         }
-        if(spots[x][y].occupiedByPlayer==100){
-            if(x%2==1){
-                if((x-1)>=0&&(y-1)>=0&&spots[x-1][y-1].occupiedByPlayer==player){
+        if (spots[x][y].occupiedByPlayer == 100) {
+            if (x % 2 == 1) {
+                if ((x - 1) >= 0 && (y - 1) >= 0 && spots[x - 1][y - 1].occupiedByPlayer == player) {
                     System.out.println(1);
                     return true;
                 }
-                if ((x+1)<=size-1&&(y-1)>=0&&spots[x+1][y-1].occupiedByPlayer==player) {
+                if ((x + 1) <= size - 1 && (y - 1) >= 0 && spots[x + 1][y - 1].occupiedByPlayer == player) {
                     System.out.println(2);
                     return true;
                 }
-                if ((y-1)>=0&&spots[x][y-1].occupiedByPlayer==player) {
+                if ((y - 1) >= 0 && spots[x][y - 1].occupiedByPlayer == player) {
                     System.out.println(3);
                     return true;
                 }
-                if ((x-1)>=0&&spots[x-1][y].occupiedByPlayer==player) {
+                if ((x - 1) >= 0 && spots[x - 1][y].occupiedByPlayer == player) {
                     System.out.println(4);
                     return true;
                 }
-                if ((x+1)<=size-1&&spots[x+1][y].occupiedByPlayer==player) {
+                if ((x + 1) <= size - 1 && spots[x + 1][y].occupiedByPlayer == player) {
                     System.out.println(5);
                     return true;
                 }
-                if ((y+1)<=size-1&&spots[x][y+1].occupiedByPlayer==player) {
+                if ((y + 1) <= size - 1 && spots[x][y + 1].occupiedByPlayer == player) {
                     System.out.println(6);
                     return true;
                 }
 
                 return false;
-            } else  {
-                if((x-1)>=0&&(y+1)<=size-1&&spots[x-1][y+1].occupiedByPlayer==player){
+            } else {
+                if ((x - 1) >= 0 && (y + 1) <= size - 1 && spots[x - 1][y + 1].occupiedByPlayer == player) {
                     System.out.println(1);
                     return true;
                 }
-                if ((x+1)<=size-1&&(y+1)<=size-1&&spots[x+1][y+1].occupiedByPlayer==player) {
+                if ((x + 1) <= size - 1 && (y + 1) <= size - 1 && spots[x + 1][y + 1].occupiedByPlayer == player) {
                     System.out.println(2);
                     return true;
                 }
-                if ((y-1)>=0&&spots[x][y-1].occupiedByPlayer==player) {
+                if ((y - 1) >= 0 && spots[x][y - 1].occupiedByPlayer == player) {
                     System.out.println(3);
                     return true;
                 }
-                if ((x-1)>=0&&spots[x-1][y].occupiedByPlayer==player) {
+                if ((x - 1) >= 0 && spots[x - 1][y].occupiedByPlayer == player) {
                     System.out.println(4);
                     return true;
                 }
-                if ((x+1)<=size-1&&spots[x+1][y].occupiedByPlayer==player) {
+                if ((x + 1) <= size - 1 && spots[x + 1][y].occupiedByPlayer == player) {
                     System.out.println(5);
                     return true;
                 }
-                if ((y+1)<=size-1&&spots[x][y+1].occupiedByPlayer==player) {
+                if ((y + 1) <= size - 1 && spots[x][y + 1].occupiedByPlayer == player) {
                     System.out.println(6);
                     return true;
                 }
@@ -511,7 +503,7 @@ public class BlueLagoon {
                 return false;
             }
 
-        }else {
+        } else {
             return false;
         }
 
@@ -893,64 +885,84 @@ public class BlueLagoon {
         //The first method as usual
         stateString = " " + stateString;
         String[] statement = stateString.split(";");
-        int playerNumber=Integer.parseInt(statement[0].substring(statement[0].length()-1,statement[0].length()));
-        int[][] playerResources=new int[playerNumber][4];//E.G. playerResources[1][2] means the number of water possessed by player 2
+        int playerNumber = Integer.parseInt(statement[0].substring(statement[0].length() - 1, statement[0].length()));
+        int[][] playerResources = new int[playerNumber][4];//E.G. playerResources[1][2] means the number of water possessed by player 2
 
 
-        int player=0;
-        for(int i=0;i<=statement.length-1;i++){
-            if(statement[i].charAt(1)=='p'){//if this is a player statement
-                String[] playerProperty=statement[i].split(" ");
-                for(int j=0;j<=3;j++){
-                    int numOfResource=Integer.parseInt(playerProperty[j+4]);
-                    playerResources[player][j]=numOfResource;
+        int player = 0;
+        for (int i = 0; i <= statement.length - 1; i++) {
+            if (statement[i].charAt(1) == 'p') {//if this is a player statement
+                String[] playerProperty = statement[i].split(" ");
+                for (int j = 0; j <= 3; j++) {
+                    int numOfResource = Integer.parseInt(playerProperty[j + 4]);
+                    playerResources[player][j] = numOfResource;
                 }
                 player++;
             }
         }
         //Count the number of all resources occupied bu all players
-        int sumOfResources=0;
-        for(int i=0;i<=player-1;i++){
-            for(int j=0;j<=3;j++){
-                sumOfResources=sumOfResources+playerResources[i][j];
+        int sumOfResources = 0;
+        for (int i = 0; i <= player - 1; i++) {
+            for (int j = 0; j <= 3; j++) {
+                sumOfResources = sumOfResources + playerResources[i][j];
             }
         }
         boolean allResources;
-        if(sumOfResources==24){
-            allResources=true;
-        }else {
-            allResources=false;
+        if (sumOfResources == 24) {
+            allResources = true;
+        } else {
+            allResources = false;
         }
 
 
-        int flag=0;
-        String newString="";
-        statement[0]=statement[0].substring(1,statement[0].length());
-        for(int d=0;d<=statement.length-1;d++){
-            statement[d]+=";";
+        int flag = 0;
+        String newString = "";
+        statement[0] = statement[0].substring(1, statement[0].length());
+        for (int d = 0; d <= statement.length - 1; d++) {
+            statement[d] += ";";
         }
 
-        for(int k=0;k<=playerNumber-1;k++){
-            String num=""+k;
-            statement[1]=statement[1].substring(0,3)+num+statement[1].substring(4,7);
-            for(int j=0;j<=statement.length-1;j++){
-                newString+=statement[j];
+        for (int k = 0; k <= playerNumber - 1; k++) {
+            String num = "" + k;
+            statement[1] = statement[1].substring(0, 3) + num + statement[1].substring(4, 7);
+            for (int j = 0; j <= statement.length - 1; j++) {
+                newString += statement[j];
 
             }
             //System.out.println(newString);
-            if(generateAllValidMoves(newString).size()==0){//this player has no
+            if (generateAllValidMoves(newString).size() == 0) {//this player has no
                 flag++;
             }
-            newString="";
+            newString = "";
         }
 
         System.out.println(sumOfResources);
-        if(allResources||flag==playerNumber){
+        if (allResources || flag == playerNumber) {
             return true;
-        }else{
+        } else {
             return false;
         }
         //return false; // FIXME Task 9
+    }
+
+    public static boolean comparePos(String pos1, String pos2) {
+        String[] posString1 = pos1.split(",");
+        String[] posString2 = pos2.split(",");
+        int x1 = Integer.parseInt(posString1[0]);
+        int y1 = Integer.parseInt(posString1[1]);
+        int x2 = Integer.parseInt(posString2[0]);
+        int y2 = Integer.parseInt(posString2[1]);
+        if (x1 > x2) {
+            return true;
+        } else if (x1 < x2) {
+            return false;
+        } else {
+            if (y1 > y2) {
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 
     /**
@@ -965,7 +977,218 @@ public class BlueLagoon {
      * @return a new state string achieved by placing the move on the board
      */
     public static String placePiece(String stateString, String moveString) {
-        return ""; // FIXME Task 10
+        stateString = " " + stateString;
+        String[] statement = stateString.split(";");
+        char turn = statement[1].charAt(3);//which player is moving
+        int thisPlayer = 0;
+        int re = 0;
+        for (int i = 0; i <= statement.length - 1; i++) {
+            if (statement[i].charAt(1) == 'p' && statement[i].charAt(3) == turn) {
+                thisPlayer = i;
+            }
+            if (statement[i].charAt(1) == 'r' ) {
+                re = i;
+            }
+        }
+
+        // ID of this player
+        int player = (int) turn - 48;
+        String[] moveStrings = moveString.split(" ");
+        String phase = moveStrings[0];
+        String pos = moveStrings[1];
+        String[] xy = pos.split(",");
+        int moveX = Integer.parseInt(xy[0]);
+        int moveY = Integer.parseInt(xy[1]);
+
+        if (phase.equals("S")) {
+            String[] playerStrings = statement[thisPlayer].split(" ");
+
+
+            int pre = 0;
+            boolean flag = true;
+            for (int i = 0; i <= playerStrings.length - 1; i++) {
+                if (playerStrings[i].equals("S")) {
+
+                    while (!playerStrings[i + 1].equals("T")) {
+                        if (comparePos(playerStrings[i + 1], pos)) {
+
+                            flag = false;
+                            break;
+                        } else {
+                            i++;
+                        }
+                    }
+                    pre = i;
+                    if (!flag) {
+                        break;
+                    }
+
+                }
+            }
+
+            statement[thisPlayer] = "";
+            for (int i = 0; i <= playerStrings.length - 1; i++) {
+                statement[thisPlayer] = statement[thisPlayer] + " " + playerStrings[i];
+                if (i == pre) {
+                    statement[thisPlayer] = statement[thisPlayer] + " " + pos;
+                }
+
+            }
+        }
+
+        if (phase.equals("T")) {
+            boolean flag = true;
+
+            String[] playerStrings = statement[thisPlayer].split(" ");
+            int pre = 0;
+            for (int i = 0; i <= playerStrings.length - 1; i++) {
+                if (playerStrings[i].equals("T")) {
+
+                    while (i + 1 <= playerStrings.length - 1) {
+                        if (comparePos(playerStrings[i + 1], pos)) {
+
+                            flag = false;
+                            break;
+                        } else {
+                            i++;
+                        }
+                    }
+                    pre = i;
+                    if (!flag) {
+                        break;
+                    }
+                }
+            }
+
+            statement[thisPlayer] = "";
+            for (int i = 0; i <= playerStrings.length - 1; i++) {
+                statement[thisPlayer] = statement[thisPlayer] + " " + playerStrings[i];
+                if (i == pre) {
+                    statement[thisPlayer] = statement[thisPlayer] + " " + pos;
+                }
+            }
+
+        }
+        System.out.println("\n");
+
+        statement[thisPlayer]=statement[thisPlayer].substring(1,statement[thisPlayer].length());
+        System.out.println(statement[thisPlayer]);
+        String[] playerStrings = statement[thisPlayer].split(" ");
+
+        char f='v';
+        boolean ff=false;
+        String[] subRe=statement[re].split(" ");
+        for(int b=0;b<=subRe.length-1;b++){
+            if(subRe[b].equals("C")){
+                while(!subRe[b+1].equals("B")){
+                    if(subRe[b+1].equals(pos)){
+                        f='c';
+                        ff=true;
+                        break;
+                    }
+                    b++;
+                }
+                if(ff){
+                    break;
+                }
+            }
+            if(subRe[b].equals("B")){
+                while(!subRe[b+1].equals("W")){
+                    if(subRe[b+1].equals(pos)){
+                        f='b';
+                        ff=true;
+                        break;
+                    }
+                    b++;
+                }
+                if(ff){
+                    break;
+                }
+            }
+            if(subRe[b].equals("W")){
+                while(!subRe[b+1].equals("P")){
+                    if(subRe[b+1].equals(pos)){
+                        f='w';
+                        ff=true;
+                        break;
+                    }
+                    b++;
+                }
+                if(ff){
+                    break;
+                }
+            }
+            if(subRe[b].equals("P")){
+                while(!subRe[b+1].equals("S")){
+                    if(subRe[b+1].equals(pos)){
+                        f='p';
+                        ff=true;
+                        break;
+                    }
+                    b++;
+                }
+                if(ff){
+                    break;
+                }
+            }
+            if(subRe[b].equals("S")){
+                while(b+1<=subRe.length-1){
+                    if(subRe[b+1].equals(pos)){
+                        f='s';
+                        ff=true;
+                        break;
+                    }
+                    b++;
+                }
+                if(ff){
+                    break;
+                }
+            }
+        }
+
+
+        if (f=='c') {
+            System.out.println(1);
+            playerStrings[4] = "" + (Integer.parseInt(playerStrings[4]) + 1);
+        } else if (f=='b') {
+            System.out.println(1);
+            playerStrings[5] = "" + (Integer.parseInt(playerStrings[5]) + 1);
+        } else if (f=='w') {
+            System.out.println(1);
+            playerStrings[6] = "" + (Integer.parseInt(playerStrings[6]) + 1);
+        } else if (f=='p') {
+            System.out.println(1);
+            playerStrings[7] = "" + (Integer.parseInt(playerStrings[7]) + 1);
+        } else if (f=='s') {
+            System.out.println(1);
+            playerStrings[8] = "" + (Integer.parseInt(playerStrings[8]) + 1);
+        } else {
+            System.out.println(2);
+        }
+
+        statement[thisPlayer]="";
+        for(int p=0;p<=playerStrings.length-1;p++){
+            statement[thisPlayer]+=" "+playerStrings[p];
+        }
+        statement[thisPlayer]=statement[thisPlayer].substring(1,statement[thisPlayer].length());
+
+        String[] reString = statement[re].split(" ");
+        System.out.println(statement[re]);
+        statement[re] = "";
+        for (int i = 1; i <= reString.length - 1; i++) {
+            if (!reString[i].equals(pos)) {
+                statement[re] = statement[re] + " " + reString[i];
+            }
+        }
+
+        String newString = "";
+        for (int i = 0; i <= statement.length - 1; i++) {
+            newString = newString + statement[i] + ";";
+        }
+        System.out.println(stateString);
+        System.out.println(moveString);
+
+        return newString.substring(1, newString.length()); // FIXME Task 10
     }
 
     /**

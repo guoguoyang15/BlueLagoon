@@ -44,32 +44,32 @@ public class Viewer extends Application {
             // Generates the islands
             if (parts[i].startsWith(" i")) {
                 String[] islands = parts[i].split(" ");
-                for (int j = 2; j < islands.length; j++) {
-                    if (islands[j].startsWith("[0|2|4|6|8|10|12]")) {
+                for (int j = 3; j < islands.length; j++) {
+                    if (islands[j].startsWith("0")) {
                         String[] coords = islands[j].split(",");
                         double x = Double.parseDouble(coords[0]);
                         double y = Double.parseDouble(coords[1]);
                         Polygon p = new Polygon();
-                        p.getPoints().addAll(34.64 + 70.28*y, 0.0 + 81*x,
-                                0.0 + 70.28*y, 20.0 + 81*x,
-                                0.0 + 70.28*y, 60.0 + 81*x,
-                                34.64 + 70.28*y, 80.0 + 81*x,
-                                69.28 + 70.28*y, 60.0 + 81*x,
-                                69.28 + 70.28*y, 20.0 + 81*x);
+                        p.getPoints().addAll(94.64 + 70.28 * y, 0.0 + 81 * x,
+                                60.0 + 70.28 * y, 20.0 + 81 * x,
+                                60.0 + 70.28 * y, 60.0 + 81 * x,
+                                94.64 + 70.28 * y, 80.0 + 81 * x,
+                                129.28 + 70.28 * y, 60.0 + 81 * x,
+                                129.28 + 70.28 * y, 20.0 + 81 * x);
                         p.setFill(Color.LIGHTGREEN);
                         tilesList.add(p);
                     }
-                    else if (islands[j].startsWith("[1|3|5|7|9|11]")) {
+                    else if (islands[j].startsWith("1")) {
                         String[] coords = islands[j].split(",");
                         double x = Double.parseDouble(coords[0]);
                         double y = Double.parseDouble(coords[1]);
                         Polygon p = new Polygon();
-                        p.getPoints().addAll(94.64 + 70.28 * y, 34.64 + 81 * x,
-                                60.0 + 70.28 * y, 54.64 + 81 * x,
-                                70.0 + 70.28 * y, 94.64 + 81 * x,
-                                94.64 + 70.28 * y, 114.64 + 81 * x,
-                                159.28 + 70.28 * y, 94.64 + 81 * x,
-                                159.28 + 70.28 * y, 54.64 + 81 * x);
+                        p.getPoints().addAll(60.5 + 70.28 * y, 0.0 + 71 * x,
+                                24.86 + 70.28 * y, 20.0 + 71 * x,
+                                24.86 + 70.28 * y, 60.0 + 71 * x,
+                                60.5 + 70.28 * y, 80.0 + 71 * x,
+                                94.14 + 70.28 * y, 60.0 + 71 * x,
+                                94.14 + 70.28 * y, 20.0 + 71 * x);
                         p.setFill(Color.LIGHTGREEN);
                         tilesList.add(p);
                     }
@@ -130,10 +130,10 @@ public class Viewer extends Application {
                 }
                 while (c1 < 6) {
                         Polygon p = new Polygon();
-                        p.getPoints().addAll(900.0, 10.0 + 15*c1,
-                                900.0, 20.0 + 15*c1,
-                                910.0, 20.0 + 15*c1,
-                                910.0, 10.0 + 15*c1);
+                        p.getPoints().addAll(1000.0, 10.0 + 15*c1,
+                                1000.0, 20.0 + 15*c1,
+                                1010.0, 20.0 + 15*c1,
+                                1010.0, 10.0 + 15*c1);
                         p.setFill(Color.LIGHTGRAY);
                     tilesList.add(p);
                     c1++;
@@ -156,10 +156,10 @@ public class Viewer extends Application {
                 }
                 while (c2 < 6) {
                         Polygon p = new Polygon();
-                        p.getPoints().addAll(950.0, 10.0 + 15*c2,
-                                950.0, 20.0 + 15*c2,
-                                960.0, 20.0 + 15*c2,
-                                960.0, 10.0 + 15*c2);
+                        p.getPoints().addAll(1040.0, 10.0 + 15*c2,
+                                1040.0, 20.0 + 15*c2,
+                                1050.0, 20.0 + 15*c2,
+                                1050.0, 10.0 + 15*c2);
                         p.setFill(Color.LIGHTYELLOW);
                     tilesList.add(p);
                         c2++;
@@ -182,10 +182,10 @@ public class Viewer extends Application {
                 }
                 while (c3 < 6) {
                     Polygon p = new Polygon();
-                    p.getPoints().addAll(1000.0, 10.0 + 15*c3,
-                            1000.0, 20.0 + 15*c3,
-                            1010.0, 20.0 + 15*c3,
-                            1010.0, 10.0 + 15*c3);
+                    p.getPoints().addAll(1080.0, 10.0 + 15*c3,
+                            1080.0, 20.0 + 15*c3,
+                            1090.0, 20.0 + 15*c3,
+                            1090.0, 10.0 + 15*c3);
                     p.setFill(Color.LIGHTBLUE);
                     tilesList.add(p);
                     c3++;
@@ -208,10 +208,10 @@ public class Viewer extends Application {
                 }
                 while (c4 < 6) {
                     Polygon p = new Polygon();
-                    p.getPoints().addAll(1050.0, 10.0 + 15*c4,
-                            1050.0, 20.0 + 15*c4,
-                            1060.0, 20.0 + 15*c4,
-                            1060.0, 10.0 + 15*c4);
+                    p.getPoints().addAll(1120.0, 10.0 + 15*c4,
+                            1120.0, 20.0 + 15*c4,
+                            1130.0, 20.0 + 15*c4,
+                            1130.0, 10.0 + 15*c4);
                     p.setFill(Color.DARKSEAGREEN);
                     tilesList.add(p);
                     c4++;
@@ -238,10 +238,10 @@ public class Viewer extends Application {
                 }
                 while (c5 < 8) {
                     Polygon p = new Polygon();
-                    p.getPoints().addAll(1100.0, 10.0 + 15*c5,
-                            1100.0, 20.0 + 15*c5,
-                            1110.0, 20.0 + 15*c5,
-                            1110.0, 10.0 + 15*c5);
+                    p.getPoints().addAll(1160.0, 10.0 + 15*c5,
+                            1160.0, 20.0 + 15*c5,
+                            1170.0, 20.0 + 15*c5,
+                            1170.0, 10.0 + 15*c5);
                     p.setFill(Color.MAROON);
                     tilesList.add(p);
                     c5++;

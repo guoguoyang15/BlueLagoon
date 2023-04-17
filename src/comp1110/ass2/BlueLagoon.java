@@ -890,7 +890,67 @@ public class BlueLagoon {
      * @return true if the state is at the end of either phase and false otherwise
      */
     public static boolean isPhaseOver(String stateString) {
-        return false; // FIXME Task 9
+        //
+        stateString = " " + stateString;
+        String[] statement = stateString.split(";");
+        int playerNumber=Integer.parseInt(statement[0].substring(statement[0].length()-1,statement[0].length()));
+        int[][] playerResources=new int[playerNumber][4];//E.G. playerResources[1][2] means the number of water possessed by player 2
+
+
+        int player=0;
+        for(int i=0;i<=statement.length-1;i++){
+            if(statement[i].charAt(1)=='p'){//if this is a player statement
+                String[] playerProperty=statement[i].split(" ");
+                for(int j=0;j<=3;j++){
+                    int numOfResource=Integer.parseInt(playerProperty[j+4]);
+                    playerResources[player][j]=numOfResource;
+                }
+                player++;
+            }
+        }
+        //Count the number of all resources occupied bu all players
+        int sumOfResources=0;
+        for(int i=0;i<=player-1;i++){
+            for(int j=0;j<=3;j++){
+                sumOfResources=sumOfResources+playerResources[i][j];
+            }
+        }
+        boolean allResources;
+        if(sumOfResources==24){
+            allResources=true;
+        }else {
+            allResources=false;
+        }
+
+
+        int flag=0;
+        String newString="";
+        statement[0]=statement[0].substring(1,statement[0].length());
+        for(int d=0;d<=statement.length-1;d++){
+            statement[d]+=";";
+        }
+
+        for(int k=0;k<=playerNumber-1;k++){
+            String num=""+k;
+            statement[1]=statement[1].substring(0,3)+num+statement[1].substring(4,7);
+            for(int j=0;j<=statement.length-1;j++){
+                newString+=statement[j];
+
+            }
+            //System.out.println(newString);
+            if(generateAllValidMoves(newString).size()==0){//this player has no
+                flag++;
+            }
+            newString="";
+        }
+
+        System.out.println(sumOfResources);
+        if(allResources||flag==playerNumber){
+            return true;
+        }else{
+            return false;
+        }
+        //return false; // FIXME Task 9
     }
 
     /**

@@ -1329,7 +1329,103 @@ public class BlueLagoon {
      * of the score for each player
      */
     public static int[] calculateIslandMajoritiesScore(String stateString) {
-        return new int[]{0, 0}; // FIXME Task 11
+        stateString = " " + stateString;
+        String[] statement = stateString.split(";");
+        int playerNum=Integer.parseInt(statement[0].substring(statement[0].length()-1,statement[0].length()));
+        //Get the size of the map
+        String[] arrangement = statement[0].split(" ");
+        int size = Integer.parseInt(arrangement[2]);
+
+        int numOfIslands=0;
+        for(int j=0;j<=statement.length-1;j++){
+            if(statement[j].charAt(1)=='i'){
+                numOfIslands++;
+            }
+        }
+        int[] islandPoints=new int[numOfIslands];
+        //set up a map of spots
+        Spot[][] spots = new Spot[size][size];
+        for (int i = 0; i <= size - 1; i++) {
+            for (int j = 0; j <= size - 1; j++) {
+                spots[i][j] = new Spot();
+            }
+        }
+
+        String[] land;
+        String[] landXY;
+        int landx;
+        int landy;
+        //initialize land spots on the map
+        for (int i = 0; i <= statement.length - 1; i++) {
+            //when this statement is island string
+            if (statement[i].charAt(1) == 'i') {
+                land = statement[i].split(" ");
+                islandPoints[i-2]=Integer.parseInt(land[2]);
+                for (int j = 3; j <= land.length - 1; j++) {//land[0]="",land[1]="i",land[2]="6/8/10"
+                    landXY = land[j].split(",");
+                    landx = Integer.parseInt(landXY[0]);
+                    landy = Integer.parseInt(landXY[1]);
+                    spots[landx][landy].spotType = 1;
+                    spots[landx][landy].island=i-2;
+                }
+            }
+            if (statement[i].charAt(1) == 'p') {
+                String[] playerPositions = statement[i].split(" ");
+                int whichplayer = Integer.parseInt(playerPositions[2]);//which player occupies these following spots
+                for (int j = 0; j <= playerPositions.length - 1; j++) {
+                    if (playerPositions[j].equals("S")) {
+                        while (!playerPositions[j + 1].equals("T")) {
+                            String[] setPos = playerPositions[j + 1].split(",");
+                            int setx = Integer.parseInt(setPos[0]);
+                            int sety = Integer.parseInt(setPos[1]);
+                            spots[setx][sety].occupiedByPlayer = whichplayer;
+                            j++;
+                        }
+                    }
+                    if (playerPositions[j].equals("T")) {
+                        while (j + 1 <= playerPositions.length - 1) {
+                            String[] vilPos = playerPositions[j + 1].split(",");
+                            int vilx = Integer.parseInt(vilPos[0]);
+                            int vily = Integer.parseInt(vilPos[1]);
+                            spots[vilx][vily].occupiedByPlayer = whichplayer;
+                            j++;
+                        }
+                    }
+                }
+            }
+        }
+
+        int[] playerPoints=new int[playerNum];
+        int[] occupiers=new int[playerNum];
+
+        for(int i=0;i<=numOfIslands-1;i++){
+            for(int g=0;g<=playerNum-1;g++){
+                occupiers[g]=0;
+            }
+            for(int j=0;j<=size-1;j++){
+                for(int k=0;k<=size-1;k++){
+                    if(spots[j][k].island==i&&spots[j][k].occupiedByPlayer!=100){
+                        occupiers[spots[j][k].occupiedByPlayer]++;
+                    }
+                }
+            }
+            if(playerNum==2){
+                if(occupiers[0]!=0||occupiers[1]!=0){
+                    if(occupiers[0]>occupiers[1]){
+                        playerPoints[0]+=islandPoints[i];
+                    } else if (occupiers[0]<occupiers[1]) {
+                        playerPoints[1]+=islandPoints[i];
+                    }  else {
+                        playerPoints[0]+=islandPoints[i]/2;
+                        playerPoints[1]+=islandPoints[i]/2;
+                    }
+                }
+            }
+
+        }
+
+
+        return playerPoints; // FIXME Task 11
     }
 
     /**

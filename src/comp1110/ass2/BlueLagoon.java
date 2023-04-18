@@ -256,7 +256,7 @@ public class BlueLagoon {
                 after += statement[k] + ";";
             }
         }
-        return after;
+        return after;//// FIXME Task 6
     }
 
     /**
@@ -508,7 +508,7 @@ public class BlueLagoon {
         }
 
 
-        //return true;
+        //return true;// FIXME Task 7
     }
 
     public static boolean isPosInIndex(int size, int x, int y) {

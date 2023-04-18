@@ -1356,7 +1356,75 @@ public class BlueLagoon {
      * portions of the score for each player
      */
     public static int[] calculateResourcesAndStatuettesScore(String stateString) {
-        return new int[]{0, 0}; // FIXME Task 11
+        stateString = " " + stateString;
+        String[] statement = stateString.split(";");
+        int playerNumber = Integer.parseInt(statement[0].substring(statement[0].length() - 1, statement[0].length()));
+        int[] scores = new int[playerNumber];
+        int firstPlayer = 0;
+        for (int i = 0; i <= statement.length - 1; i++) {
+            if (statement[i].charAt(1) == 'p') {
+                firstPlayer = i;
+                break;
+            }
+        }
+
+        for(int p=firstPlayer;p<=statement.length-1;p++){
+            String[] playerString=statement[p].split(" ");
+            int score=0;
+            int coconut=Integer.parseInt(playerString[4]);
+            int bamboo=Integer.parseInt(playerString[5]);
+            int water=Integer.parseInt(playerString[6]);
+            int prestone=Integer.parseInt(playerString[7]);
+            int statuette=Integer.parseInt(playerString[8]);
+            if(coconut>=4){
+                score+=20;
+            } else if (coconut==3) {
+                score+=10;
+            }else if(coconut==2){
+                score+=5;
+            }else {
+                score+=0;
+            }
+
+            if(water>=4){
+                score+=20;
+            } else if (water==3) {
+                score+=10;
+            }else if(water==2){
+                score+=5;
+            }else {
+                score+=0;
+            }
+            if(prestone>=4){
+                score+=20;
+            } else if (prestone==3) {
+                score+=10;
+            }else if(prestone==2){
+                score+=5;
+            }else {
+                score+=0;
+            }
+            if(bamboo>=4){
+                score+=20;
+            } else if (bamboo==3) {
+                score+=10;
+            }else if(bamboo==2){
+                score+=5;
+            }else {
+                score+=0;
+            }
+
+            score+=4*statuette;
+
+            if(coconut>0&&bamboo>0&&water>0&&prestone>0){
+                score+=10;
+            }
+
+            scores[p-firstPlayer]=score;
+
+        }
+
+        return scores; // FIXME Task 11
     }
 
     /**

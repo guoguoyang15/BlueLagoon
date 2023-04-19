@@ -35,7 +35,6 @@ public class Viewer extends Application {
      *
      * @param stateString a string representing a game state
      */
-    // FIXME Task 5
     void displayState(String stateString) {
         String[] parts = stateString.split(";");
         List<Polygon> tilesList = new ArrayList<>();

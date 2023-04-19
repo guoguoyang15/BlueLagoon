@@ -38,47 +38,40 @@ public class BlueLagoon {
                     // Iterate through the array to check if it is correct
                     if (parts[i].startsWith(" i")) {
                         if (parts[i].matches("\\si\\s[0-9]*[1-9][0-9]*\\s(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})")) {
-                        }
-                        else {
+                        } else {
                             return false;
                         }
                     }
                     // Checks if Stones Statement is formatted correctly.
                     else if (parts[i].startsWith(" s")) {
                         if (parts[i].matches("\\ss\\s(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})")) {
-                        }
-                        else {
+                        } else {
                             return false;
                         }
                     }
                     // Checks if Unclaimed Resources and Statuettes Statement is formatted correctly.
                     else if (parts[i].startsWith(" r")) {
                         if (parts[i].matches("\\sr\\sC\\s(\\d{1,2},\\d{1,2}\\s)*B\\s(\\d{1,2},\\d{1,2}\\s)*W\\s(\\d{1,2},\\d{1,2}\\s)*P\\s(\\d{1,2},\\d{1,2}\\s)*S(\\s)??(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})*")) {
-                        }
-                        else {
+                        } else {
                             return false;
                         }
                     }
                     // Checks if Player Statement is formatted correctly.
                     else if (parts[i].startsWith(" p")) {
                         if (parts[i].matches("\\sp\\s\\d\\s\\d{1,3}\\s(\\d\\s){5}S\\s(\\d{1,2},\\d{1,2}\\s)*T(\\s)??(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})*")) {
-                        }
-                        else {
+                        } else {
                             return false;
                         }
-                    }
-                    else {
+                    } else {
                         return false;
                     }
                 }
                 // Returns false if any errors are detected.
                 return (stateString.endsWith(";"));
-            }
-            else {
+            } else {
                 return false;
             }
-        }
-        else {
+        } else {
             return false;
         }
 
@@ -98,8 +91,7 @@ public class BlueLagoon {
         // Checks if Move string is properly formatted
         if (moveString.matches("[S|T]\s\\d{1,2},\\d{1,2}")) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -124,59 +116,147 @@ public class BlueLagoon {
      */
 
     public static String distributeResources(String stateString) {
-        //add a space at front to make sure that for every statement, the second char of the substring is the type of statement
-        //stateString = " " + stateString;
+        //add a space at front to make shre that for every statement, the second char of the substring is the type of statement
+        stateString = " " + stateString;
         String[] statement = stateString.split(";");
-        String target=null;
-        for(int i=0;i<14;i++)
-        {
-            if(statement[i].startsWith(" s")) {
-                target=statement[i];
-                break;
+        //store the index of stonecirlce statement
+        int stoneCircle = 0;
+        //store the index of resource statement
+        int resource = 0;
+        //search for the index of two statements
+        for (int i = 0; i <= statement.length - 1; i++) {
+            if (statement[i].charAt(1) == 's') {
+                stoneCircle = i;
+            }
+            if (statement[i].charAt(1) == 'r') {
+                resource = i;
             }
         }
-        //先用target截取s开头的字符串
-        target=target.replace(" s ","");
-        //切除掉开头的无关字符
-        String[]stoneCircle=target.split(" ");
-        //分离出来字符串中的顺序字符
-        String[]random=new String[32];
-        //另外新设一个字符串数组
-        Random r=new Random();
-        int []a=new int [32];
-        int rand;
-        for(int i=0;i<32;i++)
-        {
 
-            do{rand=r.nextInt(32);
-                if(a[rand]==0){
-                    a[rand]=i;
-                    break;
+        //store the coordinates of 32 stone circles
+        Coordinate[] coordinate = new Coordinate[32];
+        String[] stoneCoorString = statement[stoneCircle].split(" ");
+        int x;
+        int y;
+        for (int i = 0; i <= 31; i++) {
+            String[] xy = stoneCoorString[i + 2].split(",");//stoneCoorString[0]="" and stoneCoorString[1]="s"
+            x = Integer.parseInt(xy[0]);
+            y = Integer.parseInt(xy[1]);
+            coordinate[i] = new Coordinate(x, y);
+        }
+        //coordinates of resources
+        Coordinate[] bamboo = new Coordinate[6];
+        Coordinate[] coconut = new Coordinate[6];
+        Coordinate[] water = new Coordinate[6];
+        Coordinate[] preciousStone = new Coordinate[6];
+        Coordinate[] statuette = new Coordinate[8];
+        //numbers of resources allocated
+        int b = 0;
+        int c = 0;
+        int w = 0;
+        int p = 0;
+        int s = 0;
+        //index is the total number of resources allocated
+        int index = 0;
+        Random random = new Random();
+        //store the coordinates of stonecircles which have been occupied, true for occupation
+        int[] flag = new int[32];
+        while (index <= 31) {
+            int i = random.nextInt(16);
+            if (i == 0 || i == 1 || i == 2) {
+                if (b <= 5) {
+                    int r = random.nextInt(32);
+                    //if true and occupied, then search for another position which have yet been occupied. When false(not occupied), exit loop
+                    while (flag[r] == 1) {
+                        r = random.nextInt(32);
+                    }
+                    bamboo[b] = coordinate[r];
+                    b++;
+                    index++;
+                    //set the coordinate of this stonecircle as occupied
+                    flag[r] = 1;
                 }
-            }while (true);
-        }
-        for(int i=0;i<32;i++)
-        {
-            random[i]=stoneCircle[a[i]];
-        }
-        // 随机一串0~31的数组，把新数据记录进新的字符串里面
-        String C=random[0]+" "+random[1]+" "+random[2]+" "+random[3]+" "+random[4]+" "+random[5]+" ";
-        String B=random[6]+" "+random[7]+" "+random[8]+" "+random[9]+" "+random[10]+" "+random[11]+" ";
-        String W=random[12]+" "+random[13]+" "+random[14]+" "+random[15]+" "+random[16]+" "+random[17]+" ";
-        String P=random[18]+" "+random[19]+" "+random[20]+" "+random[21]+" "+random[22]+" "+random[23]+" ";
-        String S=random[24]+" "+random[25]+" "+random[26]+" "+random[27]+" "+random[28]+" "+random[29]+" "+random[30]+" "+random[31];
-        //先把各个资源的字符串表示出来
-        String replaceString=" r C "+C+"B "+B+"W "+W+"P "+P+"S "+S;
-        //直接用字符串加法，先另外拟一个字符串资源声明
-
-        for(int i=0;i<12;i++)
-        {
-            if(statement[i].startsWith(" r")){
-                stateString=stateString.replace(statement[i],replaceString);
+            } else if (i == 3 || i == 4 || i == 5) {
+                if (c <= 5) {
+                    int r = random.nextInt(32);
+                    while (flag[r] == 1) {
+                        r = random.nextInt(32);
+                    }
+                    coconut[c] = coordinate[r];
+                    c++;
+                    index++;
+                    flag[r] = 1;
+                }
+            } else if (i == 6 || i == 7 || i == 8) {
+                if (w <= 5) {
+                    int r = random.nextInt(32);
+                    while (flag[r] == 1) {
+                        r = random.nextInt(32);
+                    }
+                    water[w] = coordinate[r];
+                    w++;
+                    index++;
+                    flag[r] = 1;
+                }
+            } else if (i == 9 || i == 10 || i == 11) {
+                if (p <= 5) {
+                    int r = random.nextInt(32);
+                    while (flag[r] == 1) {
+                        r = random.nextInt(32);
+                    }
+                    preciousStone[p] = coordinate[r];
+                    p++;
+                    index++;
+                    flag[r] = 1;
+                }
+            } else {
+                if (s <= 7) {
+                    int r = random.nextInt(32);
+                    while (flag[r] == 1) {
+                        r = random.nextInt(32);
+                    }
+                    statuette[s] = coordinate[r];
+                    s++;
+                    index++;
+                    flag[r] = 1;
+                }
             }
         }
-
-        return stateString;
+        // Create a new statement for resources
+        statement[resource] = " r";
+        statement[resource] += " " + "C";
+        for (int j = 0; j <= 5; j++) {
+            statement[resource] += " " + coconut[j].x + "," + coconut[j].y;
+        }
+        statement[resource] += " " + "B";
+        for (int j = 0; j <= 5; j++) {
+            statement[resource] += " " + bamboo[j].x + "," + bamboo[j].y;
+        }
+        statement[resource] += " " + "W";
+        for (int j = 0; j <= 5; j++) {
+            statement[resource] += " " + water[j].x + "," + water[j].y;
+        }
+        statement[resource] += " " + "P";
+        for (int j = 0; j <= 5; j++) {
+            statement[resource] += " " + preciousStone[j].x + "," + preciousStone[j].y;
+        }
+        statement[resource] += " " + "S";
+        for (int j = 0; j <= 7; j++) {
+            statement[resource] += " " + statuette[j].x + "," + statuette[j].y;
+        }
+        statement[resource] += ";";
+        //delete the first space of the arrangement statement
+        statement[0] = statement[0].substring(1, statement[0].length());
+        //assembly all statements
+        String after = "";
+        for (int k = 0; k <= statement.length - 1; k++) {
+            if (k == resource) {
+                after += statement[resource];
+            } else {
+                after += statement[k] + ";";
+            }
+        }
+        return after;//// FIXME Task 6
     }
 
     /**
@@ -366,56 +446,56 @@ public class BlueLagoon {
                 }
             }
         }
-        if(spots[x][y].occupiedByPlayer==100){
-            if(x%2==1){
-                if((x-1)>=0&&(y-1)>=0&&spots[x-1][y-1].occupiedByPlayer==player){
+        if (spots[x][y].occupiedByPlayer == 100) {
+            if (x % 2 == 1) {
+                if ((x - 1) >= 0 && (y - 1) >= 0 && spots[x - 1][y - 1].occupiedByPlayer == player) {
                     System.out.println(1);
                     return true;
                 }
-                if ((x+1)<=size-1&&(y-1)>=0&&spots[x+1][y-1].occupiedByPlayer==player) {
+                if ((x + 1) <= size - 1 && (y - 1) >= 0 && spots[x + 1][y - 1].occupiedByPlayer == player) {
                     System.out.println(2);
                     return true;
                 }
-                if ((y-1)>=0&&spots[x][y-1].occupiedByPlayer==player) {
+                if ((y - 1) >= 0 && spots[x][y - 1].occupiedByPlayer == player) {
                     System.out.println(3);
                     return true;
                 }
-                if ((x-1)>=0&&spots[x-1][y].occupiedByPlayer==player) {
+                if ((x - 1) >= 0 && spots[x - 1][y].occupiedByPlayer == player) {
                     System.out.println(4);
                     return true;
                 }
-                if ((x+1)<=size-1&&spots[x+1][y].occupiedByPlayer==player) {
+                if ((x + 1) <= size - 1 && spots[x + 1][y].occupiedByPlayer == player) {
                     System.out.println(5);
                     return true;
                 }
-                if ((y+1)<=size-1&&spots[x][y+1].occupiedByPlayer==player) {
+                if ((y + 1) <= size - 1 && spots[x][y + 1].occupiedByPlayer == player) {
                     System.out.println(6);
                     return true;
                 }
 
                 return false;
-            } else  {
-                if((x-1)>=0&&(y+1)<=size-1&&spots[x-1][y+1].occupiedByPlayer==player){
+            } else {
+                if ((x - 1) >= 0 && (y + 1) <= size - 1 && spots[x - 1][y + 1].occupiedByPlayer == player) {
                     System.out.println(1);
                     return true;
                 }
-                if ((x+1)<=size-1&&(y+1)<=size-1&&spots[x+1][y+1].occupiedByPlayer==player) {
+                if ((x + 1) <= size - 1 && (y + 1) <= size - 1 && spots[x + 1][y + 1].occupiedByPlayer == player) {
                     System.out.println(2);
                     return true;
                 }
-                if ((y-1)>=0&&spots[x][y-1].occupiedByPlayer==player) {
+                if ((y - 1) >= 0 && spots[x][y - 1].occupiedByPlayer == player) {
                     System.out.println(3);
                     return true;
                 }
-                if ((x-1)>=0&&spots[x-1][y].occupiedByPlayer==player) {
+                if ((x - 1) >= 0 && spots[x - 1][y].occupiedByPlayer == player) {
                     System.out.println(4);
                     return true;
                 }
-                if ((x+1)<=size-1&&spots[x+1][y].occupiedByPlayer==player) {
+                if ((x + 1) <= size - 1 && spots[x + 1][y].occupiedByPlayer == player) {
                     System.out.println(5);
                     return true;
                 }
-                if ((y+1)<=size-1&&spots[x][y+1].occupiedByPlayer==player) {
+                if ((y + 1) <= size - 1 && spots[x][y + 1].occupiedByPlayer == player) {
                     System.out.println(6);
                     return true;
                 }
@@ -423,12 +503,12 @@ public class BlueLagoon {
                 return false;
             }
 
-        }else {
+        } else {
             return false;
         }
 
 
-        //return true;
+        //return true;// FIXME Task 7
     }
 
     public static boolean isPosInIndex(int size, int x, int y) {
@@ -802,7 +882,87 @@ public class BlueLagoon {
      * @return true if the state is at the end of either phase and false otherwise
      */
     public static boolean isPhaseOver(String stateString) {
-        return false; // FIXME Task 9
+        //The first method as usual
+        stateString = " " + stateString;
+        String[] statement = stateString.split(";");
+        int playerNumber = Integer.parseInt(statement[0].substring(statement[0].length() - 1, statement[0].length()));
+        int[][] playerResources = new int[playerNumber][4];//E.G. playerResources[1][2] means the number of water possessed by player 2
+
+
+        int player = 0;
+        for (int i = 0; i <= statement.length - 1; i++) {
+            if (statement[i].charAt(1) == 'p') {//if this is a player statement
+                String[] playerProperty = statement[i].split(" ");
+                for (int j = 0; j <= 3; j++) {
+                    int numOfResource = Integer.parseInt(playerProperty[j + 4]);
+                    playerResources[player][j] = numOfResource;
+                }
+                player++;
+            }
+        }
+        //Count the number of all resources occupied bu all players
+        int sumOfResources = 0;
+        for (int i = 0; i <= player - 1; i++) {
+            for (int j = 0; j <= 3; j++) {
+                sumOfResources = sumOfResources + playerResources[i][j];
+            }
+        }
+        boolean allResources;
+        if (sumOfResources == 24) {
+            allResources = true;
+        } else {
+            allResources = false;
+        }
+
+
+        int flag = 0;
+        String newString = "";
+        statement[0] = statement[0].substring(1, statement[0].length());
+        for (int d = 0; d <= statement.length - 1; d++) {
+            statement[d] += ";";
+        }
+
+        for (int k = 0; k <= playerNumber - 1; k++) {
+            String num = "" + k;
+            statement[1] = statement[1].substring(0, 3) + num + statement[1].substring(4, 7);
+            for (int j = 0; j <= statement.length - 1; j++) {
+                newString += statement[j];
+
+            }
+            //System.out.println(newString);
+            if (generateAllValidMoves(newString).size() == 0) {//this player has no
+                flag++;
+            }
+            newString = "";
+        }
+
+        System.out.println(sumOfResources);
+        if (allResources || flag == playerNumber) {
+            return true;
+        } else {
+            return false;
+        }
+        //return false; // FIXME Task 9
+    }
+
+    public static boolean comparePos(String pos1, String pos2) {
+        String[] posString1 = pos1.split(",");
+        String[] posString2 = pos2.split(",");
+        int x1 = Integer.parseInt(posString1[0]);
+        int y1 = Integer.parseInt(posString1[1]);
+        int x2 = Integer.parseInt(posString2[0]);
+        int y2 = Integer.parseInt(posString2[1]);
+        if (x1 > x2) {
+            return true;
+        } else if (x1 < x2) {
+            return false;
+        } else {
+            if (y1 > y2) {
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 
     /**
@@ -817,7 +977,218 @@ public class BlueLagoon {
      * @return a new state string achieved by placing the move on the board
      */
     public static String placePiece(String stateString, String moveString) {
-        return ""; // FIXME Task 10
+        stateString = " " + stateString;
+        String[] statement = stateString.split(";");
+        char turn = statement[1].charAt(3);//which player is moving
+        int thisPlayer = 0;
+        int re = 0;
+        for (int i = 0; i <= statement.length - 1; i++) {
+            if (statement[i].charAt(1) == 'p' && statement[i].charAt(3) == turn) {
+                thisPlayer = i;
+            }
+            if (statement[i].charAt(1) == 'r') {
+                re = i;
+            }
+        }
+
+        // ID of this player
+        int player = (int) turn - 48;
+        String[] moveStrings = moveString.split(" ");
+        String phase = moveStrings[0];
+        String pos = moveStrings[1];
+        String[] xy = pos.split(",");
+        int moveX = Integer.parseInt(xy[0]);
+        int moveY = Integer.parseInt(xy[1]);
+
+        if (phase.equals("S")) {
+            String[] playerStrings = statement[thisPlayer].split(" ");
+
+
+            int pre = 0;
+            boolean flag = true;
+            for (int i = 0; i <= playerStrings.length - 1; i++) {
+                if (playerStrings[i].equals("S")) {
+
+                    while (!playerStrings[i + 1].equals("T")) {
+                        if (comparePos(playerStrings[i + 1], pos)) {
+
+                            flag = false;
+                            break;
+                        } else {
+                            i++;
+                        }
+                    }
+                    pre = i;
+                    if (!flag) {
+                        break;
+                    }
+
+                }
+            }
+
+            statement[thisPlayer] = "";
+            for (int i = 0; i <= playerStrings.length - 1; i++) {
+                statement[thisPlayer] = statement[thisPlayer] + " " + playerStrings[i];
+                if (i == pre) {
+                    statement[thisPlayer] = statement[thisPlayer] + " " + pos;
+                }
+
+            }
+        }
+
+        if (phase.equals("T")) {
+            boolean flag = true;
+
+            String[] playerStrings = statement[thisPlayer].split(" ");
+            int pre = 0;
+            for (int i = 0; i <= playerStrings.length - 1; i++) {
+                if (playerStrings[i].equals("T")) {
+
+                    while (i + 1 <= playerStrings.length - 1) {
+                        if (comparePos(playerStrings[i + 1], pos)) {
+
+                            flag = false;
+                            break;
+                        } else {
+                            i++;
+                        }
+                    }
+                    pre = i;
+                    if (!flag) {
+                        break;
+                    }
+                }
+            }
+
+            statement[thisPlayer] = "";
+            for (int i = 0; i <= playerStrings.length - 1; i++) {
+                statement[thisPlayer] = statement[thisPlayer] + " " + playerStrings[i];
+                if (i == pre) {
+                    statement[thisPlayer] = statement[thisPlayer] + " " + pos;
+                }
+            }
+
+        }
+        System.out.println("\n");
+
+        statement[thisPlayer] = statement[thisPlayer].substring(1, statement[thisPlayer].length());
+        System.out.println(statement[thisPlayer]);
+        String[] playerStrings = statement[thisPlayer].split(" ");
+
+        char f = 'v';
+        boolean ff = false;
+        String[] subRe = statement[re].split(" ");
+        for (int b = 0; b <= subRe.length - 1; b++) {
+            if (subRe[b].equals("C")) {
+                while (!subRe[b + 1].equals("B")) {
+                    if (subRe[b + 1].equals(pos)) {
+                        f = 'c';
+                        ff = true;
+                        break;
+                    }
+                    b++;
+                }
+                if (ff) {
+                    break;
+                }
+            }
+            if (subRe[b].equals("B")) {
+                while (!subRe[b + 1].equals("W")) {
+                    if (subRe[b + 1].equals(pos)) {
+                        f = 'b';
+                        ff = true;
+                        break;
+                    }
+                    b++;
+                }
+                if (ff) {
+                    break;
+                }
+            }
+            if (subRe[b].equals("W")) {
+                while (!subRe[b + 1].equals("P")) {
+                    if (subRe[b + 1].equals(pos)) {
+                        f = 'w';
+                        ff = true;
+                        break;
+                    }
+                    b++;
+                }
+                if (ff) {
+                    break;
+                }
+            }
+            if (subRe[b].equals("P")) {
+                while (!subRe[b + 1].equals("S")) {
+                    if (subRe[b + 1].equals(pos)) {
+                        f = 'p';
+                        ff = true;
+                        break;
+                    }
+                    b++;
+                }
+                if (ff) {
+                    break;
+                }
+            }
+            if (subRe[b].equals("S")) {
+                while (b + 1 <= subRe.length - 1) {
+                    if (subRe[b + 1].equals(pos)) {
+                        f = 's';
+                        ff = true;
+                        break;
+                    }
+                    b++;
+                }
+                if (ff) {
+                    break;
+                }
+            }
+        }
+
+
+        if (f == 'c') {
+            System.out.println(1);
+            playerStrings[4] = "" + (Integer.parseInt(playerStrings[4]) + 1);
+        } else if (f == 'b') {
+            System.out.println(1);
+            playerStrings[5] = "" + (Integer.parseInt(playerStrings[5]) + 1);
+        } else if (f == 'w') {
+            System.out.println(1);
+            playerStrings[6] = "" + (Integer.parseInt(playerStrings[6]) + 1);
+        } else if (f == 'p') {
+            System.out.println(1);
+            playerStrings[7] = "" + (Integer.parseInt(playerStrings[7]) + 1);
+        } else if (f == 's') {
+            System.out.println(1);
+            playerStrings[8] = "" + (Integer.parseInt(playerStrings[8]) + 1);
+        } else {
+            System.out.println(2);
+        }
+
+        statement[thisPlayer] = "";
+        for (int p = 0; p <= playerStrings.length - 1; p++) {
+            statement[thisPlayer] += " " + playerStrings[p];
+        }
+        statement[thisPlayer] = statement[thisPlayer].substring(1, statement[thisPlayer].length());
+
+        String[] reString = statement[re].split(" ");
+        System.out.println(statement[re]);
+        statement[re] = "";
+        for (int i = 1; i <= reString.length - 1; i++) {
+            if (!reString[i].equals(pos)) {
+                statement[re] = statement[re] + " " + reString[i];
+            }
+        }
+
+        String newString = "";
+        for (int i = 0; i <= statement.length - 1; i++) {
+            newString = newString + statement[i] + ";";
+        }
+        System.out.println(stateString);
+        System.out.println(moveString);
+
+        return newString.substring(1, newString.length()); // FIXME Task 10
     }
 
     /**
@@ -836,7 +1207,85 @@ public class BlueLagoon {
      * the score for each player
      */
     public static int[] calculateTotalIslandsScore(String stateString) {
-        return new int[]{0, 0}; // FIXME Task 11
+        stateString = " " + stateString;
+        String[] statement = stateString.split(";");
+        int playerNumber = Integer.parseInt(statement[0].substring(statement[0].length() - 1, statement[0].length()));
+        int[] islandPoints = new int[playerNumber];
+        int firstPlayer = 0;
+        for (int i = 0; i <= statement.length - 1; i++) {
+            if (statement[i].charAt(1) == 'p') {
+                firstPlayer = i;
+                break;
+            }
+        }
+
+
+        //Get the size of the map
+        String[] arrangement = statement[0].split(" ");
+        int size = Integer.parseInt(arrangement[2]);
+
+        //set up a map of spots
+        Spot[][] spots = new Spot[size][size];
+        for (int i = 0; i <= size - 1; i++) {
+            for (int j = 0; j <= size - 1; j++) {
+                spots[i][j] = new Spot();
+            }
+        }
+
+        String[] land;
+        String[] landXY;
+        int landx;
+        int landy;
+        int numofisland = 0;
+        //initialize land spots on the map
+        for (int i = 0; i <= statement.length - 1; i++) {
+            //when this statement is island string
+            if (statement[i].charAt(1) == 'i') {
+                numofisland++;
+                land = statement[i].split(" ");
+                for (int j = 3; j <= land.length - 1; j++) {//land[0]="",land[1]="i",land[2]="6/8/10"
+                    landXY = land[j].split(",");
+                    landx = Integer.parseInt(landXY[0]);
+                    landy = Integer.parseInt(landXY[1]);
+                    spots[landx][landy].spotType = 1;
+                    spots[landx][landy].island = numofisland;
+                }
+            }
+        }
+
+        int islandOfThisPlayer;
+        for (int p = firstPlayer; p<= statement.length- 1; p++) {
+            System.out.println(p);
+            islandOfThisPlayer=0;
+            System.out.println(islandOfThisPlayer);
+            String[] thisPlayer = statement[p].split(" ");
+            for (int i = 1; i <= numofisland; i++) {
+                for (int j = 0; j <= thisPlayer.length - 1; j++) {
+                    if (thisPlayer[j].contains(",")) {
+                        String[] xy = thisPlayer[j].split(",");
+                        int x = Integer.parseInt(xy[0]);
+                        int y = Integer.parseInt(xy[1]);
+                        if (spots[x][y].island == i) {
+                            islandOfThisPlayer++;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            System.out.println(islandOfThisPlayer);
+            if (islandOfThisPlayer >= 8) {
+                islandPoints[p -firstPlayer] = 20;
+            } else if (islandOfThisPlayer == 7) {
+                islandPoints[p - firstPlayer] = 10;
+            } else {
+                islandPoints[p - firstPlayer] = 0;
+            }
+
+        }
+
+
+        return islandPoints; // FIXME Task 11
     }
 
     /**
@@ -880,7 +1329,103 @@ public class BlueLagoon {
      * of the score for each player
      */
     public static int[] calculateIslandMajoritiesScore(String stateString) {
-        return new int[]{0, 0}; // FIXME Task 11
+        stateString = " " + stateString;
+        String[] statement = stateString.split(";");
+        int playerNum=Integer.parseInt(statement[0].substring(statement[0].length()-1,statement[0].length()));
+        //Get the size of the map
+        String[] arrangement = statement[0].split(" ");
+        int size = Integer.parseInt(arrangement[2]);
+
+        int numOfIslands=0;
+        for(int j=0;j<=statement.length-1;j++){
+            if(statement[j].charAt(1)=='i'){
+                numOfIslands++;
+            }
+        }
+        int[] islandPoints=new int[numOfIslands];
+        //set up a map of spots
+        Spot[][] spots = new Spot[size][size];
+        for (int i = 0; i <= size - 1; i++) {
+            for (int j = 0; j <= size - 1; j++) {
+                spots[i][j] = new Spot();
+            }
+        }
+
+        String[] land;
+        String[] landXY;
+        int landx;
+        int landy;
+        //initialize land spots on the map
+        for (int i = 0; i <= statement.length - 1; i++) {
+            //when this statement is island string
+            if (statement[i].charAt(1) == 'i') {
+                land = statement[i].split(" ");
+                islandPoints[i-2]=Integer.parseInt(land[2]);
+                for (int j = 3; j <= land.length - 1; j++) {//land[0]="",land[1]="i",land[2]="6/8/10"
+                    landXY = land[j].split(",");
+                    landx = Integer.parseInt(landXY[0]);
+                    landy = Integer.parseInt(landXY[1]);
+                    spots[landx][landy].spotType = 1;
+                    spots[landx][landy].island=i-2;
+                }
+            }
+            if (statement[i].charAt(1) == 'p') {
+                String[] playerPositions = statement[i].split(" ");
+                int whichplayer = Integer.parseInt(playerPositions[2]);//which player occupies these following spots
+                for (int j = 0; j <= playerPositions.length - 1; j++) {
+                    if (playerPositions[j].equals("S")) {
+                        while (!playerPositions[j + 1].equals("T")) {
+                            String[] setPos = playerPositions[j + 1].split(",");
+                            int setx = Integer.parseInt(setPos[0]);
+                            int sety = Integer.parseInt(setPos[1]);
+                            spots[setx][sety].occupiedByPlayer = whichplayer;
+                            j++;
+                        }
+                    }
+                    if (playerPositions[j].equals("T")) {
+                        while (j + 1 <= playerPositions.length - 1) {
+                            String[] vilPos = playerPositions[j + 1].split(",");
+                            int vilx = Integer.parseInt(vilPos[0]);
+                            int vily = Integer.parseInt(vilPos[1]);
+                            spots[vilx][vily].occupiedByPlayer = whichplayer;
+                            j++;
+                        }
+                    }
+                }
+            }
+        }
+
+        int[] playerPoints=new int[playerNum];
+        int[] occupiers=new int[playerNum];
+
+        for(int i=0;i<=numOfIslands-1;i++){
+            for(int g=0;g<=playerNum-1;g++){
+                occupiers[g]=0;
+            }
+            for(int j=0;j<=size-1;j++){
+                for(int k=0;k<=size-1;k++){
+                    if(spots[j][k].island==i&&spots[j][k].occupiedByPlayer!=100){
+                        occupiers[spots[j][k].occupiedByPlayer]++;
+                    }
+                }
+            }
+            if(playerNum==2){
+                if(occupiers[0]!=0||occupiers[1]!=0){
+                    if(occupiers[0]>occupiers[1]){
+                        playerPoints[0]+=islandPoints[i];
+                    } else if (occupiers[0]<occupiers[1]) {
+                        playerPoints[1]+=islandPoints[i];
+                    }  else {
+                        playerPoints[0]+=islandPoints[i]/2;
+                        playerPoints[1]+=islandPoints[i]/2;
+                    }
+                }
+            }
+
+        }
+
+
+        return playerPoints; // FIXME Task 11
     }
 
     /**
@@ -907,7 +1452,75 @@ public class BlueLagoon {
      * portions of the score for each player
      */
     public static int[] calculateResourcesAndStatuettesScore(String stateString) {
-        return new int[]{0, 0}; // FIXME Task 11
+        stateString = " " + stateString;
+        String[] statement = stateString.split(";");
+        int playerNumber = Integer.parseInt(statement[0].substring(statement[0].length() - 1, statement[0].length()));
+        int[] scores = new int[playerNumber];
+        int firstPlayer = 0;
+        for (int i = 0; i <= statement.length - 1; i++) {
+            if (statement[i].charAt(1) == 'p') {
+                firstPlayer = i;
+                break;
+            }
+        }
+
+        for(int p=firstPlayer;p<=statement.length-1;p++){
+            String[] playerString=statement[p].split(" ");
+            int score=0;
+            int coconut=Integer.parseInt(playerString[4]);
+            int bamboo=Integer.parseInt(playerString[5]);
+            int water=Integer.parseInt(playerString[6]);
+            int prestone=Integer.parseInt(playerString[7]);
+            int statuette=Integer.parseInt(playerString[8]);
+            if(coconut>=4){
+                score+=20;
+            } else if (coconut==3) {
+                score+=10;
+            }else if(coconut==2){
+                score+=5;
+            }else {
+                score+=0;
+            }
+
+            if(water>=4){
+                score+=20;
+            } else if (water==3) {
+                score+=10;
+            }else if(water==2){
+                score+=5;
+            }else {
+                score+=0;
+            }
+            if(prestone>=4){
+                score+=20;
+            } else if (prestone==3) {
+                score+=10;
+            }else if(prestone==2){
+                score+=5;
+            }else {
+                score+=0;
+            }
+            if(bamboo>=4){
+                score+=20;
+            } else if (bamboo==3) {
+                score+=10;
+            }else if(bamboo==2){
+                score+=5;
+            }else {
+                score+=0;
+            }
+
+            score+=4*statuette;
+
+            if(coconut>0&&bamboo>0&&water>0&&prestone>0){
+                score+=10;
+            }
+
+            scores[p-firstPlayer]=score;
+
+        }
+
+        return scores; // FIXME Task 11
     }
 
     /**

@@ -94,10 +94,65 @@ public class BlueLagoon {
      * @return true if moveString is well-formed and false otherwise
      */
     public static boolean isMoveStringWellFormed(String moveString) {
-
-        return false; // FIXME Task 4
+        return moveString.matches("^(S|T) \\d+,\\d+");
+         // FIXME Task 4
     }
+    public static String distributeResources(String stateString) {
+        //add a space at front to make sure that for every statement, the second char of the substring is the type of statement
+        //stateString = " " + stateString;
+        String[] statement = stateString.split(";");
+        String target=null;
+        for(int i=0;i<14;i++)
+        {
+            if(statement[i].startsWith(" s")) {
+                target=statement[i];
+                break;
+            }
+        }
+        //先用target截取s开头的字符串
+        target=target.replace(" s ","");
+        //切除掉开头的无关字符
+        String[]stoneCircle=target.split(" ");
+        //分离出来字符串中的顺序字符
+        String[]random=new String[32];
+        //另外新设一个字符串数组
+        Random r=new Random();
+        int []a=new int [32];
+        int rand;
+        for(int i=0;i<32;i++)
+        {
 
+            do{rand=r.nextInt(32);
+                if(a[rand]==0){
+                    a[rand]=i;
+                    break;
+                }
+            }while (true);
+        }
+        for(int i=0;i<32;i++)
+        {
+            random[i]=stoneCircle[a[i]];
+        }
+        // 随机一串0~31的数组，把新数据记录进新的字符串里面
+        String C=random[0]+" "+random[1]+" "+random[2]+" "+random[3]+" "+random[4]+" "+random[5]+" ";
+        String B=random[6]+" "+random[7]+" "+random[8]+" "+random[9]+" "+random[10]+" "+random[11]+" ";
+        String W=random[12]+" "+random[13]+" "+random[14]+" "+random[15]+" "+random[16]+" "+random[17]+" ";
+        String P=random[18]+" "+random[19]+" "+random[20]+" "+random[21]+" "+random[22]+" "+random[23]+" ";
+        String S=random[24]+" "+random[25]+" "+random[26]+" "+random[27]+" "+random[28]+" "+random[29]+" "+random[30]+" "+random[31];
+        //先把各个资源的字符串表示出来
+        String replaceString=" r C "+C+"B "+B+"W "+W+"P "+P+"S "+S;
+        //直接用字符串加法，先另外拟一个字符串资源声明
+
+        for(int i=0;i<12;i++)
+        {
+            if(statement[i].startsWith(" r")){
+                stateString=stateString.replace(statement[i],replaceString);
+            }
+        }
+
+        return stateString;
+    }
+    // FIXME Task 6
     /**
      * Given a state string which is yet to have resources distributed amongst the stone circles,
      * randomly distribute the resources and statuettes between all the stone circles.
@@ -116,7 +171,7 @@ public class BlueLagoon {
      * @param stateString a string representing a game state without resources distributed
      * @return a string of the game state with resources randomly distributed
      */
-    public static String distributeResources(String stateString) {
+    /*public static String distributeResources(String stateString) {
         //add a space at front to make shre that for every statement, the second char of the substring is the type of statement
         stateString = " " + stateString;
         String[] statement = stateString.split(";");
@@ -257,8 +312,10 @@ public class BlueLagoon {
                 after += statement[k] + ";";
             }
         }
-        return after; // FIXME Task 6
+        return after;
     }
+
+     */
 
     /**
      * Given a state string and a move string, determine if the move is

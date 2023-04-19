@@ -27,52 +27,52 @@ public class BlueLagoon {
      * @param stateString a string representing a game state
      * @return true if stateString is well-formed and false otherwise
      */
+
     public static boolean isStateStringWellFormed(String stateString) {
         String[] parts = stateString.split(";");
-        // Checks if Game Arrangement Statement is formatted correctly.
+        // Separate strings into arrays of strings with the split function, using ";"
         if (parts[0].matches("a\\s[0-9]*[1-9][0-9]*\\s[1-9]")) {
-            // Checks if Current State Statement is formatted correctly.
+            // Check if the game arrangement declaration is correct by means of regular expressions
             if (parts[1].matches("\\sc\\s\\d\\s[E|S]")) {
-                int i1 = 0;
                 for (int i = 2; i < parts.length; i++) {
-                    // Checks if Island Statement is formatted correctly.
+                    // Iterate through the array to check if it is correct
                     if (parts[i].startsWith(" i")) {
                         if (parts[i].matches("\\si\\s[0-9]*[1-9][0-9]*\\s(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})")) {
-                            i1 = i1;
-                        } else {
-                            i1 = i1 + 1;
+                        }
+                        else {
+                            return false;
                         }
                     }
                     // Checks if Stones Statement is formatted correctly.
                     else if (parts[i].startsWith(" s")) {
                         if (parts[i].matches("\\ss\\s(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})")) {
-                            i1 = i1;
-                        } else {
-                            i1 = i1 + 1;
+                        }
+                        else {
+                            return false;
                         }
                     }
                     // Checks if Unclaimed Resources and Statuettes Statement is formatted correctly.
                     else if (parts[i].startsWith(" r")) {
                         if (parts[i].matches("\\sr\\sC\\s(\\d{1,2},\\d{1,2}\\s)*B\\s(\\d{1,2},\\d{1,2}\\s)*W\\s(\\d{1,2},\\d{1,2}\\s)*P\\s(\\d{1,2},\\d{1,2}\\s)*S(\\s)??(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})*")) {
-                            i1 = i1;
-                        } else {
-                            i1 = i1 + 1;
+                        }
+                        else {
+                            return false;
                         }
                     }
                     // Checks if Player Statement is formatted correctly.
                     else if (parts[i].startsWith(" p")) {
-                        if (parts[i].matches("\\sp\\s\\d\\s\\d{1,3}\\s\\d\\s\\d\\s\\d\\s\\d\\s\\d\\sS\\s(\\d{1,2},\\d{1,2}\\s)*T(\\s)??(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})*")) {
-                            i1 = i1;
-                        } else {
-                            i1 = i1 + 1;
+                        if (parts[i].matches("\\sp\\s\\d\\s\\d{1,3}\\s(\\d\\s){5}S\\s(\\d{1,2},\\d{1,2}\\s)*T(\\s)??(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})*")) {
+                        }
+                        else {
+                            return false;
                         }
                     }
                     else {
-                        i1 = i1 + 1;
+                        return false;
                     }
                 }
                 // Returns false if any errors are detected.
-                return (i1 == 0 && stateString.endsWith(";"));
+                return (stateString.endsWith(";"));
             }
             else {
                 return false;
@@ -93,10 +93,36 @@ public class BlueLagoon {
      * @param moveString a string representing a player's move
      * @return true if moveString is well-formed and false otherwise
      */
+
     public static boolean isMoveStringWellFormed(String moveString) {
-        return moveString.matches("^(S|T) \\d+,\\d+");
-         // FIXME Task 4
+        // Checks if Move string is properly formatted
+        if (moveString.matches("[S|T]\s\\d{1,2},\\d{1,2}")) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
+
+    /**
+     * Given a state string which is yet to have resources distributed amongst the stone circles,
+     * randomly distribute the resources and statuettes between all the stone circles.
+     * <p>
+     * There will always be exactly 32 stone circles.
+     * <p>
+     * The resources and statuettes to be distributed are:
+     * - 6 coconuts
+     * - 6 bamboo
+     * - 6 water
+     * - 6 precious stones
+     * - 8 statuettes
+     * <p>
+     * The distribution must be random.
+     *
+     * @param stateString a string representing a game state without resources distributed
+     * @return a string of the game state with resources randomly distributed
+     */
+
     public static String distributeResources(String stateString) {
         //add a space at front to make sure that for every statement, the second char of the substring is the type of statement
         //stateString = " " + stateString;
@@ -152,170 +178,6 @@ public class BlueLagoon {
 
         return stateString;
     }
-    // FIXME Task 6
-    /**
-     * Given a state string which is yet to have resources distributed amongst the stone circles,
-     * randomly distribute the resources and statuettes between all the stone circles.
-     * <p>
-     * There will always be exactly 32 stone circles.
-     * <p>
-     * The resources and statuettes to be distributed are:
-     * - 6 coconuts
-     * - 6 bamboo
-     * - 6 water
-     * - 6 precious stones
-     * - 8 statuettes
-     * <p>
-     * The distribution must be random.
-     *
-     * @param stateString a string representing a game state without resources distributed
-     * @return a string of the game state with resources randomly distributed
-     */
-    /*public static String distributeResources(String stateString) {
-        //add a space at front to make shre that for every statement, the second char of the substring is the type of statement
-        stateString = " " + stateString;
-        String[] statement = stateString.split(";");
-        //store the index of stonecirlce statement
-        int stoneCircle = 0;
-        //store the index of resource statement
-        int resource = 0;
-        //search for the index of two statements
-        for (int i = 0; i <= statement.length - 1; i++) {
-            if (statement[i].charAt(1) == 's') {
-                stoneCircle = i;
-            }
-            if (statement[i].charAt(1) == 'r') {
-                resource = i;
-            }
-        }
-
-        //store the coordinates of 32 stonecircles
-        Coordinate[] coordinate = new Coordinate[32];
-        String[] stoneCoorString = statement[stoneCircle].split(" ");
-        int x;
-        int y;
-        for (int i = 0; i <= 31; i++) {
-            String[] xy = stoneCoorString[i + 2].split(",");//stoneCoorString[0]="" and stoneCoorString[1]="s"
-            x = Integer.parseInt(xy[0]);
-            y = Integer.parseInt(xy[1]);
-            coordinate[i] = new Coordinate(x, y);
-        }
-        //coordinates of resources
-        Coordinate[] bamboo = new Coordinate[6];
-        Coordinate[] coconut = new Coordinate[6];
-        Coordinate[] water = new Coordinate[6];
-        Coordinate[] preciousStone = new Coordinate[6];
-        Coordinate[] statuette = new Coordinate[8];
-        //numbers of resources allocated
-        int b = 0;
-        int c = 0;
-        int w = 0;
-        int p = 0;
-        int s = 0;
-        //index is the total number of resources allocated
-        int index = 0;
-        Random random = new Random();
-        //store the coordinates of stonecircles which have been occupied, true for occupation
-        int[] flag = new int[32];
-        while (index <= 31) {
-            int i = random.nextInt(16);
-            if (i == 0 || i == 1 || i == 2) {
-                if (b <= 5) {
-                    int r = random.nextInt(32);
-                    //if true and occupied, then search for another position which have yet been occupied. When false(not occupied), exit loop
-                    while (flag[r] == 1) {
-                        r = random.nextInt(32);
-                    }
-                    bamboo[b] = coordinate[r];
-                    b++;
-                    index++;
-                    //set the coordinate of this stonecircle as occupied
-                    flag[r] = 1;
-                }
-            } else if (i == 3 || i == 4 || i == 5) {
-                if (c <= 5) {
-                    int r = random.nextInt(32);
-                    while (flag[r] == 1) {
-                        r = random.nextInt(32);
-                    }
-                    coconut[c] = coordinate[r];
-                    c++;
-                    index++;
-                    flag[r] = 1;
-                }
-            } else if (i == 6 || i == 7 || i == 8) {
-                if (w <= 5) {
-                    int r = random.nextInt(32);
-                    while (flag[r] == 1) {
-                        r = random.nextInt(32);
-                    }
-                    water[w] = coordinate[r];
-                    w++;
-                    index++;
-                    flag[r] = 1;
-                }
-            } else if (i == 9 || i == 10 || i == 11) {
-                if (p <= 5) {
-                    int r = random.nextInt(32);
-                    while (flag[r] == 1) {
-                        r = random.nextInt(32);
-                    }
-                    preciousStone[p] = coordinate[r];
-                    p++;
-                    index++;
-                    flag[r] = 1;
-                }
-            } else {
-                if (s <= 7) {
-                    int r = random.nextInt(32);
-                    while (flag[r] == 1) {
-                        r = random.nextInt(32);
-                    }
-                    statuette[s] = coordinate[r];
-                    s++;
-                    index++;
-                    flag[r] = 1;
-                }
-            }
-        }
-        //create a new statement of resources
-        statement[resource] = " r";
-        statement[resource] += " " + "C";
-        for (int j = 0; j <= 5; j++) {
-            statement[resource] += " " + coconut[j].x + "," + coconut[j].y;
-        }
-        statement[resource] += " " + "B";
-        for (int j = 0; j <= 5; j++) {
-            statement[resource] += " " + bamboo[j].x + "," + bamboo[j].y;
-        }
-        statement[resource] += " " + "W";
-        for (int j = 0; j <= 5; j++) {
-            statement[resource] += " " + water[j].x + "," + water[j].y;
-        }
-        statement[resource] += " " + "P";
-        for (int j = 0; j <= 5; j++) {
-            statement[resource] += " " + preciousStone[j].x + "," + preciousStone[j].y;
-        }
-        statement[resource] += " " + "S";
-        for (int j = 0; j <= 7; j++) {
-            statement[resource] += " " + statuette[j].x + "," + statuette[j].y;
-        }
-        statement[resource] += ";";
-        //delete the first space of the arrangement statement
-        statement[0] = statement[0].substring(1, statement[0].length());
-        //assembly all statements
-        String after = "";
-        for (int k = 0; k <= statement.length - 1; k++) {
-            if (k == resource) {
-                after += statement[resource];
-            } else {
-                after += statement[k] + ";";
-            }
-        }
-        return after;
-    }
-
-     */
 
     /**
      * Given a state string and a move string, determine if the move is
@@ -566,7 +428,7 @@ public class BlueLagoon {
         }
 
 
-        //return true; // FIXME Task 7
+        //return true;
     }
 
     public static boolean isPosInIndex(int size, int x, int y) {
@@ -719,10 +581,10 @@ public class BlueLagoon {
                 }
             }
         }
-        //ID of this player
+        // ID of this player
         int player = (int) turn - 48;
 
-        //Generate movestrings
+        // Generate move strings
         if (phase == 'E' && firstStep) {
             for (int i = 0; i <= size - 1; i++) {
                 for (int j = 0; j <= size - 1; j++) {
@@ -925,7 +787,7 @@ public class BlueLagoon {
             }
 
 
-            //return stringSet; // FIXME Task 8
+            // return stringSet; // FIXME Task 8
         }
     }
 

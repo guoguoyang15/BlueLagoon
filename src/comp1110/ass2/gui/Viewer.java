@@ -45,10 +45,10 @@ public class Viewer extends Application {
             if (parts[i].startsWith(" i")) {
                 String[] islands = parts[i].split(" ");
                 for (int j = 3; j < islands.length; j++) {
-                    if (islands[j].startsWith("0")) {
-                        String[] coords = islands[j].split(",");
-                        double x = Double.parseDouble(coords[0]);
-                        double y = Double.parseDouble(coords[1]);
+                    String[] coords = islands[j].split(",");
+                    double x = Double.parseDouble(coords[0]);
+                    double y = Double.parseDouble(coords[1]);
+                    if (x % 2 == 0) {
                         Polygon p = new Polygon();
                         p.getPoints().addAll(94.64 + 70.28 * y, 0.0 + 81 * x,
                                 60.0 + 70.28 * y, 20.0 + 81 * x,
@@ -59,17 +59,14 @@ public class Viewer extends Application {
                         p.setFill(Color.LIGHTGREEN);
                         tilesList.add(p);
                     }
-                    else if (islands[j].startsWith("1")) {
-                        String[] coords = islands[j].split(",");
-                        double x = Double.parseDouble(coords[0]);
-                        double y = Double.parseDouble(coords[1]);
+                    else if (x % 2 == 1) {
                         Polygon p = new Polygon();
-                        p.getPoints().addAll(60.5 + 70.28 * y, 0.0 + 71 * x,
-                                24.86 + 70.28 * y, 20.0 + 71 * x,
-                                24.86 + 70.28 * y, 60.0 + 71 * x,
-                                60.5 + 70.28 * y, 80.0 + 71 * x,
-                                94.14 + 70.28 * y, 60.0 + 71 * x,
-                                94.14 + 70.28 * y, 20.0 + 71 * x);
+                        p.getPoints().addAll(60.5 + 70.28 * y, 0.0 + 61 * x,
+                                24.86 + 70.28 * y, 20.0 + 61 * x,
+                                24.86 + 70.28 * y, 60.0 + 61 * x,
+                                60.5 + 70.28 * y, 80.0 + 61 * x,
+                                94.14 + 70.28 * y, 60.0 + 61 * x,
+                                94.14 + 70.28 * y, 20.0 + 61 * x);
                         p.setFill(Color.LIGHTGREEN);
                         tilesList.add(p);
                     }

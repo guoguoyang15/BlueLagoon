@@ -430,11 +430,7 @@ public class BlueLagoon {
 
         if (phase == 'E') {
             if (spots[x][y].spotType == 0) {
-                if (moveString.charAt(0) == 'S' && spots[x][y].occupiedByPlayer == 100) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return moveString.charAt(0) == 'S' && spots[x][y].occupiedByPlayer == 100;
             }
         }
         if (spots[x][y].occupiedByPlayer == 100) {

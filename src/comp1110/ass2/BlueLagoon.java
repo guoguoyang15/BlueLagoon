@@ -284,6 +284,8 @@ public class BlueLagoon {
      * @return true if the current player can make the move and false otherwise
      */
     public static boolean isMoveValid(String stateString, String moveString) {
+        System.out.println(stateString);
+        System.out.println(moveString);
         stateString = " " + stateString;
         String[] statement = stateString.split(";");
         char turn = statement[1].charAt(3);//which player is moving
@@ -421,20 +423,8 @@ public class BlueLagoon {
             }
         }
         int player = (int) turn - 48;
-        System.out.println(player);
-        System.out.println(x + "," + y);
-        System.out.println(spots[x][y].spotType);
-        System.out.println(moveString.substring(0, 1));
-        System.out.println(spots[3][7].occupiedByPlayer);
-        System.out.println(settlerNum + "," + villageNum);
-        for (int i = 0; i <= size - 1; i++) {
-            for (int j = 0; j <= size - 1; j++) {
-                if (spots[i][j].occupiedByPlayer == player) {
-                    System.out.println(i + "," + j);
-                }
-            }
-        }
-        System.out.println("");
+
+
         //check if there are the player's own areas in adjacent spots
 
 
@@ -450,54 +440,53 @@ public class BlueLagoon {
         if (spots[x][y].occupiedByPlayer == 100) {
             if (x % 2 == 1) {
                 if ((x - 1) >= 0 && (y - 1) >= 0 && spots[x - 1][y - 1].occupiedByPlayer == player) {
-                    System.out.println(1);
+
                     return true;
                 }
                 if ((x + 1) <= size - 1 && (y - 1) >= 0 && spots[x + 1][y - 1].occupiedByPlayer == player) {
-                    System.out.println(2);
+
                     return true;
                 }
                 if ((y - 1) >= 0 && spots[x][y - 1].occupiedByPlayer == player) {
-                    System.out.println(3);
+
                     return true;
                 }
                 if ((x - 1) >= 0 && spots[x - 1][y].occupiedByPlayer == player) {
-                    System.out.println(4);
+
                     return true;
                 }
                 if ((x + 1) <= size - 1 && spots[x + 1][y].occupiedByPlayer == player) {
-                    System.out.println(5);
+
                     return true;
                 }
                 if ((y + 1) <= size - 1 && spots[x][y + 1].occupiedByPlayer == player) {
-                    System.out.println(6);
+
                     return true;
                 }
 
                 return false;
             } else {
                 if ((x - 1) >= 0 && (y + 1) <= size - 1 && spots[x - 1][y + 1].occupiedByPlayer == player) {
-                    System.out.println(1);
+
                     return true;
                 }
                 if ((x + 1) <= size - 1 && (y + 1) <= size - 1 && spots[x + 1][y + 1].occupiedByPlayer == player) {
-                    System.out.println(2);
+
                     return true;
                 }
                 if ((y - 1) >= 0 && spots[x][y - 1].occupiedByPlayer == player) {
-                    System.out.println(3);
+
                     return true;
                 }
                 if ((x - 1) >= 0 && spots[x - 1][y].occupiedByPlayer == player) {
-                    System.out.println(4);
+
                     return true;
                 }
                 if ((x + 1) <= size - 1 && spots[x + 1][y].occupiedByPlayer == player) {
-                    System.out.println(5);
+
                     return true;
                 }
                 if ((y + 1) <= size - 1 && spots[x][y + 1].occupiedByPlayer == player) {
-                    System.out.println(6);
                     return true;
                 }
 
@@ -872,6 +861,204 @@ public class BlueLagoon {
         }
     }
 
+
+    public static boolean isSettlementMoveValid(String stateString, String moveString) {
+        System.out.println(stateString);
+        System.out.println(moveString);
+        stateString = " " + stateString;
+        String[] statement = stateString.split(";");
+        char turn = statement[1].charAt(3);//which player is moving
+        char phase = statement[1].charAt(statement[1].length() - 1);//which phase, E(xpolaration) or S(ettlement)
+        int playerStringNum = 0;//the statue of this player is stored in which statement
+        for (int i = 2; i <= statement.length - 1; i++) {
+            if (statement[i].charAt(1) == 'p') {
+                if (statement[i].charAt(3) == turn) {//this player's status string
+                    playerStringNum = i;
+                    break;
+                }
+            }
+        }
+
+        //check how many villages and settlers the player have on board
+        String[] playerStatus = statement[playerStringNum].split(" ");
+        int settlerNum = 0;
+        int villageNum = 0;
+        for (int j = 0; j <= playerStatus.length - 1; j++) {
+            if (playerStatus[j].equals("S")) {
+                while (!playerStatus[j + 1].equals("T")) {
+                    settlerNum++;
+                    j++;
+                }
+            }
+            if (playerStatus[j].equals("T")) {
+                while (j + 1 <= playerStatus.length - 1) {
+                    villageNum++;
+                    j++;
+                }
+            }
+        }
+        //check the limit for settlers and villages for each player
+        char playerNumber = statement[0].charAt(statement[0].length() - 1);
+        int settlerLimit;
+        if (playerNumber == '2') {
+            settlerLimit = 30;
+        } else if (playerNumber == '3') {
+            settlerLimit = 25;
+        } else {
+            settlerLimit = 20;
+        }
+        int villageLimit = 5;
+
+
+        if (moveString.charAt(0) == 'S') {
+            if (settlerLimit <= settlerNum) {
+                return false;
+            }
+        } else {
+            return false;//because in settlement phase, player cannot place villages anymore
+        }
+
+
+        //check if the move is beyond the scale of the map
+        String[] arrangement = statement[0].split(" ");
+        int size = Integer.parseInt(arrangement[2]);
+        String[] move = moveString.split(" ");
+
+        String[] moveXY = move[1].split(",");
+        int x = Integer.parseInt(moveXY[0]);
+        int y = Integer.parseInt(moveXY[1]);
+        if (x < 0 || x >= size) {
+            return false;
+        } else {
+            if (x % 2 == 0) {
+                if (y < 0 || y > size - 2) {
+                    return false;
+                }
+            } else {
+                if (y < 0 || y > size - 1) {
+                    return false;
+                }
+            }
+        }
+        //set up a map of spots
+        Spot[][] spots = new Spot[size][size];
+        for (int i = 0; i <= size - 1; i++) {
+            for (int j = 0; j <= size - 1; j++) {
+                spots[i][j] = new Spot();
+            }
+        }
+
+        String[] land;
+        String[] landXY;
+        int landx;
+        int landy;
+        //initialize land spots on the map
+        for (int i = 0; i <= statement.length - 1; i++) {
+            //when this statement is island string
+            if (statement[i].charAt(1) == 'i') {
+                land = statement[i].split(" ");
+                for (int j = 3; j <= land.length - 1; j++) {//land[0]="",land[1]="i",land[2]="6/8/10"
+                    landXY = land[j].split(",");
+                    landx = Integer.parseInt(landXY[0]);
+                    landy = Integer.parseInt(landXY[1]);
+                    spots[landx][landy].spotType = 1;
+
+                }
+            }
+            if (statement[i].charAt(1) == 'p') {
+                String[] playerPositions = statement[i].split(" ");
+                int whichplayer = Integer.parseInt(playerPositions[2]);//which player occupies these following spots
+                for (int j = 0; j <= playerPositions.length - 1; j++) {
+                    if (playerPositions[j].equals("S")) {
+                        while (!playerPositions[j + 1].equals("T")) {
+                            String[] setPos = playerPositions[j + 1].split(",");
+                            int setx = Integer.parseInt(setPos[0]);
+                            int sety = Integer.parseInt(setPos[1]);
+                            spots[setx][sety].occupiedByPlayer = whichplayer;
+                            j++;
+                        }
+                    }
+                    if (playerPositions[j].equals("T")) {
+                        while (j + 1 <= playerPositions.length - 1) {
+                            String[] vilPos = playerPositions[j + 1].split(",");
+                            int vilx = Integer.parseInt(vilPos[0]);
+                            int vily = Integer.parseInt(vilPos[1]);
+                            spots[vilx][vily].occupiedByPlayer = whichplayer;
+                            j++;
+                        }
+                    }
+                }
+            }
+        }
+        int player = (int) turn - 48;
+
+
+        //check if there are the player's own areas in adjacent spots
+
+        if (spots[x][y].occupiedByPlayer == 100) {
+            if (x % 2 == 1) {
+                if ((x - 1) >= 0 && (y - 1) >= 0 && spots[x - 1][y - 1].occupiedByPlayer == player) {
+
+                    return true;
+                }
+                if ((x + 1) <= size - 1 && (y - 1) >= 0 && spots[x + 1][y - 1].occupiedByPlayer == player) {
+
+                    return true;
+                }
+                if ((y - 1) >= 0 && spots[x][y - 1].occupiedByPlayer == player) {
+
+                    return true;
+                }
+                if ((x - 1) >= 0 && spots[x - 1][y].occupiedByPlayer == player) {
+
+                    return true;
+                }
+                if ((x + 1) <= size - 1 && spots[x + 1][y].occupiedByPlayer == player) {
+
+                    return true;
+                }
+                if ((y + 1) <= size - 1 && spots[x][y + 1].occupiedByPlayer == player) {
+
+                    return true;
+                }
+
+                return false;
+            } else {
+                if ((x - 1) >= 0 && (y + 1) <= size - 1 && spots[x - 1][y + 1].occupiedByPlayer == player) {
+
+                    return true;
+                }
+                if ((x + 1) <= size - 1 && (y + 1) <= size - 1 && spots[x + 1][y + 1].occupiedByPlayer == player) {
+
+                    return true;
+                }
+                if ((y - 1) >= 0 && spots[x][y - 1].occupiedByPlayer == player) {
+
+                    return true;
+                }
+                if ((x - 1) >= 0 && spots[x - 1][y].occupiedByPlayer == player) {
+
+                    return true;
+                }
+                if ((x + 1) <= size - 1 && spots[x + 1][y].occupiedByPlayer == player) {
+
+                    return true;
+                }
+                if ((y + 1) <= size - 1 && spots[x][y + 1].occupiedByPlayer == player) {
+                    return true;
+                }
+
+                return false;
+            }
+
+        } else {
+            return false;
+        }
+
+        //FIXME Task 20
+
+    }
+
     /**
      * Given a state string, determine whether it represents an end of phase state.
      * <p>
@@ -888,7 +1075,6 @@ public class BlueLagoon {
         String[] statement = stateString.split(";");
         int playerNumber = Integer.parseInt(statement[0].substring(statement[0].length() - 1, statement[0].length()));
         int[][] playerResources = new int[playerNumber][4];//E.G. playerResources[1][2] means the number of water possessed by player 2
-
 
         int player = 0;
         for (int i = 0; i <= statement.length - 1; i++) {
@@ -1394,7 +1580,6 @@ public class BlueLagoon {
             List<int[]> visited;//One of links of a player
             List<List<int[]>> linkArray;//Array of all links of this player
             //We need to calculate all possible links of this player
-
 
 
             //In the end of a player calculation, clear spots set to empty set

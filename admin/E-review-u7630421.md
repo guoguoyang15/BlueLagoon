@@ -17,9 +17,11 @@ Q: Is the code well-documented?
 A: Yes. For every variable and every loop, there is a comment line illustrating what this variable means and
 how the loops  works. Besides, space is suitable to show different level of codes.
 
-Q: Does it follow Java code conventions (for example, are methods and variables properly named), and is the style consistent throughout?
+Q: Does it follow Java code conventions (for example, are methods and variables properly named), and is the style 
+consistent throughout?
 
-A: Yes. In terms of variables, the first word starts with smaller case character and the second word starts with upper case character.
+A: Yes. In terms of variables, the first word starts with smaller case character and the second word starts 
+with upper case character.
 
 Q: Is the program decomposition (class and method structure) appropriate?
 
@@ -29,5 +31,6 @@ Then according to permutation array, reorganize and assembly a new string for re
 
 Q: If you suspect an error in the code, suggest a particular situation in which the program will not function correctly.
 
-A: I think the biggest error lies in line 120. Sometimes there are 3 or even 4 players on board, although in test sets there are always 2 players. 
-The substatements are not always 14, but sometimes 15 or 16. My advice is that an extra process of calculating the number of players on the board is necessary.
+A: I think the biggest error lies in line 120. Sometimes there are 3 or even 4 players on board, although in test sets 
+there are always 2 players. The substatements are not always 14, but sometimes 15 or 16. My advice is that an 
+extra process of calculating the number of players on the board is necessary.

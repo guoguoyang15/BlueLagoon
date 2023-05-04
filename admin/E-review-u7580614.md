@@ -1,9 +1,11 @@
 Code Review
+
 Reviewed by: Zhang Zhining (Nick), u7580614
 Reviewing code written by: Quoc Thai Le (Tyler), u7542691
 Component: Task 3,Main method isStateStringWellFormed
 
 Comments
+
 Q: What are the best features of this code?
 A: I think the best feature is the use of JAVA regular expressions, which cleverly match the strings required by the question and greatly reduce the workload
 Q: Is the code well-documented?

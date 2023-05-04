@@ -116,58 +116,56 @@ public class BlueLagoon {
         //add a space at front to make sure that for every statement, the second char of the substring is the type of statement
         //stateString = " " + stateString;
         String[] statement = stateString.split(";");
-        String target=null;
-        for(int i=0;i<14;i++)
-        {
-            if(statement[i].startsWith(" s")) {
-                target=statement[i];
+        String target = null;
+        for (int i = 0; i < 14; i++) {
+            if (statement[i].startsWith(" s")) {
+                target = statement[i];
                 break;
             }
         }
         //First use target to intercept a string starting with s
-        target=target.replace(" s ","");
+        target = target.replace(" s ", "");
         //Cut out the extraneous characters at the beginning
-        String[]stoneCircle=target.split(" ");
+        String[] stoneCircle = target.split(" ");
         //Separating out sequential characters in a string
-        String[]random=new String[32];
+        String[] random = new String[32];
         //Also set up a new array of strings
-        Random r=new Random();
-        int []a=new int [32];
+        Random r = new Random();
+        int[] a = new int[32];
         int rand;
-        for(int i=0;i<32;i++)
-        {
+        for (int i = 0; i < 32; i++) {
 
-            do{rand=r.nextInt(32);
-                if(a[rand]==0){
-                    a[rand]=i;
+            do {
+                rand = r.nextInt(32);
+                if (a[rand] == 0) {
+                    a[rand] = i;
                     break;
                 }
-            }while (true);
+            } while (true);
         }
-        for(int i=0;i<32;i++)
-        {
-            random[i]=stoneCircle[a[i]];
+        for (int i = 0; i < 32; i++) {
+            random[i] = stoneCircle[a[i]];
         }
         // Randomize an array from 0 to 31 and record the new data into a new string
-        String C=random[0]+" "+random[1]+" "+random[2]+" "+random[3]+" "+random[4]+" "+random[5]+" ";
-        String B=random[6]+" "+random[7]+" "+random[8]+" "+random[9]+" "+random[10]+" "+random[11]+" ";
-        String W=random[12]+" "+random[13]+" "+random[14]+" "+random[15]+" "+random[16]+" "+random[17]+" ";
-        String P=random[18]+" "+random[19]+" "+random[20]+" "+random[21]+" "+random[22]+" "+random[23]+" ";
-        String S=random[24]+" "+random[25]+" "+random[26]+" "+random[27]+" "+random[28]+" "+random[29]+" "+random[30]+" "+random[31];
+        String C = random[0] + " " + random[1] + " " + random[2] + " " + random[3] + " " + random[4] + " " + random[5] + " ";
+        String B = random[6] + " " + random[7] + " " + random[8] + " " + random[9] + " " + random[10] + " " + random[11] + " ";
+        String W = random[12] + " " + random[13] + " " + random[14] + " " + random[15] + " " + random[16] + " " + random[17] + " ";
+        String P = random[18] + " " + random[19] + " " + random[20] + " " + random[21] + " " + random[22] + " " + random[23] + " ";
+        String S = random[24] + " " + random[25] + " " + random[26] + " " + random[27] + " " + random[28] + " " + random[29] + " " + random[30] + " " + random[31];
         //Start with a string representation of the individual resources
-        String replaceString=" r C "+C+"B "+B+"W "+W+"P "+P+"S "+S;
+        String replaceString = " r C " + C + "B " + B + "W " + W + "P " + P + "S " + S;
         //Direct string addition, first with a separate string resource declaration
 
-        for(int i=0;i<12;i++)
-        {
-            if(statement[i].startsWith(" r")){
-                stateString=stateString.replace(statement[i],replaceString);
+        for (int i = 0; i < 12; i++) {
+            if (statement[i].startsWith(" r")) {
+                stateString = stateString.replace(statement[i], replaceString);
             }
         }
 
         return stateString;
     }
     //FIXME Task 6
+
     /**
      * Given a state string and a move string, determine if the move is
      * valid for the current player.
@@ -332,10 +330,7 @@ public class BlueLagoon {
         }
         int player = (int) turn - 48;
 
-
         //check if there are the player's own areas in adjacent spots
-
-
         if (phase == 'E') {
             if (spots[x][y].spotType == 0) {
                 return moveString.charAt(0) == 'S' && spots[x][y].occupiedByPlayer == 100;
@@ -344,64 +339,48 @@ public class BlueLagoon {
         if (spots[x][y].occupiedByPlayer == 100) {
             if (x % 2 == 1) {
                 if ((x - 1) >= 0 && (y - 1) >= 0 && spots[x - 1][y - 1].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((x + 1) <= size - 1 && (y - 1) >= 0 && spots[x + 1][y - 1].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((y - 1) >= 0 && spots[x][y - 1].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((x - 1) >= 0 && spots[x - 1][y].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((x + 1) <= size - 1 && spots[x + 1][y].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((y + 1) <= size - 1 && spots[x][y + 1].occupiedByPlayer == player) {
-
                     return true;
                 }
-
                 return false;
             } else {
                 if ((x - 1) >= 0 && (y + 1) <= size - 1 && spots[x - 1][y + 1].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((x + 1) <= size - 1 && (y + 1) <= size - 1 && spots[x + 1][y + 1].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((y - 1) >= 0 && spots[x][y - 1].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((x - 1) >= 0 && spots[x - 1][y].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((x + 1) <= size - 1 && spots[x + 1][y].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((y + 1) <= size - 1 && spots[x][y + 1].occupiedByPlayer == player) {
                     return true;
                 }
-
                 return false;
             }
-
         } else {
             return false;
         }
-
-
         //return true;// FIXME Task 7
     }
 
@@ -759,12 +738,9 @@ public class BlueLagoon {
                 }
                 return stringSet;
             }
-
-
-            // return stringSet; // FIXME Task 8
+            // FIXME Task 8
         }
     }
-
 
     public static boolean isSettlementMoveValid(String stateString, String moveString) {
         System.out.println(stateString);
@@ -813,7 +789,6 @@ public class BlueLagoon {
         }
         int villageLimit = 5;
 
-
         if (moveString.charAt(0) == 'S') {
             if (settlerLimit <= settlerNum) {
                 return false;
@@ -821,7 +796,6 @@ public class BlueLagoon {
         } else {
             return false;//because in settlement phase, player cannot place villages anymore
         }
-
 
         //check if the move is beyond the scale of the map
         String[] arrangement = statement[0].split(" ");
@@ -895,66 +869,49 @@ public class BlueLagoon {
             }
         }
         int player = (int) turn - 48;
-
-
         //check if there are the player's own areas in adjacent spots
-
         if (spots[x][y].occupiedByPlayer == 100) {
             if (x % 2 == 1) {
                 if ((x - 1) >= 0 && (y - 1) >= 0 && spots[x - 1][y - 1].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((x + 1) <= size - 1 && (y - 1) >= 0 && spots[x + 1][y - 1].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((y - 1) >= 0 && spots[x][y - 1].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((x - 1) >= 0 && spots[x - 1][y].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((x + 1) <= size - 1 && spots[x + 1][y].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((y + 1) <= size - 1 && spots[x][y + 1].occupiedByPlayer == player) {
-
                     return true;
                 }
-
                 return false;
             } else {
                 if ((x - 1) >= 0 && (y + 1) <= size - 1 && spots[x - 1][y + 1].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((x + 1) <= size - 1 && (y + 1) <= size - 1 && spots[x + 1][y + 1].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((y - 1) >= 0 && spots[x][y - 1].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((x - 1) >= 0 && spots[x - 1][y].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((x + 1) <= size - 1 && spots[x + 1][y].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((y + 1) <= size - 1 && spots[x][y + 1].occupiedByPlayer == player) {
                     return true;
                 }
-
                 return false;
             }
-
         } else {
             return false;
         }
@@ -1005,7 +962,6 @@ public class BlueLagoon {
             allResources = false;
         }
 
-
         int flag = 0;
         String newString = "";
         statement[0] = statement[0].substring(1, statement[0].length());
@@ -1018,22 +974,19 @@ public class BlueLagoon {
             statement[1] = statement[1].substring(0, 3) + num + statement[1].substring(4, 7);
             for (int j = 0; j <= statement.length - 1; j++) {
                 newString += statement[j];
-
             }
-            //System.out.println(newString);
-            if (generateAllValidMoves(newString).size() == 0) {//this player has no
+            if (generateAllValidMoves(newString).size() == 0) {//this player has no valid move anymore
                 flag++;
             }
             newString = "";
         }
 
-        System.out.println(sumOfResources);
         if (allResources || flag == playerNumber) {
             return true;
         } else {
             return false;
         }
-        //return false; // FIXME Task 9
+        // FIXME Task 9
     }
 
     public static boolean comparePos(String pos1, String pos2) {
@@ -1107,7 +1060,6 @@ public class BlueLagoon {
                     if (!flag) {
                         break;
                     }
-
                 }
             }
 
@@ -1117,21 +1069,17 @@ public class BlueLagoon {
                 if (i == pre) {
                     statement[thisPlayer] = statement[thisPlayer] + " " + pos;
                 }
-
             }
         }
 
         if (phase.equals("T")) {
             boolean flag = true;
-
             String[] playerStrings = statement[thisPlayer].split(" ");
             int pre = 0;
             for (int i = 0; i <= playerStrings.length - 1; i++) {
                 if (playerStrings[i].equals("T")) {
-
                     while (i + 1 <= playerStrings.length - 1) {
                         if (comparePos(playerStrings[i + 1], pos)) {
-
                             flag = false;
                             break;
                         } else {
@@ -1466,7 +1414,7 @@ public class BlueLagoon {
         }
 
         for (int p = firstPlayer; p <= statement.length - 1; p++) {
-            System.out.println("Player "+(p-12)+":");
+            System.out.println("Player " + (p - 12) + ":");
             Set<int[]> posSet = new HashSet<>();
             //Add all spots of this player to a hash set
             String[] info = statement[p].split(" ");
@@ -1492,7 +1440,7 @@ public class BlueLagoon {
                     linkSet.addAll(DFSearch(cor, posSet, visited));
                     visited.clear();
                 }
-                for(List<int[]> l:linkSet){
+                for (List<int[]> l : linkSet) {
                     for (int[] h : l) {
                         System.out.print(h[0] + "," + h[1] + ";");
                     }
@@ -1534,7 +1482,7 @@ public class BlueLagoon {
         for (int i = 0; i <= visited.size() - 1; i++) {
             visit.add(visited.get(i));
         }
-        Collections.copy(visit,visited);
+        Collections.copy(visit, visited);
         int numOfAdjacentPos = 0;
         for (int[] cord : posSet) {
             if (!visited.contains(cord)) {
@@ -1813,10 +1761,10 @@ public class BlueLagoon {
 
         //Points array of scores
         int[] scores = new int[playerNumber];
-        int[] majority=calculateIslandMajoritiesScore(stateString);
-        int[] link=calculateIslandLinksScore(stateString);
-        int[] resources=calculateResourcesAndStatuettesScore(stateString);
-        int[] islands=calculateTotalIslandsScore(stateString);
+        int[] majority = calculateIslandMajoritiesScore(stateString);
+        int[] link = calculateIslandLinksScore(stateString);
+        int[] resources = calculateResourcesAndStatuettesScore(stateString);
+        int[] islands = calculateTotalIslandsScore(stateString);
 
         //Index of the first player string
         int firstPlayer = 0;
@@ -1827,13 +1775,14 @@ public class BlueLagoon {
             }
         }
         //Calculate the points of this player in last phase
-        for(int p=firstPlayer;p>=statement.length-1;p++){
-            String[] pl=statement[p].split(" ");
-            scores[p-firstPlayer]=Integer.parseInt(pl[3]);;
+        for (int p = firstPlayer; p >= statement.length - 1; p++) {
+            String[] pl = statement[p].split(" ");
+            scores[p - firstPlayer] = Integer.parseInt(pl[3]);
+            ;
         }
         //Add current`points to this player
-        for(int i=0;i<=playerNumber-1;i++){
-            scores[i]+=majority[i]+link[i]+resources[i]+islands[i];
+        for (int i = 0; i <= playerNumber - 1; i++) {
+            scores[i] += majority[i] + link[i] + resources[i] + islands[i];
         }
 
         return scores; // FIXME Task 11

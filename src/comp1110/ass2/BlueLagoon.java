@@ -89,9 +89,8 @@ public class BlueLagoon {
         // Checks if Move string is properly formatted
         if (moveString.matches("[S|T]\s\\d{1,2},\\d{1,2}")) {
             return true;
-        } else {
+        } else
             return false;
-        }
     }
 
     /**
@@ -114,149 +113,61 @@ public class BlueLagoon {
      */
 
     public static String distributeResources(String stateString) {
-        //add a space at front to make shre that for every statement, the second char of the substring is the type of statement
-        stateString = " " + stateString;
+        //add a space at front to make sure that for every statement, the second char of the substring is the type of statement
+        //stateString = " " + stateString;
         String[] statement = stateString.split(";");
-        //store the index of stonecirlce statement
-        int stoneCircle = 0;
-        //store the index of resource statement
-        int resource = 0;
-        //search for the index of two statements
-        for (int i = 0; i <= statement.length - 1; i++) {
-            if (statement[i].charAt(1) == 's') {
-                stoneCircle = i;
+        String target=null;
+        for(int i=0;i<14;i++)
+        {
+            if(statement[i].startsWith(" s")) {
+                target=statement[i];
+                break;
             }
-            if (statement[i].charAt(1) == 'r') {
-                resource = i;
+        }
+        //先用target截取s开头的字符串
+        target=target.replace(" s ","");
+        //切除掉开头的无关字符
+        String[]stoneCircle=target.split(" ");
+        //分离出来字符串中的顺序字符
+        String[]random=new String[32];
+        //另外新设一个字符串数组
+        Random r=new Random();
+        int []a=new int [32];
+        int rand;
+        for(int i=0;i<32;i++)
+        {
+
+            do{rand=r.nextInt(32);
+                if(a[rand]==0){
+                    a[rand]=i;
+                    break;
+                }
+            }while (true);
+        }
+        for(int i=0;i<32;i++)
+        {
+            random[i]=stoneCircle[a[i]];
+        }
+        // 随机一串0~31的数组，把新数据记录进新的字符串里面
+        String C=random[0]+" "+random[1]+" "+random[2]+" "+random[3]+" "+random[4]+" "+random[5]+" ";
+        String B=random[6]+" "+random[7]+" "+random[8]+" "+random[9]+" "+random[10]+" "+random[11]+" ";
+        String W=random[12]+" "+random[13]+" "+random[14]+" "+random[15]+" "+random[16]+" "+random[17]+" ";
+        String P=random[18]+" "+random[19]+" "+random[20]+" "+random[21]+" "+random[22]+" "+random[23]+" ";
+        String S=random[24]+" "+random[25]+" "+random[26]+" "+random[27]+" "+random[28]+" "+random[29]+" "+random[30]+" "+random[31];
+        //先把各个资源的字符串表示出来
+        String replaceString=" r C "+C+"B "+B+"W "+W+"P "+P+"S "+S;
+        //直接用字符串加法，先另外拟一个字符串资源声明
+
+        for(int i=0;i<12;i++)
+        {
+            if(statement[i].startsWith(" r")){
+                stateString=stateString.replace(statement[i],replaceString);
             }
         }
 
-        //store the coordinates of 32 stone circles
-        Coordinate[] coordinate = new Coordinate[32];
-        String[] stoneCoorString = statement[stoneCircle].split(" ");
-        int x;
-        int y;
-        for (int i = 0; i <= 31; i++) {
-            String[] xy = stoneCoorString[i + 2].split(",");//stoneCoorString[0]="" and stoneCoorString[1]="s"
-            x = Integer.parseInt(xy[0]);
-            y = Integer.parseInt(xy[1]);
-            coordinate[i] = new Coordinate(x, y);
-        }
-        //coordinates of resources
-        Coordinate[] bamboo = new Coordinate[6];
-        Coordinate[] coconut = new Coordinate[6];
-        Coordinate[] water = new Coordinate[6];
-        Coordinate[] preciousStone = new Coordinate[6];
-        Coordinate[] statuette = new Coordinate[8];
-        //numbers of resources allocated
-        int b = 0;
-        int c = 0;
-        int w = 0;
-        int p = 0;
-        int s = 0;
-        //index is the total number of resources allocated
-        int index = 0;
-        Random random = new Random();
-        //store the coordinates of stonecircles which have been occupied, true for occupation
-        int[] flag = new int[32];
-        while (index <= 31) {
-            int i = random.nextInt(16);
-            if (i == 0 || i == 1 || i == 2) {
-                if (b <= 5) {
-                    int r = random.nextInt(32);
-                    //if true and occupied, then search for another position which have yet been occupied. When false(not occupied), exit loop
-                    while (flag[r] == 1) {
-                        r = random.nextInt(32);
-                    }
-                    bamboo[b] = coordinate[r];
-                    b++;
-                    index++;
-                    //set the coordinate of this stonecircle as occupied
-                    flag[r] = 1;
-                }
-            } else if (i == 3 || i == 4 || i == 5) {
-                if (c <= 5) {
-                    int r = random.nextInt(32);
-                    while (flag[r] == 1) {
-                        r = random.nextInt(32);
-                    }
-                    coconut[c] = coordinate[r];
-                    c++;
-                    index++;
-                    flag[r] = 1;
-                }
-            } else if (i == 6 || i == 7 || i == 8) {
-                if (w <= 5) {
-                    int r = random.nextInt(32);
-                    while (flag[r] == 1) {
-                        r = random.nextInt(32);
-                    }
-                    water[w] = coordinate[r];
-                    w++;
-                    index++;
-                    flag[r] = 1;
-                }
-            } else if (i == 9 || i == 10 || i == 11) {
-                if (p <= 5) {
-                    int r = random.nextInt(32);
-                    while (flag[r] == 1) {
-                        r = random.nextInt(32);
-                    }
-                    preciousStone[p] = coordinate[r];
-                    p++;
-                    index++;
-                    flag[r] = 1;
-                }
-            } else {
-                if (s <= 7) {
-                    int r = random.nextInt(32);
-                    while (flag[r] == 1) {
-                        r = random.nextInt(32);
-                    }
-                    statuette[s] = coordinate[r];
-                    s++;
-                    index++;
-                    flag[r] = 1;
-                }
-            }
-        }
-        // Create a new statement for resources
-        statement[resource] = " r";
-        statement[resource] += " " + "C";
-        for (int j = 0; j <= 5; j++) {
-            statement[resource] += " " + coconut[j].x + "," + coconut[j].y;
-        }
-        statement[resource] += " " + "B";
-        for (int j = 0; j <= 5; j++) {
-            statement[resource] += " " + bamboo[j].x + "," + bamboo[j].y;
-        }
-        statement[resource] += " " + "W";
-        for (int j = 0; j <= 5; j++) {
-            statement[resource] += " " + water[j].x + "," + water[j].y;
-        }
-        statement[resource] += " " + "P";
-        for (int j = 0; j <= 5; j++) {
-            statement[resource] += " " + preciousStone[j].x + "," + preciousStone[j].y;
-        }
-        statement[resource] += " " + "S";
-        for (int j = 0; j <= 7; j++) {
-            statement[resource] += " " + statuette[j].x + "," + statuette[j].y;
-        }
-        statement[resource] += ";";
-        //delete the first space of the arrangement statement
-        statement[0] = statement[0].substring(1, statement[0].length());
-        //assembly all statements
-        String after = "";
-        for (int k = 0; k <= statement.length - 1; k++) {
-            if (k == resource) {
-                after += statement[resource];
-            } else {
-                after += statement[k] + ";";
-            }
-        }
-        return after;//// FIXME Task 6
+        return stateString;
     }
-
+    //FIXME Task 6
     /**
      * Given a state string and a move string, determine if the move is
      * valid for the current player.

@@ -13,6 +13,7 @@ public class Coordinate {
     }
 
     public static Coordinate[] generateAllCoordinates(int n) throws Exception {
+        // Written by Tyler
         if (n < 0) {
             throw new Exception("There cannot be a negative number of rows");
         }

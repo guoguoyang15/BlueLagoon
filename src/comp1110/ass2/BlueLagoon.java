@@ -27,7 +27,7 @@ public class BlueLagoon {
      */
 
     public static boolean isStateStringWellFormed(String stateString) {
-        // Written by Tyler and Zhining
+        // Written by Tyler and edited by Zhining
         String[] parts = stateString.split(";");
         // Separate strings into arrays of strings with the split function, using ";"
         if (parts[0].matches("a\\s[0-9]*[1-9][0-9]*\\s[1-9]")) {

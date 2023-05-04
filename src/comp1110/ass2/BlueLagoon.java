@@ -1071,8 +1071,8 @@ public class BlueLagoon {
         stateString = " " + stateString;
         String[] statement = stateString.split(";");
         char turn = statement[1].charAt(3);//which player is moving
-        int thisPlayer = 0;
-        int re = 0;
+        int thisPlayer = 0;//Index of state string of this player in this turn
+        int re = 0;//Index of resource state string
         for (int i = 0; i <= statement.length - 1; i++) {
             if (statement[i].charAt(1) == 'p' && statement[i].charAt(3) == turn) {
                 thisPlayer = i;
@@ -1088,21 +1088,15 @@ public class BlueLagoon {
         String phase = moveStrings[0];
         String pos = moveStrings[1];
         String[] xy = pos.split(",");
-        int moveX = Integer.parseInt(xy[0]);
-        int moveY = Integer.parseInt(xy[1]);
 
         if (phase.equals("S")) {
             String[] playerStrings = statement[thisPlayer].split(" ");
-
-
             int pre = 0;
             boolean flag = true;
             for (int i = 0; i <= playerStrings.length - 1; i++) {
                 if (playerStrings[i].equals("S")) {
-
                     while (!playerStrings[i + 1].equals("T")) {
                         if (comparePos(playerStrings[i + 1], pos)) {
-
                             flag = false;
                             break;
                         } else {
@@ -1144,13 +1138,14 @@ public class BlueLagoon {
                             i++;
                         }
                     }
-                    pre = i;
+                    pre = i;//Position of the prior position of this new position
                     if (!flag) {
                         break;
                     }
                 }
             }
 
+            //Create a new state string for this player
             statement[thisPlayer] = "";
             for (int i = 0; i <= playerStrings.length - 1; i++) {
                 statement[thisPlayer] = statement[thisPlayer] + " " + playerStrings[i];
@@ -1160,19 +1155,22 @@ public class BlueLagoon {
             }
 
         }
-        System.out.println("\n");
 
+        //split again
         statement[thisPlayer] = statement[thisPlayer].substring(1, statement[thisPlayer].length());
-        System.out.println(statement[thisPlayer]);
         String[] playerStrings = statement[thisPlayer].split(" ");
 
+        //f is the type of resource on this spot
         char f = 'v';
+        //ff is whether this spot has resource on it or not
         boolean ff = false;
+        //split the resources state string
         String[] subRe = statement[re].split(" ");
         for (int b = 0; b <= subRe.length - 1; b++) {
             if (subRe[b].equals("C")) {
                 while (!subRe[b + 1].equals("B")) {
                     if (subRe[b + 1].equals(pos)) {
+                        //on this spot there is a bamboo
                         f = 'c';
                         ff = true;
                         break;
@@ -1236,27 +1234,20 @@ public class BlueLagoon {
                 }
             }
         }
-
-
+        // Add 1 to the number of such resources in this player's state string
         if (f == 'c') {
-            System.out.println(1);
             playerStrings[4] = "" + (Integer.parseInt(playerStrings[4]) + 1);
         } else if (f == 'b') {
-            System.out.println(1);
             playerStrings[5] = "" + (Integer.parseInt(playerStrings[5]) + 1);
         } else if (f == 'w') {
-            System.out.println(1);
             playerStrings[6] = "" + (Integer.parseInt(playerStrings[6]) + 1);
         } else if (f == 'p') {
-            System.out.println(1);
             playerStrings[7] = "" + (Integer.parseInt(playerStrings[7]) + 1);
         } else if (f == 's') {
-            System.out.println(1);
             playerStrings[8] = "" + (Integer.parseInt(playerStrings[8]) + 1);
         } else {
-            System.out.println(2);
         }
-
+        //Assembly new string
         statement[thisPlayer] = "";
         for (int p = 0; p <= playerStrings.length - 1; p++) {
             statement[thisPlayer] += " " + playerStrings[p];
@@ -1264,7 +1255,6 @@ public class BlueLagoon {
         statement[thisPlayer] = statement[thisPlayer].substring(1, statement[thisPlayer].length());
 
         String[] reString = statement[re].split(" ");
-        System.out.println(statement[re]);
         statement[re] = "";
         for (int i = 1; i <= reString.length - 1; i++) {
             if (!reString[i].equals(pos)) {
@@ -1276,8 +1266,6 @@ public class BlueLagoon {
         for (int i = 0; i <= statement.length - 1; i++) {
             newString = newString + statement[i] + ";";
         }
-        System.out.println(stateString);
-        System.out.println(moveString);
 
         return newString.substring(1, newString.length()); // FIXME Task 10
     }

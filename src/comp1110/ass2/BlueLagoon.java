@@ -1,10 +1,7 @@
 package comp1110.ass2;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-
+import java.util.*;
+import java.util.Collections;
 
 public class BlueLagoon {
     // The Game Strings for five maps have been created for you.
@@ -92,9 +89,8 @@ public class BlueLagoon {
         // Checks if Move string is properly formatted
         if (moveString.matches("[S|T]\s\\d{1,2},\\d{1,2}")) {
             return true;
-        } else {
+        } else
             return false;
-        }
     }
 
     /**
@@ -117,148 +113,57 @@ public class BlueLagoon {
      */
 
     public static String distributeResources(String stateString) {
-        //add a space at front to make shre that for every statement, the second char of the substring is the type of statement
-        stateString = " " + stateString;
+        //add a space at front to make sure that for every statement, the second char of the substring is the type of statement
+        //stateString = " " + stateString;
         String[] statement = stateString.split(";");
-        //store the index of stonecirlce statement
-        int stoneCircle = 0;
-        //store the index of resource statement
-        int resource = 0;
-        //search for the index of two statements
-        for (int i = 0; i <= statement.length - 1; i++) {
-            if (statement[i].charAt(1) == 's') {
-                stoneCircle = i;
+        String target = null;
+        for (int i = 0; i < 14; i++) {
+            if (statement[i].startsWith(" s")) {
+                target = statement[i];
+                break;
             }
-            if (statement[i].charAt(1) == 'r') {
-                resource = i;
+        }
+        //First use target to intercept a string starting with s
+        target = target.replace(" s ", "");
+        //Cut out the extraneous characters at the beginning
+        String[] stoneCircle = target.split(" ");
+        //Separating out sequential characters in a string
+        String[] random = new String[32];
+        //Also set up a new array of strings
+        Random r = new Random();
+        int[] a = new int[32];
+        int rand;
+        for (int i = 0; i < 32; i++) {
+            do {
+                rand = r.nextInt(32);
+                if (a[rand] == 0) {
+                    a[rand] = i;
+                    break;
+                }
+            } while (true);
+        }
+        for (int i = 0; i < 32; i++) {
+            random[i] = stoneCircle[a[i]];
+        }
+        // Randomize an array from 0 to 31 and record the new data into a new string
+        String C = random[0] + " " + random[1] + " " + random[2] + " " + random[3] + " " + random[4] + " " + random[5] + " ";
+        String B = random[6] + " " + random[7] + " " + random[8] + " " + random[9] + " " + random[10] + " " + random[11] + " ";
+        String W = random[12] + " " + random[13] + " " + random[14] + " " + random[15] + " " + random[16] + " " + random[17] + " ";
+        String P = random[18] + " " + random[19] + " " + random[20] + " " + random[21] + " " + random[22] + " " + random[23] + " ";
+        String S = random[24] + " " + random[25] + " " + random[26] + " " + random[27] + " " + random[28] + " " + random[29] + " " + random[30] + " " + random[31];
+        //Start with a string representation of the individual resources
+        String replaceString = " r C " + C + "B " + B + "W " + W + "P " + P + "S " + S;
+        //Direct string addition, first with a separate string resource declaration
+
+        for (int i = 0; i < 12; i++) {
+            if (statement[i].startsWith(" r")) {
+                stateString = stateString.replace(statement[i], replaceString);
             }
         }
 
-        //store the coordinates of 32 stone circles
-        Coordinate[] coordinate = new Coordinate[32];
-        String[] stoneCoorString = statement[stoneCircle].split(" ");
-        int x;
-        int y;
-        for (int i = 0; i <= 31; i++) {
-            String[] xy = stoneCoorString[i + 2].split(",");//stoneCoorString[0]="" and stoneCoorString[1]="s"
-            x = Integer.parseInt(xy[0]);
-            y = Integer.parseInt(xy[1]);
-            coordinate[i] = new Coordinate(x, y);
-        }
-        //coordinates of resources
-        Coordinate[] bamboo = new Coordinate[6];
-        Coordinate[] coconut = new Coordinate[6];
-        Coordinate[] water = new Coordinate[6];
-        Coordinate[] preciousStone = new Coordinate[6];
-        Coordinate[] statuette = new Coordinate[8];
-        //numbers of resources allocated
-        int b = 0;
-        int c = 0;
-        int w = 0;
-        int p = 0;
-        int s = 0;
-        //index is the total number of resources allocated
-        int index = 0;
-        Random random = new Random();
-        //store the coordinates of stonecircles which have been occupied, true for occupation
-        int[] flag = new int[32];
-        while (index <= 31) {
-            int i = random.nextInt(16);
-            if (i == 0 || i == 1 || i == 2) {
-                if (b <= 5) {
-                    int r = random.nextInt(32);
-                    //if true and occupied, then search for another position which have yet been occupied. When false(not occupied), exit loop
-                    while (flag[r] == 1) {
-                        r = random.nextInt(32);
-                    }
-                    bamboo[b] = coordinate[r];
-                    b++;
-                    index++;
-                    //set the coordinate of this stonecircle as occupied
-                    flag[r] = 1;
-                }
-            } else if (i == 3 || i == 4 || i == 5) {
-                if (c <= 5) {
-                    int r = random.nextInt(32);
-                    while (flag[r] == 1) {
-                        r = random.nextInt(32);
-                    }
-                    coconut[c] = coordinate[r];
-                    c++;
-                    index++;
-                    flag[r] = 1;
-                }
-            } else if (i == 6 || i == 7 || i == 8) {
-                if (w <= 5) {
-                    int r = random.nextInt(32);
-                    while (flag[r] == 1) {
-                        r = random.nextInt(32);
-                    }
-                    water[w] = coordinate[r];
-                    w++;
-                    index++;
-                    flag[r] = 1;
-                }
-            } else if (i == 9 || i == 10 || i == 11) {
-                if (p <= 5) {
-                    int r = random.nextInt(32);
-                    while (flag[r] == 1) {
-                        r = random.nextInt(32);
-                    }
-                    preciousStone[p] = coordinate[r];
-                    p++;
-                    index++;
-                    flag[r] = 1;
-                }
-            } else {
-                if (s <= 7) {
-                    int r = random.nextInt(32);
-                    while (flag[r] == 1) {
-                        r = random.nextInt(32);
-                    }
-                    statuette[s] = coordinate[r];
-                    s++;
-                    index++;
-                    flag[r] = 1;
-                }
-            }
-        }
-        // Create a new statement for resources
-        statement[resource] = " r";
-        statement[resource] += " " + "C";
-        for (int j = 0; j <= 5; j++) {
-            statement[resource] += " " + coconut[j].x + "," + coconut[j].y;
-        }
-        statement[resource] += " " + "B";
-        for (int j = 0; j <= 5; j++) {
-            statement[resource] += " " + bamboo[j].x + "," + bamboo[j].y;
-        }
-        statement[resource] += " " + "W";
-        for (int j = 0; j <= 5; j++) {
-            statement[resource] += " " + water[j].x + "," + water[j].y;
-        }
-        statement[resource] += " " + "P";
-        for (int j = 0; j <= 5; j++) {
-            statement[resource] += " " + preciousStone[j].x + "," + preciousStone[j].y;
-        }
-        statement[resource] += " " + "S";
-        for (int j = 0; j <= 7; j++) {
-            statement[resource] += " " + statuette[j].x + "," + statuette[j].y;
-        }
-        statement[resource] += ";";
-        //delete the first space of the arrangement statement
-        statement[0] = statement[0].substring(1, statement[0].length());
-        //assembly all statements
-        String after = "";
-        for (int k = 0; k <= statement.length - 1; k++) {
-            if (k == resource) {
-                after += statement[resource];
-            } else {
-                after += statement[k] + ";";
-            }
-        }
-        return after;//// FIXME Task 6
+        return stateString;
     }
+    //FIXME Task 6
 
     /**
      * Given a state string and a move string, determine if the move is
@@ -424,10 +329,7 @@ public class BlueLagoon {
         }
         int player = (int) turn - 48;
 
-
         //check if there are the player's own areas in adjacent spots
-
-
         if (phase == 'E') {
             if (spots[x][y].spotType == 0) {
                 return moveString.charAt(0) == 'S' && spots[x][y].occupiedByPlayer == 100;
@@ -436,64 +338,48 @@ public class BlueLagoon {
         if (spots[x][y].occupiedByPlayer == 100) {
             if (x % 2 == 1) {
                 if ((x - 1) >= 0 && (y - 1) >= 0 && spots[x - 1][y - 1].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((x + 1) <= size - 1 && (y - 1) >= 0 && spots[x + 1][y - 1].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((y - 1) >= 0 && spots[x][y - 1].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((x - 1) >= 0 && spots[x - 1][y].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((x + 1) <= size - 1 && spots[x + 1][y].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((y + 1) <= size - 1 && spots[x][y + 1].occupiedByPlayer == player) {
-
                     return true;
                 }
-
                 return false;
             } else {
                 if ((x - 1) >= 0 && (y + 1) <= size - 1 && spots[x - 1][y + 1].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((x + 1) <= size - 1 && (y + 1) <= size - 1 && spots[x + 1][y + 1].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((y - 1) >= 0 && spots[x][y - 1].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((x - 1) >= 0 && spots[x - 1][y].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((x + 1) <= size - 1 && spots[x + 1][y].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((y + 1) <= size - 1 && spots[x][y + 1].occupiedByPlayer == player) {
                     return true;
                 }
-
                 return false;
             }
-
         } else {
             return false;
         }
-
-
         //return true;// FIXME Task 7
     }
 
@@ -851,12 +737,9 @@ public class BlueLagoon {
                 }
                 return stringSet;
             }
-
-
-            // return stringSet; // FIXME Task 8
+            // FIXME Task 8
         }
     }
-
 
     public static boolean isSettlementMoveValid(String stateString, String moveString) {
         System.out.println(stateString);
@@ -905,7 +788,6 @@ public class BlueLagoon {
         }
         int villageLimit = 5;
 
-
         if (moveString.charAt(0) == 'S') {
             if (settlerLimit <= settlerNum) {
                 return false;
@@ -913,7 +795,6 @@ public class BlueLagoon {
         } else {
             return false;//because in settlement phase, player cannot place villages anymore
         }
-
 
         //check if the move is beyond the scale of the map
         String[] arrangement = statement[0].split(" ");
@@ -987,66 +868,49 @@ public class BlueLagoon {
             }
         }
         int player = (int) turn - 48;
-
-
         //check if there are the player's own areas in adjacent spots
-
         if (spots[x][y].occupiedByPlayer == 100) {
             if (x % 2 == 1) {
                 if ((x - 1) >= 0 && (y - 1) >= 0 && spots[x - 1][y - 1].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((x + 1) <= size - 1 && (y - 1) >= 0 && spots[x + 1][y - 1].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((y - 1) >= 0 && spots[x][y - 1].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((x - 1) >= 0 && spots[x - 1][y].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((x + 1) <= size - 1 && spots[x + 1][y].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((y + 1) <= size - 1 && spots[x][y + 1].occupiedByPlayer == player) {
-
                     return true;
                 }
-
                 return false;
             } else {
                 if ((x - 1) >= 0 && (y + 1) <= size - 1 && spots[x - 1][y + 1].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((x + 1) <= size - 1 && (y + 1) <= size - 1 && spots[x + 1][y + 1].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((y - 1) >= 0 && spots[x][y - 1].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((x - 1) >= 0 && spots[x - 1][y].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((x + 1) <= size - 1 && spots[x + 1][y].occupiedByPlayer == player) {
-
                     return true;
                 }
                 if ((y + 1) <= size - 1 && spots[x][y + 1].occupiedByPlayer == player) {
                     return true;
                 }
-
                 return false;
             }
-
         } else {
             return false;
         }
@@ -1097,7 +961,6 @@ public class BlueLagoon {
             allResources = false;
         }
 
-
         int flag = 0;
         String newString = "";
         statement[0] = statement[0].substring(1, statement[0].length());
@@ -1110,22 +973,19 @@ public class BlueLagoon {
             statement[1] = statement[1].substring(0, 3) + num + statement[1].substring(4, 7);
             for (int j = 0; j <= statement.length - 1; j++) {
                 newString += statement[j];
-
             }
-            //System.out.println(newString);
-            if (generateAllValidMoves(newString).size() == 0) {//this player has no
+            if (generateAllValidMoves(newString).size() == 0) {//this player has no valid move anymore
                 flag++;
             }
             newString = "";
         }
 
-        System.out.println(sumOfResources);
         if (allResources || flag == playerNumber) {
             return true;
         } else {
             return false;
         }
-        //return false; // FIXME Task 9
+        // FIXME Task 9
     }
 
     public static boolean comparePos(String pos1, String pos2) {
@@ -1163,8 +1023,8 @@ public class BlueLagoon {
         stateString = " " + stateString;
         String[] statement = stateString.split(";");
         char turn = statement[1].charAt(3);//which player is moving
-        int thisPlayer = 0;
-        int re = 0;
+        int thisPlayer = 0;//Index of state string of this player in this turn
+        int re = 0;//Index of resource state string
         for (int i = 0; i <= statement.length - 1; i++) {
             if (statement[i].charAt(1) == 'p' && statement[i].charAt(3) == turn) {
                 thisPlayer = i;
@@ -1180,21 +1040,15 @@ public class BlueLagoon {
         String phase = moveStrings[0];
         String pos = moveStrings[1];
         String[] xy = pos.split(",");
-        int moveX = Integer.parseInt(xy[0]);
-        int moveY = Integer.parseInt(xy[1]);
 
         if (phase.equals("S")) {
             String[] playerStrings = statement[thisPlayer].split(" ");
-
-
             int pre = 0;
             boolean flag = true;
             for (int i = 0; i <= playerStrings.length - 1; i++) {
                 if (playerStrings[i].equals("S")) {
-
                     while (!playerStrings[i + 1].equals("T")) {
                         if (comparePos(playerStrings[i + 1], pos)) {
-
                             flag = false;
                             break;
                         } else {
@@ -1205,7 +1059,6 @@ public class BlueLagoon {
                     if (!flag) {
                         break;
                     }
-
                 }
             }
 
@@ -1215,34 +1068,31 @@ public class BlueLagoon {
                 if (i == pre) {
                     statement[thisPlayer] = statement[thisPlayer] + " " + pos;
                 }
-
             }
         }
 
         if (phase.equals("T")) {
             boolean flag = true;
-
             String[] playerStrings = statement[thisPlayer].split(" ");
             int pre = 0;
             for (int i = 0; i <= playerStrings.length - 1; i++) {
                 if (playerStrings[i].equals("T")) {
-
                     while (i + 1 <= playerStrings.length - 1) {
                         if (comparePos(playerStrings[i + 1], pos)) {
-
                             flag = false;
                             break;
                         } else {
                             i++;
                         }
                     }
-                    pre = i;
+                    pre = i;//Position of the prior position of this new position
                     if (!flag) {
                         break;
                     }
                 }
             }
 
+            //Create a new state string for this player
             statement[thisPlayer] = "";
             for (int i = 0; i <= playerStrings.length - 1; i++) {
                 statement[thisPlayer] = statement[thisPlayer] + " " + playerStrings[i];
@@ -1252,19 +1102,22 @@ public class BlueLagoon {
             }
 
         }
-        System.out.println("\n");
 
+        //split again
         statement[thisPlayer] = statement[thisPlayer].substring(1, statement[thisPlayer].length());
-        System.out.println(statement[thisPlayer]);
         String[] playerStrings = statement[thisPlayer].split(" ");
 
+        //f is the type of resource on this spot
         char f = 'v';
+        //ff is whether this spot has resource on it or not
         boolean ff = false;
+        //split the resources state string
         String[] subRe = statement[re].split(" ");
         for (int b = 0; b <= subRe.length - 1; b++) {
             if (subRe[b].equals("C")) {
                 while (!subRe[b + 1].equals("B")) {
                     if (subRe[b + 1].equals(pos)) {
+                        //on this spot there is a bamboo
                         f = 'c';
                         ff = true;
                         break;
@@ -1328,27 +1181,20 @@ public class BlueLagoon {
                 }
             }
         }
-
-
+        // Add 1 to the number of such resources in this player's state string
         if (f == 'c') {
-            System.out.println(1);
             playerStrings[4] = "" + (Integer.parseInt(playerStrings[4]) + 1);
         } else if (f == 'b') {
-            System.out.println(1);
             playerStrings[5] = "" + (Integer.parseInt(playerStrings[5]) + 1);
         } else if (f == 'w') {
-            System.out.println(1);
             playerStrings[6] = "" + (Integer.parseInt(playerStrings[6]) + 1);
         } else if (f == 'p') {
-            System.out.println(1);
             playerStrings[7] = "" + (Integer.parseInt(playerStrings[7]) + 1);
         } else if (f == 's') {
-            System.out.println(1);
             playerStrings[8] = "" + (Integer.parseInt(playerStrings[8]) + 1);
         } else {
-            System.out.println(2);
         }
-
+        //Assembly new string
         statement[thisPlayer] = "";
         for (int p = 0; p <= playerStrings.length - 1; p++) {
             statement[thisPlayer] += " " + playerStrings[p];
@@ -1356,7 +1202,6 @@ public class BlueLagoon {
         statement[thisPlayer] = statement[thisPlayer].substring(1, statement[thisPlayer].length());
 
         String[] reString = statement[re].split(" ");
-        System.out.println(statement[re]);
         statement[re] = "";
         for (int i = 1; i <= reString.length - 1; i++) {
             if (!reString[i].equals(pos)) {
@@ -1368,8 +1213,6 @@ public class BlueLagoon {
         for (int i = 0; i <= statement.length - 1; i++) {
             newString = newString + statement[i] + ";";
         }
-        System.out.println(stateString);
-        System.out.println(moveString);
 
         return newString.substring(1, newString.length()); // FIXME Task 10
     }
@@ -1390,11 +1233,15 @@ public class BlueLagoon {
      * the score for each player
      */
     public static int[] calculateTotalIslandsScore(String stateString) {
+        //split state string
         stateString = " " + stateString;
         String[] statement = stateString.split(";");
+        //Number of player on this board
         int playerNumber = Integer.parseInt(statement[0].substring(statement[0].length() - 1, statement[0].length()));
+        //Points array of players
         int[] islandPoints = new int[playerNumber];
         int firstPlayer = 0;
+        //Find index of first player's statement string
         for (int i = 0; i <= statement.length - 1; i++) {
             if (statement[i].charAt(1) == 'p') {
                 firstPlayer = i;
@@ -1424,23 +1271,24 @@ public class BlueLagoon {
         for (int i = 0; i <= statement.length - 1; i++) {
             //when this statement is island string
             if (statement[i].charAt(1) == 'i') {
+                //This is the i-th island
                 numofisland++;
+                //split this island state string
                 land = statement[i].split(" ");
                 for (int j = 3; j <= land.length - 1; j++) {//land[0]="",land[1]="i",land[2]="6/8/10"
                     landXY = land[j].split(",");
                     landx = Integer.parseInt(landXY[0]);
                     landy = Integer.parseInt(landXY[1]);
-                    spots[landx][landy].spotType = 1;
-                    spots[landx][landy].island = numofisland;
+                    spots[landx][landy].spotType = 1;//This is land, not sea
+                    spots[landx][landy].island = numofisland;//This is No.i island
                 }
             }
         }
-
+        //Number of islands this player occupies
         int islandOfThisPlayer;
+
         for (int p = firstPlayer; p <= statement.length - 1; p++) {
-            System.out.println(p);
             islandOfThisPlayer = 0;
-            System.out.println(islandOfThisPlayer);
             String[] thisPlayer = statement[p].split(" ");
             for (int i = 1; i <= numofisland; i++) {
                 for (int j = 0; j <= thisPlayer.length - 1; j++) {
@@ -1456,7 +1304,7 @@ public class BlueLagoon {
                 }
             }
 
-            System.out.println(islandOfThisPlayer);
+            //Calculate island points for this player
             if (islandOfThisPlayer >= 8) {
                 islandPoints[p - firstPlayer] = 20;
             } else if (islandOfThisPlayer == 7) {
@@ -1467,29 +1315,31 @@ public class BlueLagoon {
 
         }
 
-
+        //return points array
         return islandPoints; // FIXME Task 11
     }
 
-
+    //ifAdjacent is to judge if the two coordinates are next to each other
     public static boolean ifAdjacent(int x1, int y1, int x2, int y2) {
+        //four positions are true for all rows
         if (x1 == x2 && Math.abs(y1 - y2) == 1) {
             return true;
-        } else if (y1 == y2 && Math.abs(x1 - x2) == 1) {
+        }
+        if (y1 == y2 && Math.abs(x1 - x2) == 1) {
             return true;
-        } else {
-            if (x1 % 2 == 0) {
-                if (Math.abs(x1 - x2) == 1 && (y2 - y1) == 0) {
-                    return true;
-                } else {
-                    return false;
-                }
+        }
+        //sometimes we need to consider two cases: odd rows and even rows
+        if (x1 % 2 == 0) {
+            if (Math.abs(x1 - x2) == 1 && (y2 - y1) == 1) {
+                return true;
             } else {
-                if (Math.abs(x1 - x2) == 1 && (y1 - y2) == 0) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return false;
+            }
+        } else {
+            if (Math.abs(x1 - x2) == 1 && (y1 - y2) == 1) {
+                return true;
+            } else {
+                return false;
             }
         }
     }
@@ -1514,13 +1364,14 @@ public class BlueLagoon {
 
 
     public static int[] calculateIslandLinksScore(String stateString) {
+        System.out.println("****************************************************************************************************");
         stateString = " " + stateString;
         String[] statement = stateString.split(";");
         int playerNum = Integer.parseInt(statement[0].substring(statement[0].length() - 1, statement[0].length()));
-        int[] pos = new int[2];//Position of each point
+
         int[] point = new int[playerNum];
 
-        Set<int[]> posSet = new HashSet<>();
+
         //Get the size of the map
         String[] arrangement = statement[0].split(" ");
         int size = Integer.parseInt(arrangement[2]);
@@ -1554,37 +1405,114 @@ public class BlueLagoon {
             }
         }
         int firstPlayer = 0;
-        for (int p = 6; p <= statement.length - 1; p++) {
-            if (statement[p].charAt(3) == 'p') {
+        for (int p = 0; p <= statement.length - 1; p++) {
+            if (statement[p].charAt(1) == 'p') {
                 firstPlayer = p;
                 break;
             }
         }
 
         for (int p = firstPlayer; p <= statement.length - 1; p++) {
+            System.out.println("Player " + (p - 12) + ":");
+            Set<int[]> posSet = new HashSet<>();
             //Add all spots of this player to a hash set
             String[] info = statement[p].split(" ");
             for (int i = 0; i <= info.length - 1; i++) {
                 if (info[i].contains(",")) {
+                    int[] pos = new int[2];//Position of each point
                     String[] xy = info[i].split(",");
                     pos[0] = Integer.parseInt(xy[0]);
                     pos[1] = Integer.parseInt(xy[1]);
                     posSet.add(pos);
                 }
             }
-            List<int[]> linkSpot;//One of links of a player
-            List<int[]> visited;//One of links of a player
-            List<List<int[]>> linkArray;//Array of all links of this player
+            //**********************Above are correct*********************************
+
             //We need to calculate all possible links of this player
+            if (posSet.size() == 0) {
+                point[p - firstPlayer] = 0;
+            } else {
+                Set<List<int[]>> linkSet = new HashSet<>();
+                for (int[] cor : posSet) {
+                    List<int[]> visited = new ArrayList<>();//One of links of a player
+                    visited.add(cor);
+                    linkSet.addAll(DFSearch(cor, posSet, visited));
+                    visited.clear();
+                }
+                for (List<int[]> l : linkSet) {
+                    for (int[] h : l) {
+                        System.out.print(h[0] + "," + h[1] + ";");
+                    }
+                    System.out.print("\n");
+                }
+                //Now we know all possible links of the player in linkSet
+                int maxIsland = 0;
+                for (List<int[]> link : linkSet) {
+                    int[] islandOccupied = new int[numofisland];
+                    for (int[] cord : link) {
+                        if (spots[cord[0]][cord[1]].island != 100) {
+                            islandOccupied[spots[cord[0]][cord[1]].island - 1]++;
+                        }
+                    }
+                    int thisLinkIsland = 0;
+                    for (int i = 0; i <= numofisland - 1; i++) {
+                        if (islandOccupied[i] != 0) {
+                            thisLinkIsland++;
+                        }
+                    }
+                    if (thisLinkIsland > maxIsland) {
+                        maxIsland = thisLinkIsland;
+                    }
+                }
+                point[p - firstPlayer] = maxIsland * 5;
 
-
+            }
             //In the end of a player calculation, clear spots set to empty set
             posSet.clear();
+            System.out.println("");
         }
 
-        return new int[]{0, 0}; // FIXME Task 11
+        return point; // FIXME Task 11
     }
 
+    public static Set<List<int[]>> DFSearch(int[] lastPos, Set<int[]> posSet, List<int[]> visited) {
+        Set<List<int[]>> linkSet = new HashSet<>();
+        List<int[]> visit = new ArrayList<>();
+        for (int i = 0; i <= visited.size() - 1; i++) {
+            visit.add(visited.get(i));
+        }
+        Collections.copy(visit, visited);
+        int numOfAdjacentPos = 0;
+        for (int[] cord : posSet) {
+            if (!visited.contains(cord)) {
+                if (!ifAdjacent(lastPos[0], lastPos[1], cord[0], cord[1])) {
+                    continue;
+                }
+                numOfAdjacentPos++;
+                visit.add(cord);
+                linkSet.addAll(DFSearch(cord, posSet, visit));
+                visit.remove(visit.size() - 1);
+            }
+        }
+        if (numOfAdjacentPos == 0) {
+            List<int[]> visit1 = new ArrayList<>();
+            for (int i = 0; i <= visited.size() - 1; i++) {
+                visit1.add(visited.get(i));
+            }
+            System.out.print("Link:");
+            for (int[] h : visit1) {
+                System.out.print(h[0] + "," + h[1] + ";");
+            }
+            System.out.print("\n");
+
+            Set<List<int[]>> linkSet1 = new HashSet<>();
+            linkSet1.add(visit1);
+
+            return linkSet1;
+        } else {
+            return linkSet;
+        }
+    }
 
     /**
      * Given a state string, calculate the "Majorities" portion of the score for
@@ -1606,19 +1534,22 @@ public class BlueLagoon {
      * of the score for each player
      */
     public static int[] calculateIslandMajoritiesScore(String stateString) {
+        //split state string
         stateString = " " + stateString;
         String[] statement = stateString.split(";");
+        //Number of player on this board
         int playerNum = Integer.parseInt(statement[0].substring(statement[0].length() - 1, statement[0].length()));
         //Get the size of the map
         String[] arrangement = statement[0].split(" ");
         int size = Integer.parseInt(arrangement[2]);
 
+        //Number of islands of this map
         int numOfIslands = 0;
         for (int j = 0; j <= statement.length - 1; j++) {
             if (statement[j].charAt(1) == 'i') {
                 numOfIslands++;
             }
-        }
+        }//Point array of majority island of players
         int[] islandPoints = new int[numOfIslands];
         //set up a map of spots
         Spot[][] spots = new Spot[size][size];
@@ -1643,7 +1574,7 @@ public class BlueLagoon {
                     landx = Integer.parseInt(landXY[0]);
                     landy = Integer.parseInt(landXY[1]);
                     spots[landx][landy].spotType = 1;
-                    spots[landx][landy].island = i - 2;
+                    spots[landx][landy].island = i - 2;//Index of islands
                 }
             }
             if (statement[i].charAt(1) == 'p') {
@@ -1655,7 +1586,7 @@ public class BlueLagoon {
                             String[] setPos = playerPositions[j + 1].split(",");
                             int setx = Integer.parseInt(setPos[0]);
                             int sety = Integer.parseInt(setPos[1]);
-                            spots[setx][sety].occupiedByPlayer = whichplayer;
+                            spots[setx][sety].occupiedByPlayer = whichplayer;//This spot is occupied by this player
                             j++;
                         }
                     }
@@ -1671,8 +1602,9 @@ public class BlueLagoon {
                 }
             }
         }
-
+        //Point array of this sub calculation
         int[] playerPoints = new int[playerNum];
+        //Occupiers of a certain island
         int[] occupiers = new int[playerNum];
 
         for (int i = 0; i <= numOfIslands - 1; i++) {
@@ -1681,11 +1613,13 @@ public class BlueLagoon {
             }
             for (int j = 0; j <= size - 1; j++) {
                 for (int k = 0; k <= size - 1; k++) {
+                    //If this spot is not sea and occupied by a player
                     if (spots[j][k].island == i && spots[j][k].occupiedByPlayer != 100) {
                         occupiers[spots[j][k].occupiedByPlayer]++;
                     }
                 }
             }
+            //We suppose only 2 players on the board because it's easy to compare
             if (playerNum == 2) {
                 if (occupiers[0] != 0 || occupiers[1] != 0) {
                     if (occupiers[0] > occupiers[1]) {
@@ -1701,7 +1635,7 @@ public class BlueLagoon {
 
         }
 
-
+        //Return point array of majority criteria
         return playerPoints; // FIXME Task 11
     }
 
@@ -1729,10 +1663,14 @@ public class BlueLagoon {
      * portions of the score for each player
      */
     public static int[] calculateResourcesAndStatuettesScore(String stateString) {
+        //split state string
         stateString = " " + stateString;
         String[] statement = stateString.split(";");
         int playerNumber = Integer.parseInt(statement[0].substring(statement[0].length() - 1, statement[0].length()));
+
+        //Points array of scores
         int[] scores = new int[playerNumber];
+        //Index of the first player string
         int firstPlayer = 0;
         for (int i = 0; i <= statement.length - 1; i++) {
             if (statement[i].charAt(1) == 'p') {
@@ -1740,15 +1678,18 @@ public class BlueLagoon {
                 break;
             }
         }
-
+        //Loop of these players
         for (int p = firstPlayer; p <= statement.length - 1; p++) {
             String[] playerString = statement[p].split(" ");
             int score = 0;
+            //Withdraw the number of these resources
             int coconut = Integer.parseInt(playerString[4]);
             int bamboo = Integer.parseInt(playerString[5]);
             int water = Integer.parseInt(playerString[6]);
             int prestone = Integer.parseInt(playerString[7]);
             int statuette = Integer.parseInt(playerString[8]);
+
+            //Calculate points of these resources
             if (coconut >= 4) {
                 score += 20;
             } else if (coconut == 3) {
@@ -1796,7 +1737,7 @@ public class BlueLagoon {
             scores[p - firstPlayer] = score;
 
         }
-
+        //return scores
         return scores; // FIXME Task 11
     }
 
@@ -1812,7 +1753,38 @@ public class BlueLagoon {
      * @return an integer array containing the calculated scores for each player
      */
     public static int[] calculateScores(String stateString) {
-        return new int[]{0, 0}; // FIXME Task 11
+        //split state string
+        stateString = " " + stateString;
+        String[] statement = stateString.split(";");
+        int playerNumber = Integer.parseInt(statement[0].substring(statement[0].length() - 1, statement[0].length()));
+
+        //Points array of scores
+        int[] scores = new int[playerNumber];
+        int[] majority = calculateIslandMajoritiesScore(stateString);
+        int[] link = calculateIslandLinksScore(stateString);
+        int[] resources = calculateResourcesAndStatuettesScore(stateString);
+        int[] islands = calculateTotalIslandsScore(stateString);
+
+        //Index of the first player string
+        int firstPlayer = 0;
+        for (int i = 0; i <= statement.length - 1; i++) {
+            if (statement[i].charAt(1) == 'p') {
+                firstPlayer = i;
+                break;
+            }
+        }
+        //Calculate the points of this player in last phase
+        for (int p = firstPlayer; p >= statement.length - 1; p++) {
+            String[] pl = statement[p].split(" ");
+            scores[p - firstPlayer] = Integer.parseInt(pl[3]);
+            ;
+        }
+        //Add current`points to this player
+        for (int i = 0; i <= playerNumber - 1; i++) {
+            scores[i] += majority[i] + link[i] + resources[i] + islands[i];
+        }
+
+        return scores; // FIXME Task 11
     }
 
     /**

@@ -27,6 +27,7 @@ public class BlueLagoon {
      */
 
     public static boolean isStateStringWellFormed(String stateString) {
+        // Written by Tyler and Zhining
         String[] parts = stateString.split(";");
         // Separate strings into arrays of strings with the split function, using ";"
         if (parts[0].matches("a\\s[0-9]*[1-9][0-9]*\\s[1-9]")) {
@@ -86,6 +87,7 @@ public class BlueLagoon {
      */
 
     public static boolean isMoveStringWellFormed(String moveString) {
+        // Written by Tyler
         // Checks if Move string is properly formatted
         if (moveString.matches("[S|T]\s\\d{1,2},\\d{1,2}")) {
             return true;
@@ -163,7 +165,6 @@ public class BlueLagoon {
 
         return stateString;
     }
-    //FIXME Task 6
 
     /**
      * Given a state string and a move string, determine if the move is
@@ -380,7 +381,7 @@ public class BlueLagoon {
         } else {
             return false;
         }
-        //return true;// FIXME Task 7
+        //return true;
     }
 
     public static boolean isPosInIndex(int size, int x, int y) {

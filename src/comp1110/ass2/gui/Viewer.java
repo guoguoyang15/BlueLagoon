@@ -36,6 +36,7 @@ public class Viewer extends Application {
      * @param stateString a string representing a game state
      */
     void displayState(String stateString) {
+        // Written by Tyler
         String[] parts = stateString.split(";");
         List<Polygon> tilesList = new ArrayList<>();
 

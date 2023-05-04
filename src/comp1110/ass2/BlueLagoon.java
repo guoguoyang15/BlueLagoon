@@ -134,7 +134,6 @@ public class BlueLagoon {
         int[] a = new int[32];
         int rand;
         for (int i = 0; i < 32; i++) {
-
             do {
                 rand = r.nextInt(32);
                 if (a[rand] == 0) {

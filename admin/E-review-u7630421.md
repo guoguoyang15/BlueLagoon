@@ -27,7 +27,7 @@ Q: Is the program decomposition (class and method structure) appropriate?
 
 A: The algorithm is quite reasonable. First, he split statestring and extract stone circle string.
 Second, create a integer array, like an index permutation array reorganizing the position strings.
-Then according to permutation array, reorganize and assembly a new string for resources.
+Then according to permutation array, reorganize and assemble a new string for resources.
 
 Q: If you suspect an error in the code, suggest a particular situation in which the program will not function correctly.
 

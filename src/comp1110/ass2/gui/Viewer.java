@@ -13,7 +13,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 

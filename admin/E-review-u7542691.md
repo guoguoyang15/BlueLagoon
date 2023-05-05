@@ -16,16 +16,16 @@ prints the stateString and moveString, a functionality that is never needed in t
 - It appears to do what it is intended to do, although it also does some extraneous things.
 
 - Printing the stateString and the moveString are functionalities not required of this method, and may make the method 
-unnecessarily slower to run. 
+unnecessarily slower to run. Removing these print statements could be considered.
 
 - It appears to address all edge cases and there are no bugs that I can detect.
 
 ● Tests: There are already tests for method 'isMoveValid' given by the lecturer, but it uses some helper methods that 
-are untested; and so, there should be some consideration in writing some tests for them. For example, 'spotType' and 
-'occupiedByPlayer', and 'isPosInIndex' could have some tests written for it.
+are untested; and so, there should be some consideration in writing some tests for them. For example, 
+<code>spotType</code>, <code>occupiedByPlayer</code>, and <code>isPosInIndex</code> could have some tests written for it.
 
 ● Complexity: There are a number of redundancies, particularly in the if loops found between lines 339 and 379 in the 
-BlueLagoon class, and so the code could be condensed.
+BlueLagoon class, and so the code could be condensed by taking out the common conditions.
 
 ● Good Names: Variable and object names are excellent across the board and clearly indicate what they represent.
 

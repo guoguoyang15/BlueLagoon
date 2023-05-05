@@ -25,7 +25,7 @@ public class BlueLagoon {
      * @param stateString a string representing a game state
      * @return true if stateString is well-formed and false otherwise
      */
-
+    //Tyler completes Task3
     public static boolean isStateStringWellFormed(String stateString) {
         // Written by Tyler and edited by Zhining
         String[] parts = stateString.split(";");
@@ -85,7 +85,7 @@ public class BlueLagoon {
      * @param moveString a string representing a player's move
      * @return true if moveString is well-formed and false otherwise
      */
-
+    //Tyler completes Task 4
     public static boolean isMoveStringWellFormed(String moveString) {
         // Written by Tyler
         // Checks if Move string is properly formatted
@@ -113,7 +113,7 @@ public class BlueLagoon {
      * @param stateString a string representing a game state without resources distributed
      * @return a string of the game state with resources randomly distributed
      */
-
+    //Zhang Zhining completes Task 6
     public static String distributeResources(String stateString) {
         //add a space at front to make sure that for every statement, the second char of the substring is the type of statement
         //stateString = " " + stateString;
@@ -189,6 +189,7 @@ public class BlueLagoon {
      * @param moveString  a string representing the current player's move
      * @return true if the current player can make the move and false otherwise
      */
+    //Zhou Linsheng(u7630421) completes Task 7
     public static boolean isMoveValid(String stateString, String moveString) {
         System.out.println(stateString);
         System.out.println(moveString);
@@ -383,7 +384,7 @@ public class BlueLagoon {
         }
         //return true;
     }
-
+    //Zhou Linsheng adds this function to decide if a position is on the board or not
     public static boolean isPosInIndex(int size, int x, int y) {
         if (x < 0 || x >= size) {
             return false;
@@ -410,6 +411,7 @@ public class BlueLagoon {
      * @param stateString a string representing a game state
      * @return a set of strings representing all moves the current player can play
      */
+    //Zhou Linsheng(u7630421) completes Task8
     public static Set<String> generateAllValidMoves(String stateString) {
         Set<String> stringSet = new HashSet<String>();//Create a new empty HashSet of movestrings
 
@@ -741,7 +743,7 @@ public class BlueLagoon {
             // FIXME Task 8
         }
     }
-
+    //Zhou Linsheng(u7630421) completes the following function for D2D JUnit test, meaningless in the game
     public static boolean isSettlementMoveValid(String stateString, String moveString) {
         System.out.println(stateString);
         System.out.println(moveString);
@@ -930,6 +932,7 @@ public class BlueLagoon {
      * @param stateString a string representing a game state
      * @return true if the state is at the end of either phase and false otherwise
      */
+    //Zhou Linsheng(u7630421) completes the following Task9
     public static boolean isPhaseOver(String stateString) {
         //The first method as usual
         stateString = " " + stateString;
@@ -988,7 +991,7 @@ public class BlueLagoon {
         }
         // FIXME Task 9
     }
-
+    //Zhou Linsheng(u7630421) completes the following function to sort positions in state string
     public static boolean comparePos(String pos1, String pos2) {
         String[] posString1 = pos1.split(",");
         String[] posString2 = pos2.split(",");
@@ -1020,6 +1023,7 @@ public class BlueLagoon {
      * @param moveString  a string representing the current player's move
      * @return a new state string achieved by placing the move on the board
      */
+    //Zhou Linsheng(u7630421) completes Task 10
     public static String placePiece(String stateString, String moveString) {
         stateString = " " + stateString;
         String[] statement = stateString.split(";");
@@ -1233,6 +1237,7 @@ public class BlueLagoon {
      * @return an integer array containing the calculated "Islands" portion of
      * the score for each player
      */
+    //Zhou Linsheng(u7630421) completes the following function
     public static int[] calculateTotalIslandsScore(String stateString) {
         //split state string
         stateString = " " + stateString;
@@ -1250,11 +1255,9 @@ public class BlueLagoon {
             }
         }
 
-
         //Get the size of the map
         String[] arrangement = statement[0].split(" ");
         int size = Integer.parseInt(arrangement[2]);
-
         //set up a map of spots
         Spot[][] spots = new Spot[size][size];
         for (int i = 0; i <= size - 1; i++) {
@@ -1320,6 +1323,7 @@ public class BlueLagoon {
         return islandPoints; // FIXME Task 11
     }
 
+    //Zhou Linsheng(u7630421) adds ifAdjacent to examine if two spots next to each other
     //ifAdjacent is to judge if the two coordinates are next to each other
     public static boolean ifAdjacent(int x1, int y1, int x2, int y2) {
         //four positions are true for all rows
@@ -1369,6 +1373,7 @@ public class BlueLagoon {
         return null; // FIXME Task 11
     }
 
+    //Zhou Linsheng(u7630421) adds this Depth First Search to calculate island link score
     public static Set<List<int[]>> DFSearch(int[] lastPos, Set<int[]> posSet, List<int[]> visited) {
         Set<List<int[]>> linkSet = new HashSet<>();
         List<int[]> visit = new ArrayList<>();
@@ -1427,6 +1432,8 @@ public class BlueLagoon {
      * @return an integer array containing the calculated "Majorities" portion
      * of the score for each player
      */
+
+    //Zhou Linsheng(u7630421) completes the following function
     public static int[] calculateIslandMajoritiesScore(String stateString) {
         //split state string
         stateString = " " + stateString;
@@ -1556,6 +1563,7 @@ public class BlueLagoon {
      * @return an integer array containing the calculated "Resources" and "Statuettes"
      * portions of the score for each player
      */
+    //Zhou Linsheng(u7630421) completes the following function
     public static int[] calculateResourcesAndStatuettesScore(String stateString) {
         //split state string
         stateString = " " + stateString;
@@ -1646,6 +1654,7 @@ public class BlueLagoon {
      * @param stateString a string representing a game state
      * @return an integer array containing the calculated scores for each player
      */
+    //Zhou Linsheng(u7630421) completes the following function
     public static int[] calculateScores(String stateString) {
         //split state string
         stateString = " " + stateString;

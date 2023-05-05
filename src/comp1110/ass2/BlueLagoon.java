@@ -25,7 +25,7 @@ public class BlueLagoon {
      * @param stateString a string representing a game state
      * @return true if stateString is well-formed and false otherwise
      */
-
+    //Tyler completes Task3
     public static boolean isStateStringWellFormed(String stateString) {
         // Written by Tyler and edited by Zhining
         String[] parts = stateString.split(";");
@@ -85,7 +85,7 @@ public class BlueLagoon {
      * @param moveString a string representing a player's move
      * @return true if moveString is well-formed and false otherwise
      */
-
+    //Tyler completes Task 4
     public static boolean isMoveStringWellFormed(String moveString) {
         // Written by Tyler
         // Checks if Move string is properly formatted
@@ -113,7 +113,7 @@ public class BlueLagoon {
      * @param stateString a string representing a game state without resources distributed
      * @return a string of the game state with resources randomly distributed
      */
-
+    //Zhang Zhining completes Task 6
     public static String distributeResources(String stateString) {
         //add a space at front to make sure that for every statement, the second char of the substring is the type of statement
         //stateString = " " + stateString;
@@ -384,7 +384,7 @@ public class BlueLagoon {
         }
         //return true;
     }
-
+    //Zhou Linsheng adds this function to decide if a position is on the board or not
     public static boolean isPosInIndex(int size, int x, int y) {
         if (x < 0 || x >= size) {
             return false;

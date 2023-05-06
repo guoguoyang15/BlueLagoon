@@ -893,12 +893,10 @@ public class BlueLagoon {
         int thisPlayer = 0;//Index of state string of this player in this turn
         int re = 0;//Index of resource state string
         for (int i = 0; i <= statement.length - 1; i++) {
-            if (statement[i].charAt(1) == 'p' && statement[i].charAt(3) == turn) {
+            if (statement[i].charAt(1) == 'p' && statement[i].charAt(3) == turn)
                 thisPlayer = i;
-            }
-            if (statement[i].charAt(1) == 'r') {
+            if (statement[i].charAt(1) == 'r')
                 re = i;
-            }
         }
 
         // ID of this player
@@ -923,18 +921,15 @@ public class BlueLagoon {
                         }
                     }
                     pre = i;
-                    if (!flag) {
+                    if (!flag)
                         break;
-                    }
                 }
             }
-
             statement[thisPlayer] = "";
             for (int i = 0; i <= playerStrings.length - 1; i++) {
                 statement[thisPlayer] = statement[thisPlayer] + " " + playerStrings[i];
-                if (i == pre) {
+                if (i == pre)
                     statement[thisPlayer] = statement[thisPlayer] + " " + pos;
-                }
             }
         }
 
@@ -953,9 +948,8 @@ public class BlueLagoon {
                         }
                     }
                     pre = i;//Position of the prior position of this new position
-                    if (!flag) {
+                    if (!flag)
                         break;
-                    }
                 }
             }
 
@@ -963,17 +957,13 @@ public class BlueLagoon {
             statement[thisPlayer] = "";
             for (int i = 0; i <= playerStrings.length - 1; i++) {
                 statement[thisPlayer] = statement[thisPlayer] + " " + playerStrings[i];
-                if (i == pre) {
+                if (i == pre)
                     statement[thisPlayer] = statement[thisPlayer] + " " + pos;
-                }
             }
-
         }
-
         //split again
         statement[thisPlayer] = statement[thisPlayer].substring(1, statement[thisPlayer].length());
         String[] playerStrings = statement[thisPlayer].split(" ");
-
         //f is the type of resource on this spot
         char f = 'v';
         //ff is whether this spot has resource on it or not
@@ -991,9 +981,8 @@ public class BlueLagoon {
                     }
                     b++;
                 }
-                if (ff) {
+                if (ff)
                     break;
-                }
             }
             if (subRe[b].equals("B")) {
                 while (!subRe[b + 1].equals("W")) {
@@ -1004,9 +993,8 @@ public class BlueLagoon {
                     }
                     b++;
                 }
-                if (ff) {
+                if (ff)
                     break;
-                }
             }
             if (subRe[b].equals("W")) {
                 while (!subRe[b + 1].equals("P")) {
@@ -1017,9 +1005,8 @@ public class BlueLagoon {
                     }
                     b++;
                 }
-                if (ff) {
+                if (ff)
                     break;
-                }
             }
             if (subRe[b].equals("P")) {
                 while (!subRe[b + 1].equals("S")) {
@@ -1030,9 +1017,8 @@ public class BlueLagoon {
                     }
                     b++;
                 }
-                if (ff) {
+                if (ff)
                     break;
-                }
             }
             if (subRe[b].equals("S")) {
                 while (b + 1 <= subRe.length - 1) {
@@ -1043,9 +1029,8 @@ public class BlueLagoon {
                     }
                     b++;
                 }
-                if (ff) {
+                if (ff)
                     break;
-                }
             }
         }
         // Add 1 to the number of such resources in this player's state string
@@ -1063,24 +1048,17 @@ public class BlueLagoon {
         }
         //Assembly new string
         statement[thisPlayer] = "";
-        for (int p = 0; p <= playerStrings.length - 1; p++) {
+        for (int p = 0; p <= playerStrings.length - 1; p++)
             statement[thisPlayer] += " " + playerStrings[p];
-        }
         statement[thisPlayer] = statement[thisPlayer].substring(1, statement[thisPlayer].length());
-
         String[] reString = statement[re].split(" ");
         statement[re] = "";
-        for (int i = 1; i <= reString.length - 1; i++) {
-            if (!reString[i].equals(pos)) {
+        for (int i = 1; i <= reString.length - 1; i++)
+            if (!reString[i].equals(pos))
                 statement[re] = statement[re] + " " + reString[i];
-            }
-        }
-
         String newString = "";
-        for (int i = 0; i <= statement.length - 1; i++) {
+        for (int i = 0; i <= statement.length - 1; i++)
             newString = newString + statement[i] + ";";
-        }
-
         return newString.substring(1, newString.length()); // FIXME Task 10
     }
 
@@ -1127,7 +1105,6 @@ public class BlueLagoon {
                 spots[i][j] = new Spot();
             }
         }
-
 
         int numofisland = 0;
         //initialize land spots on the map
@@ -1215,7 +1192,6 @@ public class BlueLagoon {
      * @return an integer array containing the calculated "Links" portion of
      * the score for each player
      */
-
 
     public static int[] calculateIslandLinksScore(String stateString) {
 
@@ -1307,8 +1283,6 @@ public class BlueLagoon {
                 spots[i][j] = new Spot();
             }
         }
-
-
         //initialize land spots on the map
         for (int i = 0; i <= statement.length - 1; i++) {
             //when this statement is island string

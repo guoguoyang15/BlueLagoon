@@ -89,10 +89,7 @@ public class BlueLagoon {
     public static boolean isMoveStringWellFormed(String moveString) {
         // Written by Tyler
         // Checks if Move string is properly formatted
-        if (moveString.matches("[S|T]\s\\d{1,2},\\d{1,2}")) {
-            return true;
-        } else
-            return false;
+        return moveString.matches("[S|T]\s\\d{1,2},\\d{1,2}");
     }
 
     /**
@@ -191,8 +188,6 @@ public class BlueLagoon {
      */
     //Zhou Linsheng(u7630421) completes Task 7
     public static boolean isMoveValid(String stateString, String moveString) {
-        System.out.println(stateString);
-        System.out.println(moveString);
         stateString = " " + stateString;
         String[] statement = stateString.split(";");
         char turn = statement[1].charAt(3);//which player is moving
@@ -206,25 +201,17 @@ public class BlueLagoon {
                 }
             }
         }
-
         //check how many villages and settlers the player have on board
         String[] playerStatus = statement[playerStringNum].split(" ");
-        int settlerNum = 0;
-        int villageNum = 0;
+        int settlerNum = 0; int villageNum = 0; int s=0;int t=0;
         for (int j = 0; j <= playerStatus.length - 1; j++) {
-            if (playerStatus[j].equals("S")) {
-                while (!playerStatus[j + 1].equals("T")) {
-                    settlerNum++;
-                    j++;
-                }
-            }
-            if (playerStatus[j].equals("T")) {
-                while (j + 1 <= playerStatus.length - 1) {
-                    villageNum++;
-                    j++;
-                }
-            }
+            if (playerStatus[j].equals("S"))
+                s=j;
+            if (playerStatus[j].equals("T"))
+                t=j;
         }
+        settlerNum=t-s-1;
+        villageNum=playerStatus.length-1-t;
         //check the limit for settlers and villages for each player
         char playerNumber = statement[0].charAt(statement[0].length() - 1);
         int settlerLimit;
@@ -236,48 +223,33 @@ public class BlueLagoon {
             settlerLimit = 20;
         }
         int villageLimit = 5;
-
         //check if the player is able to place items
         if (phase == 'E') {//in phase 1
-            if (moveString.charAt(0) == 'S') {
-                if (settlerLimit <= settlerNum) {
+            if (moveString.charAt(0) != 'S') {
+                if (villageLimit <= villageNum)
                     return false;
-                }
             } else {
-                if (villageLimit <= villageNum) {
+                if (settlerLimit > settlerNum) {
+                } else
                     return false;
-                }
             }
         } else {//in phase 2
             if (moveString.charAt(0) == 'S') {
-                if (settlerLimit <= settlerNum) {
+                if (settlerLimit > settlerNum) {
+                } else
                     return false;
-                }
-            } else {
+            } else
                 return false;//because in settlement phase, player cannot place villages anymore
-            }
         }
 
         //check if the move is beyond the scale of the map
         String[] arrangement = statement[0].split(" ");
         int size = Integer.parseInt(arrangement[2]);
         String[] move = moveString.split(" ");
-
         String[] moveXY = move[1].split(",");
-        int x = Integer.parseInt(moveXY[0]);
-        int y = Integer.parseInt(moveXY[1]);
-        if (x < 0 || x >= size) {
+        int x = Integer.parseInt(moveXY[0]); int y = Integer.parseInt(moveXY[1]);
+        if(!isPosInIndex(size,x,y)){
             return false;
-        } else {
-            if (x % 2 == 0) {
-                if (y < 0 || y > size - 2) {
-                    return false;
-                }
-            } else {
-                if (y < 0 || y > size - 1) {
-                    return false;
-                }
-            }
         }
         //set up a map of spots
         Spot[][] spots = new Spot[size][size];
@@ -286,117 +258,105 @@ public class BlueLagoon {
                 spots[i][j] = new Spot();
             }
         }
-
-        String[] land;
-        String[] landXY;
-        int landx;
-        int landy;
         //initialize land spots on the map
         for (int i = 0; i <= statement.length - 1; i++) {
             //when this statement is island string
             if (statement[i].charAt(1) == 'i') {
-                land = statement[i].split(" ");
+                String[] land = statement[i].split(" ");
                 for (int j = 3; j <= land.length - 1; j++) {//land[0]="",land[1]="i",land[2]="6/8/10"
-                    landXY = land[j].split(",");
-                    landx = Integer.parseInt(landXY[0]);
-                    landy = Integer.parseInt(landXY[1]);
+                    String[] landXY = land[j].split(",");
+                    int landx = Integer.parseInt(landXY[0]);
+                    int landy = Integer.parseInt(landXY[1]);
                     spots[landx][landy].spotType = 1;
-
                 }
             }
             if (statement[i].charAt(1) == 'p') {
                 String[] playerPositions = statement[i].split(" ");
                 int whichplayer = Integer.parseInt(playerPositions[2]);//which player occupies these following spots
                 for (int j = 0; j <= playerPositions.length - 1; j++) {
-                    if (playerPositions[j].equals("S")) {
-                        while (!playerPositions[j + 1].equals("T")) {
-                            String[] setPos = playerPositions[j + 1].split(",");
-                            int setx = Integer.parseInt(setPos[0]);
-                            int sety = Integer.parseInt(setPos[1]);
-                            spots[setx][sety].occupiedByPlayer = whichplayer;
-                            j++;
-                        }
-                    }
-                    if (playerPositions[j].equals("T")) {
-                        while (j + 1 <= playerPositions.length - 1) {
-                            String[] vilPos = playerPositions[j + 1].split(",");
-                            int vilx = Integer.parseInt(vilPos[0]);
-                            int vily = Integer.parseInt(vilPos[1]);
-                            spots[vilx][vily].occupiedByPlayer = whichplayer;
-                            j++;
-                        }
+                    if (playerPositions[j].contains(",")) {
+                        String[] setPos = playerPositions[j].split(",");
+                        int setx = Integer.parseInt(setPos[0]);
+                        int sety = Integer.parseInt(setPos[1]);
+                        spots[setx][sety].occupiedByPlayer = whichplayer;
                     }
                 }
             }
         }
         int player = (int) turn - 48;
-
         //check if there are the player's own areas in adjacent spots
         if (phase == 'E') {
-            if (spots[x][y].spotType == 0) {
+            if (spots[x][y].spotType == 0)
                 return moveString.charAt(0) == 'S' && spots[x][y].occupiedByPlayer == 100;
-            }
         }
-        if (spots[x][y].occupiedByPlayer == 100) {
-            if (x % 2 == 1) {
+        if (spots[x][y].occupiedByPlayer != 100) {
+            return false;
+        } else {
+            if (x % 2 != 1) {
+                if ((x - 1) < 0 || (y + 1) > size - 1 || spots[x - 1][y + 1].occupiedByPlayer != player) {
+                    if ((x + 1) > size - 1 || (y + 1) > size - 1 || spots[x + 1][y + 1].occupiedByPlayer != player) {
+                        if ((y - 1) < 0 || spots[x][y - 1].occupiedByPlayer != player) {
+                            if ((x - 1) < 0 || spots[x - 1][y].occupiedByPlayer != player) {
+                                if ((x + 1) > size - 1 || spots[x + 1][y].occupiedByPlayer != player) {
+                                    if ((y + 1) > size - 1 || spots[x][y + 1].occupiedByPlayer != player) {
+                                        return false;
+                                    }
+                                    return true;
+                                } else {
+                                    return true;
+                                }
+                            } else {
+                                return true;
+                            }
+                        } else {
+                            return true;
+                        }
+                    } else {
+                        return true;
+                    }
+                } else {
+                    return true;
+                }
+            } else {
                 if ((x - 1) >= 0 && (y - 1) >= 0 && spots[x - 1][y - 1].occupiedByPlayer == player) {
                     return true;
+                } else {
+                    if ((x + 1) > size - 1 || (y - 1) < 0 || spots[x + 1][y - 1].occupiedByPlayer != player) {
+                        if ((y - 1) < 0 || spots[x][y - 1].occupiedByPlayer != player) {
+                            if ((x - 1) < 0 || spots[x - 1][y].occupiedByPlayer != player) {
+                                if ((x + 1) > size - 1 || spots[x + 1][y].occupiedByPlayer != player) {
+                                    if ((y + 1) > size - 1 || spots[x][y + 1].occupiedByPlayer != player) {
+                                        return false;
+                                    }
+                                    return true;
+                                } else {
+                                    return true;
+                                }
+                            } else {
+                                return true;
+                            }
+                        } else {
+                            return true;
+                        }
+                    } else {
+                        return true;
+                    }
                 }
-                if ((x + 1) <= size - 1 && (y - 1) >= 0 && spots[x + 1][y - 1].occupiedByPlayer == player) {
-                    return true;
-                }
-                if ((y - 1) >= 0 && spots[x][y - 1].occupiedByPlayer == player) {
-                    return true;
-                }
-                if ((x - 1) >= 0 && spots[x - 1][y].occupiedByPlayer == player) {
-                    return true;
-                }
-                if ((x + 1) <= size - 1 && spots[x + 1][y].occupiedByPlayer == player) {
-                    return true;
-                }
-                if ((y + 1) <= size - 1 && spots[x][y + 1].occupiedByPlayer == player) {
-                    return true;
-                }
-                return false;
-            } else {
-                if ((x - 1) >= 0 && (y + 1) <= size - 1 && spots[x - 1][y + 1].occupiedByPlayer == player) {
-                    return true;
-                }
-                if ((x + 1) <= size - 1 && (y + 1) <= size - 1 && spots[x + 1][y + 1].occupiedByPlayer == player) {
-                    return true;
-                }
-                if ((y - 1) >= 0 && spots[x][y - 1].occupiedByPlayer == player) {
-                    return true;
-                }
-                if ((x - 1) >= 0 && spots[x - 1][y].occupiedByPlayer == player) {
-                    return true;
-                }
-                if ((x + 1) <= size - 1 && spots[x + 1][y].occupiedByPlayer == player) {
-                    return true;
-                }
-                if ((y + 1) <= size - 1 && spots[x][y + 1].occupiedByPlayer == player) {
-                    return true;
-                }
-                return false;
             }
-        } else {
-            return false;
         }
-        //return true;
     }
+
     //Zhou Linsheng adds this function to decide if a position is on the board or not
     public static boolean isPosInIndex(int size, int x, int y) {
         if (x < 0 || x >= size) {
             return false;
         } else {
             if (x % 2 == 0) {
-                if (y < 0 || y > size - 2) {
+                if (y < 0 || y > size - 2)
                     return false;
-                }
             } else {
-                if (y < 0 || y > size - 1) {
+                if (y < 0 || y > size - 1)
                     return false;
-                }
             }
         }
         return true;
@@ -743,6 +703,7 @@ public class BlueLagoon {
             // FIXME Task 8
         }
     }
+
     //Zhou Linsheng(u7630421) completes the following function for D2D JUnit test, meaningless in the game
     public static boolean isSettlementMoveValid(String stateString, String moveString) {
         System.out.println(stateString);
@@ -991,6 +952,7 @@ public class BlueLagoon {
         }
         // FIXME Task 9
     }
+
     //Zhou Linsheng(u7630421) completes the following function to sort positions in state string
     public static boolean comparePos(String pos1, String pos2) {
         String[] posString1 = pos1.split(",");

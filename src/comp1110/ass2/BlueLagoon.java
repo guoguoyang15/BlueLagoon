@@ -203,15 +203,18 @@ public class BlueLagoon {
         }
         //check how many villages and settlers the player have on board
         String[] playerStatus = statement[playerStringNum].split(" ");
-        int settlerNum = 0; int villageNum = 0; int s=0;int t=0;
+        int settlerNum = 0;
+        int villageNum = 0;
+        int s = 0;
+        int t = 0;
         for (int j = 0; j <= playerStatus.length - 1; j++) {
             if (playerStatus[j].equals("S"))
-                s=j;
+                s = j;
             if (playerStatus[j].equals("T"))
-                t=j;
+                t = j;
         }
-        settlerNum=t-s-1;
-        villageNum=playerStatus.length-1-t;
+        settlerNum = t - s - 1;
+        villageNum = playerStatus.length - 1 - t;
         //check the limit for settlers and villages for each player
         char playerNumber = statement[0].charAt(statement[0].length() - 1);
         int settlerLimit;
@@ -247,8 +250,9 @@ public class BlueLagoon {
         int size = Integer.parseInt(arrangement[2]);
         String[] move = moveString.split(" ");
         String[] moveXY = move[1].split(",");
-        int x = Integer.parseInt(moveXY[0]); int y = Integer.parseInt(moveXY[1]);
-        if(!isPosInIndex(size,x,y)){
+        int x = Integer.parseInt(moveXY[0]);
+        int y = Integer.parseInt(moveXY[1]);
+        if (!isPosInIndex(size, x, y)) {
             return false;
         }
         //set up a map of spots
@@ -374,7 +378,6 @@ public class BlueLagoon {
     //Zhou Linsheng(u7630421) completes Task8
     public static Set<String> generateAllValidMoves(String stateString) {
         Set<String> stringSet = new HashSet<String>();//Create a new empty HashSet of movestrings
-
         stateString = " " + stateString;
         String[] statement = stateString.split(";");
         char turn = statement[1].charAt(3);//which player is moving
@@ -388,32 +391,22 @@ public class BlueLagoon {
                 }
             }
         }
-
         //check how many villages and settlers the player have on board
         String[] playerStatus = statement[playerStringNum].split(" ");
         int settlerNum = 0;
         int villageNum = 0;
+        int s = 0;
+        int t = 0;
         for (int j = 0; j <= playerStatus.length - 1; j++) {
-            if (playerStatus[j].equals("S")) {
-                while (!playerStatus[j + 1].equals("T")) {
-                    settlerNum++;
-                    j++;
-                }
-            }
-            if (playerStatus[j].equals("T")) {
-                while (j + 1 <= playerStatus.length - 1) {
-                    villageNum++;
-                    j++;
-                }
-            }
+            if (playerStatus[j].equals("S"))
+                s = j;
+            if (playerStatus[j].equals("T"))
+                t = j;
         }
-
+        settlerNum = t - s - 1;
+        villageNum = playerStatus.length - 1 - t;
         //check if this is the first step of this player, so possible moves can only be settler on sea area.
-        boolean firstStep = false;
-        if (settlerNum == 0 && villageNum == 0) {
-            firstStep = true;
-        }
-
+        boolean firstStep = settlerNum == 0 && villageNum == 0;
         //check the limit for settlers and villages for each player
         char playerNumber = statement[0].charAt(statement[0].length() - 1);
         int settlerLimit;
@@ -425,27 +418,24 @@ public class BlueLagoon {
             settlerLimit = 20;
         }
         int villageLimit = 5;
-
         boolean canMoveSettler = false;//if this player can move settlers in this phase
         boolean canMoveVillage = false;//if this player can move villages in this phase+
-        if (phase == 'E') {//in phase 1
+        if (phase != 'E') {//in phase 2
+            if (settlerNum < settlerLimit) {
+                canMoveSettler = true;
+            }
+            canMoveVillage = false;
+        } else {//in phase 1
             if (settlerNum < settlerLimit) {
                 canMoveSettler = true;
             }
             if (villageNum < villageLimit) {
                 canMoveVillage = true;
             }
-        } else {//in phase 2
-            if (settlerNum < settlerLimit) {
-                canMoveSettler = true;
-            }
-            canMoveVillage = false;
         }
-
         //Get the size of the map
         String[] arrangement = statement[0].split(" ");
         int size = Integer.parseInt(arrangement[2]);
-
         //set up a map of spots
         Spot[][] spots = new Spot[size][size];
         for (int i = 0; i <= size - 1; i++) {
@@ -453,173 +443,117 @@ public class BlueLagoon {
                 spots[i][j] = new Spot();
             }
         }
-
-        String[] land;
-        String[] landXY;
-        int landx;
-        int landy;
         //initialize land spots on the map
         for (int i = 0; i <= statement.length - 1; i++) {
             //when this statement is island string
             if (statement[i].charAt(1) == 'i') {
-                land = statement[i].split(" ");
+                String[] land = statement[i].split(" ");
                 for (int j = 3; j <= land.length - 1; j++) {//land[0]="",land[1]="i",land[2]="6/8/10"
-                    landXY = land[j].split(",");
-                    landx = Integer.parseInt(landXY[0]);
-                    landy = Integer.parseInt(landXY[1]);
+                    String[] landXY = land[j].split(",");
+                    int landx = Integer.parseInt(landXY[0]);
+                    int landy = Integer.parseInt(landXY[1]);
                     spots[landx][landy].spotType = 1;
-
                 }
             }
             if (statement[i].charAt(1) == 'p') {
                 String[] playerPositions = statement[i].split(" ");
                 int whichplayer = Integer.parseInt(playerPositions[2]);//which player occupies these following spots
                 for (int j = 0; j <= playerPositions.length - 1; j++) {
-                    if (playerPositions[j].equals("S")) {
-                        while (!playerPositions[j + 1].equals("T")) {
-                            String[] setPos = playerPositions[j + 1].split(",");
-                            int setx = Integer.parseInt(setPos[0]);
-                            int sety = Integer.parseInt(setPos[1]);
-                            spots[setx][sety].occupiedByPlayer = whichplayer;
-                            j++;
-                        }
-                    }
-                    if (playerPositions[j].equals("T")) {
-                        while (j + 1 <= playerPositions.length - 1) {
-                            String[] vilPos = playerPositions[j + 1].split(",");
-                            int vilx = Integer.parseInt(vilPos[0]);
-                            int vily = Integer.parseInt(vilPos[1]);
-                            spots[vilx][vily].occupiedByPlayer = whichplayer;
-                            j++;
-                        }
+                    if (playerPositions[j].contains(",")) {
+                        String[] setPos = playerPositions[j].split(",");
+                        int setx = Integer.parseInt(setPos[0]);
+                        int sety = Integer.parseInt(setPos[1]);
+                        spots[setx][sety].occupiedByPlayer = whichplayer;
                     }
                 }
             }
         }
         // ID of this player
         int player = (int) turn - 48;
-
         // Generate move strings
-        if (phase == 'E' && firstStep) {
-            for (int i = 0; i <= size - 1; i++) {
-                for (int j = 0; j <= size - 1; j++) {
-                    if (isPosInIndex(size, i, j)) {
-                        if (spots[i][j].spotType == 0 && spots[i][j].occupiedByPlayer == 100) {//This sea spot isn't occupied by any player
-                            stringSet.add("S " + i + "," + j);
-                        }
-                    }
-                }
-            }
-            return stringSet;
-        } else {
+        if (phase != 'E' || !firstStep) {
             if (phase == 'E') {
                 for (int i = 0; i <= size - 1; i++) {
                     for (int j = 0; j <= size - 1; j++) {
                         if (isPosInIndex(size, i, j)) {
-                            if (spots[i][j].spotType == 0 && spots[i][j].occupiedByPlayer == 100) {//This sea spot isn't occupied by any player
-                                if (canMoveSettler) {
+                            if (spots[i][j].spotType == 0 && spots[i][j].occupiedByPlayer == 100) //This sea spot isn't occupied by any player
+                                if (canMoveSettler)
                                     stringSet.add("S " + i + "," + j);
+                            if (spots[i][j].spotType != 1 || spots[i][j].occupiedByPlayer != 100)
+                                continue;
+                            if (i % 2 != 1) {
+                                if (isPosInIndex(size, i - 1, j + 1) && spots[i - 1][j + 1].occupiedByPlayer == player) {
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                    if (canMoveVillage)
+                                        stringSet.add("T " + i + "," + j);
                                 }
-                            }
-                            if (spots[i][j].spotType == 1 && spots[i][j].occupiedByPlayer == 100) {
-                                if (i % 2 == 1) {
-                                    if (isPosInIndex(size, i - 1, j - 1) && spots[i - 1][j - 1].occupiedByPlayer == player) {
-                                        if (canMoveSettler) {
-                                            stringSet.add("S " + i + "," + j);
-                                        }
-                                        if (canMoveVillage) {
-                                            stringSet.add("T " + i + "," + j);
-                                        }
-                                    }
-                                    if (isPosInIndex(size, i + 1, j - 1) && spots[i + 1][j - 1].occupiedByPlayer == player) {
-                                        if (canMoveSettler) {
-                                            stringSet.add("S " + i + "," + j);
-                                        }
-                                        if (canMoveVillage) {
-                                            stringSet.add("T " + i + "," + j);
-                                        }
-                                    }
-                                    if (isPosInIndex(size, i, j - 1) && spots[i][j - 1].occupiedByPlayer == player) {
-                                        if (canMoveSettler) {
-                                            stringSet.add("S " + i + "," + j);
-                                        }
-                                        if (canMoveVillage) {
-                                            stringSet.add("T " + i + "," + j);
-                                        }
-                                    }
-                                    if (isPosInIndex(size, i - 1, j) && spots[i - 1][j].occupiedByPlayer == player) {
-                                        if (canMoveSettler) {
-                                            stringSet.add("S " + i + "," + j);
-                                        }
-                                        if (canMoveVillage) {
-                                            stringSet.add("T " + i + "," + j);
-                                        }
-                                    }
-                                    if (isPosInIndex(size, i + 1, j) && spots[i + 1][j].occupiedByPlayer == player) {
-                                        if (canMoveSettler) {
-                                            stringSet.add("S " + i + "," + j);
-                                        }
-                                        if (canMoveVillage) {
-                                            stringSet.add("T " + i + "," + j);
-                                        }
-                                    }
-                                    if (isPosInIndex(size, i, j + 1) && spots[i][j + 1].occupiedByPlayer == player) {
-                                        if (canMoveSettler) {
-                                            stringSet.add("S " + i + "," + j);
-                                        }
-                                        if (canMoveVillage) {
-                                            stringSet.add("T " + i + "," + j);
-                                        }
-                                    }
-                                } else {
-                                    if (isPosInIndex(size, i - 1, j + 1) && spots[i - 1][j + 1].occupiedByPlayer == player) {
-                                        if (canMoveSettler) {
-                                            stringSet.add("S " + i + "," + j);
-                                        }
-                                        if (canMoveVillage) {
-                                            stringSet.add("T " + i + "," + j);
-                                        }
-                                    }
-                                    if (isPosInIndex(size, i + 1, j + 1) && spots[i + 1][j + 1].occupiedByPlayer == player) {
-                                        if (canMoveSettler) {
-                                            stringSet.add("S " + i + "," + j);
-                                        }
-                                        if (canMoveVillage) {
-                                            stringSet.add("T " + i + "," + j);
-                                        }
-                                    }
-                                    if (isPosInIndex(size, i, j - 1) && spots[i][j - 1].occupiedByPlayer == player) {
-                                        if (canMoveSettler) {
-                                            stringSet.add("S " + i + "," + j);
-                                        }
-                                        if (canMoveVillage) {
-                                            stringSet.add("T " + i + "," + j);
-                                        }
-                                    }
-                                    if (isPosInIndex(size, i - 1, j) && spots[i - 1][j].occupiedByPlayer == player) {
-                                        if (canMoveSettler) {
-                                            stringSet.add("S " + i + "," + j);
-                                        }
-                                        if (canMoveVillage) {
-                                            stringSet.add("T " + i + "," + j);
-                                        }
-                                    }
-                                    if (isPosInIndex(size, i + 1, j) && spots[i + 1][j].occupiedByPlayer == player) {
-                                        if (canMoveSettler) {
-                                            stringSet.add("S " + i + "," + j);
-                                        }
-                                        if (canMoveVillage) {
-                                            stringSet.add("T " + i + "," + j);
-                                        }
-                                    }
-                                    if (isPosInIndex(size, i, j + 1) && spots[i][j + 1].occupiedByPlayer == player) {
-                                        if (canMoveSettler) {
-                                            stringSet.add("S " + i + "," + j);
-                                        }
-                                        if (canMoveVillage) {
-                                            stringSet.add("T " + i + "," + j);
-                                        }
-                                    }
+                                if (isPosInIndex(size, i + 1, j + 1) && spots[i + 1][j + 1].occupiedByPlayer == player) {
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                    if (canMoveVillage)
+                                        stringSet.add("T " + i + "," + j);
+                                }
+                                if (isPosInIndex(size, i, j - 1) && spots[i][j - 1].occupiedByPlayer == player) {
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                    if (canMoveVillage)
+                                        stringSet.add("T " + i + "," + j);
+                                }
+                                if (isPosInIndex(size, i - 1, j) && spots[i - 1][j].occupiedByPlayer == player) {
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                    if (canMoveVillage)
+                                        stringSet.add("T " + i + "," + j);
+                                }
+                                if (isPosInIndex(size, i + 1, j) && spots[i + 1][j].occupiedByPlayer == player) {
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                    if (canMoveVillage)
+                                        stringSet.add("T " + i + "," + j);
+                                }
+                                if (isPosInIndex(size, i, j + 1) && spots[i][j + 1].occupiedByPlayer == player) {
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                    if (canMoveVillage)
+                                        stringSet.add("T " + i + "," + j);
+                                }
+                            } else {
+                                if (isPosInIndex(size, i - 1, j - 1) && spots[i - 1][j - 1].occupiedByPlayer == player) {
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                    if (canMoveVillage)
+                                        stringSet.add("T " + i + "," + j);
+                                }
+                                if (isPosInIndex(size, i + 1, j - 1) && spots[i + 1][j - 1].occupiedByPlayer == player) {
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                    if (canMoveVillage)
+                                        stringSet.add("T " + i + "," + j);
+                                }
+                                if (isPosInIndex(size, i, j - 1) && spots[i][j - 1].occupiedByPlayer == player) {
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                    if (canMoveVillage)
+                                        stringSet.add("T " + i + "," + j);
+                                }
+                                if (isPosInIndex(size, i - 1, j) && spots[i - 1][j].occupiedByPlayer == player) {
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                    if (canMoveVillage)
+                                        stringSet.add("T " + i + "," + j);
+                                }
+                                if (isPosInIndex(size, i + 1, j) && spots[i + 1][j].occupiedByPlayer == player) {
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                    if (canMoveVillage)
+                                        stringSet.add("T " + i + "," + j);
+                                }
+                                if (isPosInIndex(size, i, j + 1) && spots[i][j + 1].occupiedByPlayer == player) {
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                    if (canMoveVillage)
+                                        stringSet.add("T " + i + "," + j);
                                 }
                             }
                         }
@@ -629,71 +563,45 @@ public class BlueLagoon {
             } else {
                 for (int i = 0; i <= size - 1; i++) {
                     for (int j = 0; j <= size - 1; j++) {
-                        if (isPosInIndex(size, i, j)) {
-                            if (spots[i][j].occupiedByPlayer == 100) {
-                                if (i % 2 == 1) {
-                                    if (isPosInIndex(size, i - 1, j - 1) && spots[i - 1][j - 1].occupiedByPlayer == player) {
-                                        if (canMoveSettler) {
-                                            stringSet.add("S " + i + "," + j);
-                                        }
-                                    }
-                                    if (isPosInIndex(size, i + 1, j - 1) && spots[i + 1][j - 1].occupiedByPlayer == player) {
-                                        if (canMoveSettler) {
-                                            stringSet.add("S " + i + "," + j);
-                                        }
-                                    }
-                                    if (isPosInIndex(size, i, j - 1) && spots[i][j - 1].occupiedByPlayer == player) {
-                                        if (canMoveSettler) {
-                                            stringSet.add("S " + i + "," + j);
-                                        }
-                                    }
-                                    if (isPosInIndex(size, i - 1, j) && spots[i - 1][j].occupiedByPlayer == player) {
-                                        if (canMoveSettler) {
-                                            stringSet.add("S " + i + "," + j);
-                                        }
-                                    }
-                                    if (isPosInIndex(size, i + 1, j) && spots[i + 1][j].occupiedByPlayer == player) {
-                                        if (canMoveSettler) {
-                                            stringSet.add("S " + i + "," + j);
-                                        }
-                                    }
-                                    if (isPosInIndex(size, i, j + 1) && spots[i][j + 1].occupiedByPlayer == player) {
-                                        if (canMoveSettler) {
-                                            stringSet.add("S " + i + "," + j);
-                                        }
-                                    }
-                                } else {
-                                    if (isPosInIndex(size, i - 1, j + 1) && spots[i - 1][j + 1].occupiedByPlayer == player) {
-                                        if (canMoveSettler) {
-                                            stringSet.add("S " + i + "," + j);
-                                        }
-                                    }
-                                    if (isPosInIndex(size, i + 1, j + 1) && spots[i + 1][j + 1].occupiedByPlayer == player) {
-                                        if (canMoveSettler) {
-                                            stringSet.add("S " + i + "," + j);
-                                        }
-                                    }
-                                    if (isPosInIndex(size, i, j - 1) && spots[i][j - 1].occupiedByPlayer == player) {
-                                        if (canMoveSettler) {
-                                            stringSet.add("S " + i + "," + j);
-                                        }
-                                    }
-                                    if (isPosInIndex(size, i - 1, j) && spots[i - 1][j].occupiedByPlayer == player) {
-                                        if (canMoveSettler) {
-                                            stringSet.add("S " + i + "," + j);
-                                        }
-                                    }
-                                    if (isPosInIndex(size, i + 1, j) && spots[i + 1][j].occupiedByPlayer == player) {
-                                        if (canMoveSettler) {
-                                            stringSet.add("S " + i + "," + j);
-                                        }
-                                    }
-                                    if (isPosInIndex(size, i, j + 1) && spots[i][j + 1].occupiedByPlayer == player) {
-                                        if (canMoveSettler) {
-                                            stringSet.add("S " + i + "," + j);
-                                        }
-                                    }
-                                }
+                        if (isPosInIndex(size, i, j)) if (spots[i][j].occupiedByPlayer == 100) {
+                            if (i % 2 == 1) {
+                                if (isPosInIndex(size, i - 1, j - 1) && spots[i - 1][j - 1].occupiedByPlayer == player)
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                if (isPosInIndex(size, i + 1, j - 1) && spots[i + 1][j - 1].occupiedByPlayer == player)
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                if (isPosInIndex(size, i, j - 1) && spots[i][j - 1].occupiedByPlayer == player)
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                if (isPosInIndex(size, i - 1, j) && spots[i - 1][j].occupiedByPlayer == player)
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                if (isPosInIndex(size, i + 1, j) && spots[i + 1][j].occupiedByPlayer == player)
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                if (isPosInIndex(size, i, j + 1) && spots[i][j + 1].occupiedByPlayer == player)
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                            } else {
+                                if (isPosInIndex(size, i - 1, j + 1) && spots[i - 1][j + 1].occupiedByPlayer == player)
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                if (isPosInIndex(size, i + 1, j + 1) && spots[i + 1][j + 1].occupiedByPlayer == player)
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                if (isPosInIndex(size, i, j - 1) && spots[i][j - 1].occupiedByPlayer == player)
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                if (isPosInIndex(size, i - 1, j) && spots[i - 1][j].occupiedByPlayer == player)
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                if (isPosInIndex(size, i + 1, j) && spots[i + 1][j].occupiedByPlayer == player)
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                if (isPosInIndex(size, i, j + 1) && spots[i][j + 1].occupiedByPlayer == player)
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
                             }
                         }
                     }
@@ -701,6 +609,13 @@ public class BlueLagoon {
                 return stringSet;
             }
             // FIXME Task 8
+        } else {
+            for (int i = 0; i <= size - 1; i++)
+                for (int j = 0; j <= size - 1; j++)
+                    if (isPosInIndex(size, i, j))
+                        if (spots[i][j].spotType == 0 && spots[i][j].occupiedByPlayer == 100) //This sea spot isn't occupied by any player
+                            stringSet.add("S " + i + "," + j);
+            return stringSet;
         }
     }
 
@@ -900,7 +815,6 @@ public class BlueLagoon {
         String[] statement = stateString.split(";");
         int playerNumber = Integer.parseInt(statement[0].substring(statement[0].length() - 1, statement[0].length()));
         int[][] playerResources = new int[playerNumber][4];//E.G. playerResources[1][2] means the number of water possessed by player 2
-
         int player = 0;
         for (int i = 0; i <= statement.length - 1; i++) {
             if (statement[i].charAt(1) == 'p') {//if this is a player statement
@@ -919,12 +833,7 @@ public class BlueLagoon {
                 sumOfResources = sumOfResources + playerResources[i][j];
             }
         }
-        boolean allResources;
-        if (sumOfResources == 24) {
-            allResources = true;
-        } else {
-            allResources = false;
-        }
+        boolean allResources = sumOfResources == 24;
 
         int flag = 0;
         String newString = "";
@@ -944,12 +853,7 @@ public class BlueLagoon {
             }
             newString = "";
         }
-
-        if (allResources || flag == playerNumber) {
-            return true;
-        } else {
-            return false;
-        }
+        return allResources || flag == playerNumber;
         // FIXME Task 9
     }
 
@@ -966,11 +870,7 @@ public class BlueLagoon {
         } else if (x1 < x2) {
             return false;
         } else {
-            if (y1 > y2) {
-                return true;
-            } else {
-                return false;
-            }
+            return y1 > y2;
         }
     }
 
@@ -1228,10 +1128,7 @@ public class BlueLagoon {
             }
         }
 
-        String[] land;
-        String[] landXY;
-        int landx;
-        int landy;
+
         int numofisland = 0;
         //initialize land spots on the map
         for (int i = 0; i <= statement.length - 1; i++) {
@@ -1240,20 +1137,19 @@ public class BlueLagoon {
                 //This is the i-th island
                 numofisland++;
                 //split this island state string
-                land = statement[i].split(" ");
+                String[] land = statement[i].split(" ");
                 for (int j = 3; j <= land.length - 1; j++) {//land[0]="",land[1]="i",land[2]="6/8/10"
-                    landXY = land[j].split(",");
-                    landx = Integer.parseInt(landXY[0]);
-                    landy = Integer.parseInt(landXY[1]);
+                    String[] landXY = land[j].split(",");
+                    int landx = Integer.parseInt(landXY[0]);
+                    int landy = Integer.parseInt(landXY[1]);
                     spots[landx][landy].spotType = 1;//This is land, not sea
                     spots[landx][landy].island = numofisland;//This is No.i island
                 }
             }
         }
         //Number of islands this player occupies
-        int islandOfThisPlayer;
-
         for (int p = firstPlayer; p <= statement.length - 1; p++) {
+            int islandOfThisPlayer;
             islandOfThisPlayer = 0;
             String[] thisPlayer = statement[p].split(" ");
             for (int i = 1; i <= numofisland; i++) {
@@ -1280,7 +1176,6 @@ public class BlueLagoon {
             }
 
         }
-
         //return points array
         return islandPoints; // FIXME Task 11
     }

@@ -12,8 +12,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
+
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 public class Viewer extends Application {
@@ -38,69 +41,101 @@ public class Viewer extends Application {
         // Written by Tyler
         String[] parts = stateString.split(";");
         List<Polygon> tilesList = new ArrayList<>();
+        String[] firstString = parts[0].split(" ");
+        int size = Integer.parseInt(firstString[1]);
+        double a;
+        double b;
+        for (a = 0; a <= size - 1; a++) {
+            for (b = 0; b <= size - 1; b++) {
+                if (a % 2 == 0 && b == size - 1)
+                    continue;
+                if (a % 2 == 0) {
+                    //Size=40px
+                    Polygon p = new Polygon();
+                    p.getPoints().addAll(69.28 + 69.28 * b, 60 * a,
+                            103.92 + 69.28 * b, 20 + 60 * a,
+                            103.92 + 69.28 * b, 60 + 60 * a,
+                            69.28 + 69.28 * b, 80 + 60 * a,
+                            34.64 + 69.28 * b, 60 + 60 * a,
+                            34.64 + 69.28 * b, 20 + 60 * a);
+                    p.setFill(Color.BLUE);
+                    tilesList.add(p);
+                } else if (a % 2 == 1) {
+                    Polygon p = new Polygon();
+                    p.getPoints().addAll(34.64 + 69.28 * b, 60 * a,
+                            69.28 + 69.28 * b, 20 + 60 * a,
+                            69.28 + 69.28 * b, 60 + 60 * a,
+                            34.64 + 69.28 * b, 80 + 60 * a,
+                            69.28 * b, 60 + 60 * a,
+                            69.28 * b, 20 + 60 * a);
+                    p.setFill(Color.BLUE);
+                    tilesList.add(p);
+                }
+            }
+            for (int i = 0; i < parts.length; i++) {
+                // Generates the islands
+                if (parts[i].startsWith(" i")) {
+                    String[] islands = parts[i].split(" ");
+                    for (int j = 3; j < islands.length; j++) {
+                        String[] coords = islands[j].split(",");
+                        double x = Double.parseDouble(coords[0]);
+                        double y = Double.parseDouble(coords[1]);
+                        double[] spot = new double[2];
+                        spot[0] = x;
+                        spot[1] = y;
+                        if (x % 2 == 0) {
+                            //Size=40px
+                            Polygon p = new Polygon();
+                            p.getPoints().addAll(69.28 + 69.28 * y, 60 * x,
+                                    103.92 + 69.28 * y, 20 + 60 * x,
+                                    103.92 + 69.28 * y, 60 + 60 * x,
+                                    69.28 + 69.28 * y, 80 + 60 * x,
+                                    34.64 + 69.28 * y, 60 + 60 * x,
+                                    34.64 + 69.28 * y, 20 + 60 * x);
+                            p.setFill(Color.LIGHTGREEN);
+                            tilesList.add(p);
+                        } else if (x % 2 == 1) {
+                            Polygon p = new Polygon();
+                            p.getPoints().addAll(34.64 + 69.28 * y, 60 * x,
+                                    69.28 + 69.28 * y, 20 + 60 * x,
+                                    69.28 + 69.28 * y, 60 + 60 * x,
+                                    34.64 + 69.28 * y, 80 + 60 * x,
+                                    69.28 * y, 60 + 60 * x,
+                                    69.28 * y, 20 + 60 * x);
+                            p.setFill(Color.LIGHTGREEN);
+                            tilesList.add(p);
+                        }
+                    }
+                }
+            }
+        }
 
         for (int i = 0; i < parts.length; i++) {
-
-            // Generates the islands
-            if (parts[i].startsWith(" i")) {
-                String[] islands = parts[i].split(" ");
-                for (int j = 3; j < islands.length; j++) {
-                    String[] coords = islands[j].split(",");
+            // Generates the stone circles
+            if (parts[i].startsWith(" s")) {
+                String[] stones = parts[i].split(" ");
+                for (int j = 2; j < stones.length; j++) {
+                    String[] coords = stones[j].split(",");
                     double x = Double.parseDouble(coords[0]);
                     double y = Double.parseDouble(coords[1]);
                     if (x % 2 == 0) {
                         Polygon p = new Polygon();
-                        p.getPoints().addAll(94.64 + 70.28 * y, 0.0 + 81 * x,
-                                60.0 + 70.28 * y, 20.0 + 81 * x,
-                                60.0 + 70.28 * y, 60.0 + 81 * x,
-                                94.64 + 70.28 * y, 80.0 + 81 * x,
-                                129.28 + 70.28 * y, 60.0 + 81 * x,
-                                129.28 + 70.28 * y, 20.0 + 81 * x);
-                        p.setFill(Color.LIGHTGREEN);
-                        tilesList.add(p);
-                    }
-                    else if (x % 2 == 1) {
-                        Polygon p = new Polygon();
-                        p.getPoints().addAll(60.5 + 70.28 * y, 0.0 + 61 * x,
-                                24.86 + 70.28 * y, 20.0 + 61 * x,
-                                24.86 + 70.28 * y, 60.0 + 61 * x,
-                                60.5 + 70.28 * y, 80.0 + 61 * x,
-                                94.14 + 70.28 * y, 60.0 + 61 * x,
-                                94.14 + 70.28 * y, 20.0 + 61 * x);
-                        p.setFill(Color.LIGHTGREEN);
-                        tilesList.add(p);
-                    }
-                }
-            }
-            // Generates the stone circles
-            else if (parts[i].startsWith(" s")) {
-                String[] stones = parts[i].split(" ");
-                for (int j = 2; j < stones.length; j++) {
-                    if (stones[j].startsWith("[0|2|4|6|8|10|12]")) {
-                        String[] coords = stones[j].split(",");
-                        double x = Double.parseDouble(coords[0]);
-                        double y = Double.parseDouble(coords[1]);
-                        Polygon p = new Polygon();
-                        p.getPoints().addAll(34.64 + 70.28 * y, 0.0 + 81 * x,
-                                0.0 + 70.28 * y, 20.0 + 81 * x,
-                                0.0 + 70.28 * y, 60.0 + 81 * x,
-                                34.64 + 70.28 * y, 80.0 + 81 * x,
-                                69.28 + 70.28 * y, 60.0 + 81 * x,
-                                69.28 + 70.28 * y, 20.0 + 81 * x);
+                        p.getPoints().addAll(69.28 + 69.28 * y, 3 + 60 * x,
+                                100.92 + 69.28 * y, 20 + 60 * x,
+                                100.92 + 69.28 * y, 60 + 60 * x,
+                                69.28 + 69.28 * y, 77 + 60 * x,
+                                37.64 + 69.28 * y, 60 + 60 * x,
+                                37.64 + 69.28 * y, 20 + 60 * x);
                         p.setFill(Color.DARKSLATEGRAY);
                         tilesList.add(p);
-                    }
-                    else if (stones[j].startsWith("[1|3|5|7|9|11]")) {
-                        String[] coords = stones[j].split(",");
-                        double x = Double.parseDouble(coords[0]);
-                        double y = Double.parseDouble(coords[1]);
+                    } else {
                         Polygon p = new Polygon();
-                        p.getPoints().addAll(94.64 + 70.28 * y, 34.64 + 81 * x,
-                                60.0 + 70.28 * y, 54.64 + 81 * x,
-                                70.0 + 70.28 * y, 94.64 + 81 * x,
-                                94.64 + 70.28 * y, 114.64 + 81 * x,
-                                159.28 + 70.28 * y, 94.64 + 81 * x,
-                                159.28 + 70.28 * y, 54.64 + 81 * x);
+                        p.getPoints().addAll(34.64 + 69.28 * y, 3 + 60 * x,
+                                66.28 + 69.28 * y, 20 + 60 * x,
+                                66.28 + 69.28 * y, 60 + 60 * x,
+                                34.64 + 69.28 * y, 77 + 60 * x,
+                                3+69.28 * y, 60 + 60 * x,
+                                3+69.28 * y, 20 + 60 * x);
                         p.setFill(Color.DARKSLATEGRAY);
                         tilesList.add(p);
                     }
@@ -117,21 +152,23 @@ public class Viewer extends Application {
                     double x = Double.parseDouble(coords[0]);
                     double y = Double.parseDouble(coords[1]);
                     Polygon p = new Polygon();
-                    p.getPoints().addAll(29.64 + 70.28 * y, 35.0 + 81 * x,
-                            39.64 + 70.28 * y, 35.0 + 81 * x,
-                            29.64 + 70.28 * y, 45.0 + 81 * x,
-                            39.64 + 70.28 * y, 45.0 + 81 * x);
+                    p.getPoints().addAll(69.28 + 69.28 * y, 8 + 60 * x,
+                            95.92 + 69.28 * y, 20 + 60 * x,
+                            95.92 + 69.28 * y, 60 + 60 * x,
+                            69.28 + 69.28 * y, 72 + 60 * x,
+                            42.64 + 69.28 * y, 60 + 60 * x,
+                            42.64 + 69.28 * y, 20 + 60 * x);
                     p.setFill(Color.LIGHTGRAY);
                     tilesList.add(p);
                     c1 = c1 + 1;
                 }
                 while (c1 < 6) {
-                        Polygon p = new Polygon();
-                        p.getPoints().addAll(1000.0, 10.0 + 15*c1,
-                                1000.0, 20.0 + 15*c1,
-                                1010.0, 20.0 + 15*c1,
-                                1010.0, 10.0 + 15*c1);
-                        p.setFill(Color.LIGHTGRAY);
+                    Polygon p = new Polygon();
+                    p.getPoints().addAll(1000.0, 10.0 + 15 * c1,
+                            1000.0, 20.0 + 15 * c1,
+                            1010.0, 20.0 + 15 * c1,
+                            1010.0, 10.0 + 15 * c1);
+                    p.setFill(Color.LIGHTGRAY);
                     tilesList.add(p);
                     c1++;
                 }
@@ -152,14 +189,14 @@ public class Viewer extends Application {
                     c2 = c2 + 1;
                 }
                 while (c2 < 6) {
-                        Polygon p = new Polygon();
-                        p.getPoints().addAll(1040.0, 10.0 + 15*c2,
-                                1040.0, 20.0 + 15*c2,
-                                1050.0, 20.0 + 15*c2,
-                                1050.0, 10.0 + 15*c2);
-                        p.setFill(Color.LIGHTYELLOW);
+                    Polygon p = new Polygon();
+                    p.getPoints().addAll(1040.0, 10.0 + 15 * c2,
+                            1040.0, 20.0 + 15 * c2,
+                            1050.0, 20.0 + 15 * c2,
+                            1050.0, 10.0 + 15 * c2);
+                    p.setFill(Color.LIGHTYELLOW);
                     tilesList.add(p);
-                        c2++;
+                    c2++;
                 }
                 // Generates water
                 String[] water = resources[3].split(" ");
@@ -179,10 +216,10 @@ public class Viewer extends Application {
                 }
                 while (c3 < 6) {
                     Polygon p = new Polygon();
-                    p.getPoints().addAll(1080.0, 10.0 + 15*c3,
-                            1080.0, 20.0 + 15*c3,
-                            1090.0, 20.0 + 15*c3,
-                            1090.0, 10.0 + 15*c3);
+                    p.getPoints().addAll(1080.0, 10.0 + 15 * c3,
+                            1080.0, 20.0 + 15 * c3,
+                            1090.0, 20.0 + 15 * c3,
+                            1090.0, 10.0 + 15 * c3);
                     p.setFill(Color.LIGHTBLUE);
                     tilesList.add(p);
                     c3++;
@@ -205,10 +242,10 @@ public class Viewer extends Application {
                 }
                 while (c4 < 6) {
                     Polygon p = new Polygon();
-                    p.getPoints().addAll(1120.0, 10.0 + 15*c4,
-                            1120.0, 20.0 + 15*c4,
-                            1130.0, 20.0 + 15*c4,
-                            1130.0, 10.0 + 15*c4);
+                    p.getPoints().addAll(1120.0, 10.0 + 15 * c4,
+                            1120.0, 20.0 + 15 * c4,
+                            1130.0, 20.0 + 15 * c4,
+                            1130.0, 10.0 + 15 * c4);
                     p.setFill(Color.DARKSEAGREEN);
                     tilesList.add(p);
                     c4++;
@@ -216,8 +253,7 @@ public class Viewer extends Application {
                 // Generates statuettes
                 int c5 = 0;
                 if (resources.length == 5) {
-                }
-                else {
+                } else {
                     String[] statuette = resources[5].split(" ");
                     for (int j = 1; j < statuette.length; j++) {
                         String[] coords = statuette[j].split(",");
@@ -235,10 +271,10 @@ public class Viewer extends Application {
                 }
                 while (c5 < 8) {
                     Polygon p = new Polygon();
-                    p.getPoints().addAll(1160.0, 10.0 + 15*c5,
-                            1160.0, 20.0 + 15*c5,
-                            1170.0, 20.0 + 15*c5,
-                            1170.0, 10.0 + 15*c5);
+                    p.getPoints().addAll(1160.0, 10.0 + 15 * c5,
+                            1160.0, 20.0 + 15 * c5,
+                            1170.0, 20.0 + 15 * c5,
+                            1170.0, 10.0 + 15 * c5);
                     p.setFill(Color.MAROON);
                     tilesList.add(p);
                     c5++;
@@ -365,8 +401,10 @@ public class Viewer extends Application {
                 }
             }
         }
+
         root.getChildren().addAll(tilesList);
     }
+
     /**
      * Create a basic text field for input and a refresh button.
      */

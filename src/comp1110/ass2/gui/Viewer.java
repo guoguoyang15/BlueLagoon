@@ -53,6 +53,7 @@ public class Viewer extends Application {
                     continue;
                 if (a % 2 == 0) {
                     //Size=40px
+                    //Order is clockwise, the first point is the top one
                     Polygon p = new Polygon();
                     p.getPoints().addAll(69.28 + 69.28 * b, 60 * a,
                             103.92 + 69.28 * b, 20 + 60 * a,
@@ -150,6 +151,7 @@ public class Viewer extends Application {
                 String flag = "";
                 for (int l = 0; l <= resources.length - 1; l++) {
                     if (resources[l].equals("C")) {
+                        //current stage of resources
                         flag = "C";
                     } else if (resources[l].equals("B")) {
                         flag = "B";
@@ -205,13 +207,14 @@ public class Viewer extends Application {
                 int s = 0;
                 for (s = 0; s <= pieces.length - 1; s++) {
                     if (pieces[s].equals("S")) {
+                        //Current stage of type
                         flag = "S";
                     } else if (pieces[s].equals("T")) {
                         flag = "T";
                     } else {
                     }
                     if (flag.equals("S")) {
-                        if (pieces[s].contains(",")) {
+                        if (pieces[s].contains(",")) {//if this string is a coordinate
                             String[] coords = pieces[s].split(",");
                             double x = Double.parseDouble(coords[0]);
                             double y = Double.parseDouble(coords[1]);

@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
 
@@ -143,141 +144,54 @@ public class Viewer extends Application {
             }
             // Generates the resources
             else if (parts[i].startsWith(" r")) {
-                String[] resources = parts[i].split("[C|B|W|P|S]");
-                // Generates coconuts
-                String[] coconuts = resources[1].split(" ");
-                int c1 = 0;
-                for (int j = 1; j < coconuts.length; j++) {
-                    String[] coords = coconuts[j].split(",");
-                    double x = Double.parseDouble(coords[0]);
-                    double y = Double.parseDouble(coords[1]);
-                    Polygon p = new Polygon();
-                    p.getPoints().addAll(69.28 + 69.28 * y, 8 + 60 * x,
-                            95.92 + 69.28 * y, 20 + 60 * x,
-                            95.92 + 69.28 * y, 60 + 60 * x,
-                            69.28 + 69.28 * y, 72 + 60 * x,
-                            42.64 + 69.28 * y, 60 + 60 * x,
-                            42.64 + 69.28 * y, 20 + 60 * x);
-                    p.setFill(Color.LIGHTGRAY);
-                    tilesList.add(p);
-                    c1 = c1 + 1;
-                }
-                while (c1 < 6) {
-                    Polygon p = new Polygon();
-                    p.getPoints().addAll(1000.0, 10.0 + 15 * c1,
-                            1000.0, 20.0 + 15 * c1,
-                            1010.0, 20.0 + 15 * c1,
-                            1010.0, 10.0 + 15 * c1);
-                    p.setFill(Color.LIGHTGRAY);
-                    tilesList.add(p);
-                    c1++;
-                }
-                // Generates bamboo
-                String[] bamboo = resources[2].split(" ");
-                int c2 = 0;
-                for (int j = 1; j < bamboo.length; j++) {
-                    String[] coords = bamboo[j].split(",");
-                    double x = Double.parseDouble(coords[0]);
-                    double y = Double.parseDouble(coords[1]);
-                    Polygon p = new Polygon();
-                    p.getPoints().addAll(29.64 + 70.28 * y, 35.0 + 81 * x,
-                            39.64 + 70.28 * y, 35.0 + 81 * x,
-                            29.64 + 70.28 * y, 45.0 + 81 * x,
-                            39.64 + 70.28 * y, 45.0 + 81 * x);
-                    p.setFill(Color.LIGHTYELLOW);
-                    tilesList.add(p);
-                    c2 = c2 + 1;
-                }
-                while (c2 < 6) {
-                    Polygon p = new Polygon();
-                    p.getPoints().addAll(1040.0, 10.0 + 15 * c2,
-                            1040.0, 20.0 + 15 * c2,
-                            1050.0, 20.0 + 15 * c2,
-                            1050.0, 10.0 + 15 * c2);
-                    p.setFill(Color.LIGHTYELLOW);
-                    tilesList.add(p);
-                    c2++;
-                }
-                // Generates water
-                String[] water = resources[3].split(" ");
-                int c3 = 0;
-                for (int j = 1; j < water.length; j++) {
-                    String[] coords = water[j].split(",");
-                    double x = Double.parseDouble(coords[0]);
-                    double y = Double.parseDouble(coords[1]);
-                    Polygon p = new Polygon();
-                    p.getPoints().addAll(29.64 + 70.28 * y, 35.0 + 81 * x,
-                            39.64 + 70.28 * y, 35.0 + 81 * x,
-                            29.64 + 70.28 * y, 45.0 + 81 * x,
-                            39.64 + 70.28 * y, 45.0 + 81 * x);
-                    p.setFill(Color.LIGHTBLUE);
-                    tilesList.add(p);
-                    c3 = c3 + 1;
-                }
-                while (c3 < 6) {
-                    Polygon p = new Polygon();
-                    p.getPoints().addAll(1080.0, 10.0 + 15 * c3,
-                            1080.0, 20.0 + 15 * c3,
-                            1090.0, 20.0 + 15 * c3,
-                            1090.0, 10.0 + 15 * c3);
-                    p.setFill(Color.LIGHTBLUE);
-                    tilesList.add(p);
-                    c3++;
-                }
-                // Generates precious stone
-                String[] preciousStone = resources[4].split(" ");
-                int c4 = 0;
-                for (int j = 1; j < preciousStone.length; j++) {
-                    String[] coords = preciousStone[j].split(",");
-                    double x = Double.parseDouble(coords[0]);
-                    double y = Double.parseDouble(coords[1]);
-                    Polygon p = new Polygon();
-                    p.getPoints().addAll(29.64 + 70.28 * y, 35.0 + 81 * x,
-                            39.64 + 70.28 * y, 35.0 + 81 * x,
-                            29.64 + 70.28 * y, 45.0 + 81 * x,
-                            39.64 + 70.28 * y, 45.0 + 81 * x);
-                    p.setFill(Color.DARKSEAGREEN);
-                    tilesList.add(p);
-                    c4 = c4 + 1;
-                }
-                while (c4 < 6) {
-                    Polygon p = new Polygon();
-                    p.getPoints().addAll(1120.0, 10.0 + 15 * c4,
-                            1120.0, 20.0 + 15 * c4,
-                            1130.0, 20.0 + 15 * c4,
-                            1130.0, 10.0 + 15 * c4);
-                    p.setFill(Color.DARKSEAGREEN);
-                    tilesList.add(p);
-                    c4++;
-                }
-                // Generates statuettes
-                int c5 = 0;
-                if (resources.length == 5) {
-                } else {
-                    String[] statuette = resources[5].split(" ");
-                    for (int j = 1; j < statuette.length; j++) {
-                        String[] coords = statuette[j].split(",");
+                String[] resources = parts[i].split(" ");
+                String flag = "";
+                for (int l = 0; l <= resources.length - 1; l++) {
+                    if (resources[l].equals("C")) {
+                        flag = "C";
+                    } else if (resources[l].equals("B")) {
+                        flag = "B";
+                    } else if (resources[l].equals("W")) {
+                        flag = "W";
+                    } else if (resources[l].equals("P")) {
+                        flag = "P";
+                    } else if (resources[l].equals("S")) {
+                        flag = "S";
+                    } else {
+                    }
+                    if (resources[l].contains(",")) {
+                        String[] coords = resources[l].split(",");
                         double x = Double.parseDouble(coords[0]);
                         double y = Double.parseDouble(coords[1]);
                         Polygon p = new Polygon();
-                        p.getPoints().addAll(29.64 + 70.28 * y, 35.0 + 81 * x,
-                                39.64 + 70.28 * y, 35.0 + 81 * x,
-                                29.64 + 70.28 * y, 45.0 + 81 * x,
-                                39.64 + 70.28 * y, 45.0 + 81 * x);
-                        p.setFill(Color.MAROON);
-                        tilesList.add(p);
-                        c5 = c5 + 1;
+                        if (x % 2 == 0) {
+                            p.getPoints().addAll(49.28 + 69.28 * y, 20 + 60 * x,
+                                    89.28 + 69.28 * y, 20 + 60 * x,
+                                    89.28 + 69.28 * y, 60 + 60 * x,
+                                    49.28 + 69.28 * y, 60 + 60 * x);
+                        } else {
+                            p.getPoints().addAll(14.64 + 69.28 * y, 20 + 60 * x,
+                                    54.64 + 69.28 * y, 20 + 60 * x,
+                                    54.64 + 69.28 * y, 60 + 60 * x,
+                                    14.64 + 69.28 * y, 60 + 60 * x);
+                        }
+                        if (flag.equals("C")) {
+                            p.setFill(Color.BROWN);
+                            tilesList.add(p);
+                        } else if (flag.equals("B")) {
+                            p.setFill(Color.GREEN);
+                            tilesList.add(p);
+                        } else if (flag.equals("W")) {
+                            p.setFill(Color.CYAN);
+                            tilesList.add(p);
+                        } else if (flag.equals("P")) {
+                            p.setFill(Color.YELLOW);
+                            tilesList.add(p);
+                        } else{
+                            p.setFill(Color.GREY);
+                            tilesList.add(p);
+                        }
                     }
-                }
-                while (c5 < 8) {
-                    Polygon p = new Polygon();
-                    p.getPoints().addAll(1160.0, 10.0 + 15 * c5,
-                            1160.0, 20.0 + 15 * c5,
-                            1170.0, 20.0 + 15 * c5,
-                            1170.0, 10.0 + 15 * c5);
-                    p.setFill(Color.MAROON);
-                    tilesList.add(p);
-                    c5++;
                 }
             }
             // Generates villages and settlers

@@ -42,6 +42,7 @@ public class Viewer extends Application {
         // Written by Tyler
         String[] parts = stateString.split(";");
         List<Polygon> tilesList = new ArrayList<>();
+        List<Circle> villageList=new ArrayList<>();
         String[] firstString = parts[0].split(" ");
         int size = Integer.parseInt(firstString[1]);
         double a;
@@ -73,43 +74,44 @@ public class Viewer extends Application {
                     tilesList.add(p);
                 }
             }
-            for (int i = 0; i < parts.length; i++) {
-                // Generates the islands
-                if (parts[i].startsWith(" i")) {
-                    String[] islands = parts[i].split(" ");
-                    for (int j = 3; j < islands.length; j++) {
-                        String[] coords = islands[j].split(",");
-                        double x = Double.parseDouble(coords[0]);
-                        double y = Double.parseDouble(coords[1]);
-                        double[] spot = new double[2];
-                        spot[0] = x;
-                        spot[1] = y;
-                        if (x % 2 == 0) {
-                            //Size=40px
-                            Polygon p = new Polygon();
-                            p.getPoints().addAll(69.28 + 69.28 * y, 60 * x,
-                                    103.92 + 69.28 * y, 20 + 60 * x,
-                                    103.92 + 69.28 * y, 60 + 60 * x,
-                                    69.28 + 69.28 * y, 80 + 60 * x,
-                                    34.64 + 69.28 * y, 60 + 60 * x,
-                                    34.64 + 69.28 * y, 20 + 60 * x);
-                            p.setFill(Color.LIGHTGREEN);
-                            tilesList.add(p);
-                        } else if (x % 2 == 1) {
-                            Polygon p = new Polygon();
-                            p.getPoints().addAll(34.64 + 69.28 * y, 60 * x,
-                                    69.28 + 69.28 * y, 20 + 60 * x,
-                                    69.28 + 69.28 * y, 60 + 60 * x,
-                                    34.64 + 69.28 * y, 80 + 60 * x,
-                                    69.28 * y, 60 + 60 * x,
-                                    69.28 * y, 20 + 60 * x);
-                            p.setFill(Color.LIGHTGREEN);
-                            tilesList.add(p);
-                        }
+        }
+        for (int i = 0; i < parts.length; i++) {
+            // Generates the islands
+            if (parts[i].startsWith(" i")) {
+                String[] islands = parts[i].split(" ");
+                for (int j = 3; j < islands.length; j++) {
+                    String[] coords = islands[j].split(",");
+                    double x = Double.parseDouble(coords[0]);
+                    double y = Double.parseDouble(coords[1]);
+                    double[] spot = new double[2];
+                    spot[0] = x;
+                    spot[1] = y;
+                    if (x % 2 == 0) {
+                        //Size=40px
+                        Polygon p = new Polygon();
+                        p.getPoints().addAll(69.28 + 69.28 * y, 60 * x,
+                                103.92 + 69.28 * y, 20 + 60 * x,
+                                103.92 + 69.28 * y, 60 + 60 * x,
+                                69.28 + 69.28 * y, 80 + 60 * x,
+                                34.64 + 69.28 * y, 60 + 60 * x,
+                                34.64 + 69.28 * y, 20 + 60 * x);
+                        p.setFill(Color.LIGHTGREEN);
+                        tilesList.add(p);
+                    } else if (x % 2 == 1) {
+                        Polygon p = new Polygon();
+                        p.getPoints().addAll(34.64 + 69.28 * y, 60 * x,
+                                69.28 + 69.28 * y, 20 + 60 * x,
+                                69.28 + 69.28 * y, 60 + 60 * x,
+                                34.64 + 69.28 * y, 80 + 60 * x,
+                                69.28 * y, 60 + 60 * x,
+                                69.28 * y, 20 + 60 * x);
+                        p.setFill(Color.LIGHTGREEN);
+                        tilesList.add(p);
                     }
                 }
             }
         }
+
 
         for (int i = 0; i < parts.length; i++) {
             // Generates the stone circles
@@ -135,8 +137,8 @@ public class Viewer extends Application {
                                 66.28 + 69.28 * y, 20 + 60 * x,
                                 66.28 + 69.28 * y, 60 + 60 * x,
                                 34.64 + 69.28 * y, 77 + 60 * x,
-                                3+69.28 * y, 60 + 60 * x,
-                                3+69.28 * y, 20 + 60 * x);
+                                3 + 69.28 * y, 60 + 60 * x,
+                                3 + 69.28 * y, 20 + 60 * x);
                         p.setFill(Color.DARKSLATEGRAY);
                         tilesList.add(p);
                     }
@@ -187,7 +189,7 @@ public class Viewer extends Application {
                         } else if (flag.equals("P")) {
                             p.setFill(Color.YELLOW);
                             tilesList.add(p);
-                        } else{
+                        } else {
                             p.setFill(Color.GREY);
                             tilesList.add(p);
                         }
@@ -196,127 +198,73 @@ public class Viewer extends Application {
             }
             // Generates villages and settlers
             else if (parts[i].startsWith(" p")) {
-                String[] pieces = parts[i].split("[p |S|T]");
+                String[] pieces = parts[i].split(" ");
                 // Player 0
-                if (pieces[1].startsWith("0")) {
-                    String[] settlers = pieces[3].split(" ");
-                    for (int j = 0; j < settlers.length; j++) {
-                        String[] coords = settlers[j].split(",");
-                        double x = Double.parseDouble(coords[0]);
-                        double y = Double.parseDouble(coords[1]);
-                        Polygon p = new Polygon();
-                        p.getPoints().addAll(29.64 + 70.28 * y, 35.0 + 81 * x,
-                                39.64 + 70.28 * y, 35.0 + 81 * x,
-                                29.64 + 70.28 * y, 45.0 + 81 * x,
-                                39.64 + 70.28 * y, 45.0 + 81 * x);
-                        p.setFill(Color.PINK);
-                        tilesList.add(p);
+                int noPlayer = Integer.parseInt(pieces[2]);
+                String flag = "";
+                int s = 0;
+                for (s = 0; s <= pieces.length - 1; s++) {
+                    if (pieces[s].equals("S")) {
+                        flag = "S";
+                    } else if (pieces[s].equals("T")) {
+                        flag = "T";
+                    } else {
                     }
-                    String[] villages = pieces[4].split(" ");
-                    for (int j = 0; j < villages.length; j++) {
-                        String[] coords = villages[j].split(",");
-                        double x = Double.parseDouble(coords[0]);
-                        double y = Double.parseDouble(coords[1]);
-                        Polygon p = new Polygon();
-                        p.getPoints().addAll(29.64 + 70.28 * y, 35.0 + 81 * x,
-                                39.64 + 70.28 * y, 35.0 + 81 * x,
-                                29.64 + 70.28 * y, 45.0 + 81 * x,
-                                39.64 + 70.28 * y, 45.0 + 81 * x);
-                        p.setFill(Color.DEEPPINK);
-                        tilesList.add(p);
-                    }
-                }
-                // Player 1
-                else if (pieces[1].startsWith("1")) {
-                    String[] settlers = pieces[3].split(" ");
-                    for (int j = 0; j < settlers.length; j++) {
-                        String[] coords = settlers[j].split(",");
-                        int x = Integer.parseInt(coords[0]);
-                        int y = Integer.parseInt(coords[1]);
-                        Polygon p = new Polygon();
-                        p.getPoints().addAll(29.64 + 70.28 * y, 35.0 + 81 * x,
-                                39.64 + 70.28 * y, 35.0 + 81 * x,
-                                29.64 + 70.28 * y, 45.0 + 81 * x,
-                                39.64 + 70.28 * y, 45.0 + 81 * x);
-                        p.setFill(Color.ORANGE);
-                        tilesList.add(p);
-                    }
-                    String[] villages0 = pieces[4].split(" ");
-                    for (int j = 0; j < villages0.length; j++) {
-                        String[] coords = villages0[j].split(",");
-                        double x = Double.parseDouble(coords[0]);
-                        double y = Double.parseDouble(coords[1]);
-                        Polygon p = new Polygon();
-                        p.getPoints().addAll(29.64 + 70.28 * y, 35.0 + 81 * x,
-                                39.64 + 70.28 * y, 35.0 + 81 * x,
-                                29.64 + 70.28 * y, 45.0 + 81 * x,
-                                39.64 + 70.28 * y, 45.0 + 81 * x);
-                        p.setFill(Color.ORANGE);
-                        tilesList.add(p);
-                    }
-                }
-                // Player 2
-                else if (pieces[1].startsWith("2")) {
-                    String[] settlers = pieces[3].split(" ");
-                    for (int j = 0; j < settlers.length; j++) {
-                        String[] coords = settlers[j].split(",");
-                        double x = Double.parseDouble(coords[0]);
-                        double y = Double.parseDouble(coords[1]);
-                        Polygon p = new Polygon();
-                        p.getPoints().addAll(29.64 + 70.28 * y, 35.0 + 81 * x,
-                                39.64 + 70.28 * y, 35.0 + 81 * x,
-                                29.64 + 70.28 * y, 45.0 + 81 * x,
-                                39.64 + 70.28 * y, 45.0 + 81 * x);
-                        p.setFill(Color.DARKBLUE);
-                        tilesList.add(p);
-                    }
-                    String[] villages0 = pieces[4].split(" ");
-                    for (int j = 0; j < villages0.length; j++) {
-                        String[] coords = villages0[j].split(",");
-                        double x = Double.parseDouble(coords[0]);
-                        double y = Double.parseDouble(coords[1]);
-                        Polygon p = new Polygon();
-                        p.getPoints().addAll(29.64 + 70.28 * y, 35.0 + 81 * x,
-                                39.64 + 70.28 * y, 35.0 + 81 * x,
-                                29.64 + 70.28 * y, 45.0 + 81 * x,
-                                39.64 + 70.28 * y, 45.0 + 81 * x);
-                        p.setFill(Color.DARKBLUE);
-                        tilesList.add(p);
-                    }
-                }
-                // Player 3
-                else if (pieces[1].startsWith("3")) {
-                    String[] settlers = pieces[3].split(" ");
-                    for (int j = 0; j < settlers.length; j++) {
-                        String[] coords = settlers[j].split(",");
-                        double x = Double.parseDouble(coords[0]);
-                        double y = Double.parseDouble(coords[1]);
-                        Polygon p = new Polygon();
-                        p.getPoints().addAll(29.64 + 70.28 * y, 35.0 + 81 * x,
-                                39.64 + 70.28 * y, 35.0 + 81 * x,
-                                29.64 + 70.28 * y, 45.0 + 81 * x,
-                                39.64 + 70.28 * y, 45.0 + 81 * x);
-                        p.setFill(Color.PURPLE);
-                        tilesList.add(p);
-                    }
-                    String[] villages0 = pieces[4].split(" ");
-                    for (int j = 0; j < villages0.length; j++) {
-                        String[] coords = villages0[j].split(",");
-                        double x = Double.parseDouble(coords[0]);
-                        double y = Double.parseDouble(coords[1]);
-                        Polygon p = new Polygon();
-                        p.getPoints().addAll(29.64 + 70.28 * y, 35.0 + 81 * x,
-                                39.64 + 70.28 * y, 35.0 + 81 * x,
-                                29.64 + 70.28 * y, 45.0 + 81 * x,
-                                39.64 + 70.28 * y, 45.0 + 81 * x);
-                        p.setFill(Color.PURPLE);
-                        tilesList.add(p);
+                    if (flag.equals("S")) {
+                        if (pieces[s].contains(",")) {
+                            String[] coords = pieces[s].split(",");
+                            double x = Double.parseDouble(coords[0]);
+                            double y = Double.parseDouble(coords[1]);
+                            Polygon p = new Polygon();
+                            if (x % 2 == 0) {
+                                p.getPoints().addAll(69.28 + 69.28 * y, 20 + 60 * x,
+                                        89.28 + 69.28 * y, 60 + 60 * x,
+                                        49.28+69.28 * y, 60 + 60 * x);
+                                System.out.println(p);
+                            } else {
+                                p.getPoints().addAll(34.64 + 69.28 * y, 20 + 60 * x,
+                                        54.64 + 69.28 * y, 60 + 60 * x,
+                                        14.64 + 69.28 * y, 60 + 60 * x);
+                                System.out.println(p);
+                            }
+                            if(noPlayer==0){
+                                p.setFill(Color.PINK);
+                                tilesList.add(p);
+                            } else  {
+                                p.setFill(Color.CRIMSON);
+                                tilesList.add(p);
+                            }
+                        }
+                    } else if (flag.equals("T")) {
+                        if (pieces[s].contains(",")) {
+                            String[] coords = pieces[s].split(",");
+                            double x = Double.parseDouble(coords[0]);
+                            double y = Double.parseDouble(coords[1]);
+                            Circle c=new Circle();
+                            if (x % 2 == 0) {
+                                c.setCenterX(69.28+69.28*y);
+                                c.setCenterY(40+60*x);
+                                c.setRadius(30);
+                            } else {
+                                c.setCenterX(34.64+69.28*y);
+                                c.setCenterY(40+60*x);
+                                c.setRadius(30);
+                            }
+                            if(noPlayer==0){
+                                c.setFill(Color.PINK);
+                                villageList.add(c);
+                            } else  {
+                                c.setFill(Color.CRIMSON);
+                                villageList.add(c);
+                            }
+                        }
+                    } else {
                     }
                 }
             }
         }
-
         root.getChildren().addAll(tilesList);
+        root.getChildren().addAll(villageList);
     }
 
     /**

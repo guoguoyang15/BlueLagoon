@@ -52,7 +52,7 @@ public class Viewer extends Application {
                 if (a % 2 == 0 && b == size - 1)
                     continue;
                 if (a % 2 == 0) {
-                    //Size=40px
+                    //Side length=40px
                     //Order is clockwise, the first point is the top one
                     Polygon p = new Polygon();
                     p.getPoints().addAll(69.28 + 69.28 * b, 60 * a,
@@ -88,7 +88,7 @@ public class Viewer extends Application {
                     spot[0] = x;
                     spot[1] = y;
                     if (x % 2 == 0) {
-                        //Size=40px
+                        //Side length=40px
                         Polygon p = new Polygon();
                         p.getPoints().addAll(69.28 + 69.28 * y, 60 * x,
                                 103.92 + 69.28 * y, 20 + 60 * x,

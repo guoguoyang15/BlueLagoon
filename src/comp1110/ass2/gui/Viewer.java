@@ -268,6 +268,22 @@ public class Viewer extends Application {
         }
         root.getChildren().addAll(tilesList);
         root.getChildren().addAll(villageList);
+        int turn=Integer.parseInt(parts[1].substring(3,4));//Which player's turn
+        char phase=parts[1].charAt(5);
+        String phaseString;
+        if(phase=='E'){
+            phaseString="Exploration";
+        }else {
+            phaseString="Settlement";
+        }
+        Label phaseLabel = new Label(phaseString+" Phase      ");
+        Label turnLabel = new Label("Player "+(turn+1)+ " is moving.");
+
+        HBox hBox=new HBox();
+        hBox.getChildren().addAll(phaseLabel,turnLabel);
+        hBox.setLayoutX(950);
+        hBox.setLayoutY(10);
+        controls.getChildren().add(hBox);
     }
 
     /**

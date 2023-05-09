@@ -1,5 +1,6 @@
 package comp1110.ass2.gui;
 
+import comp1110.ass2.Hexagon;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -45,37 +46,32 @@ public class Viewer extends Application {
         List<Circle> villageList=new ArrayList<>();
         String[] firstString = parts[0].split(" ");
         int size = Integer.parseInt(firstString[1]);
+        Hexagon[][] hexagons=new Hexagon[size][size];
         double a;
         double b;
+        Hexagon hexagon;
         for (a = 0; a <= size - 1; a++) {
             for (b = 0; b <= size - 1; b++) {
-                if (a % 2 == 0 && b == size - 1)
+                if (a % 2 == 0 && b == size - 1){
+                    hexagons[(int)a][(int)b]=null;
                     continue;
+                }
                 if (a % 2 == 0) {
                     //Side length=40px
                     //Order is clockwise, the first point is the top one
-                    Polygon p = new Polygon();
-                    p.getPoints().addAll(69.28 + 69.28 * b, 60 * a,
-                            103.92 + 69.28 * b, 20 + 60 * a,
-                            103.92 + 69.28 * b, 60 + 60 * a,
-                            69.28 + 69.28 * b, 80 + 60 * a,
-                            34.64 + 69.28 * b, 60 + 60 * a,
-                            34.64 + 69.28 * b, 20 + 60 * a);
-                    p.setFill(Color.BLUE);
-                    tilesList.add(p);
+                    hexagon=new Hexagon(69.28 + 69.28 * b,40+60*a,40);
+                    hexagon.setFill(Color.BLUE);
+                    hexagons[(int)a][(int)b]=hexagon;
+                    tilesList.add(hexagon);
                 } else if (a % 2 == 1) {
-                    Polygon p = new Polygon();
-                    p.getPoints().addAll(34.64 + 69.28 * b, 60 * a,
-                            69.28 + 69.28 * b, 20 + 60 * a,
-                            69.28 + 69.28 * b, 60 + 60 * a,
-                            34.64 + 69.28 * b, 80 + 60 * a,
-                            69.28 * b, 60 + 60 * a,
-                            69.28 * b, 20 + 60 * a);
-                    p.setFill(Color.BLUE);
-                    tilesList.add(p);
+                    hexagon=new Hexagon(34.64 + 69.28 * b,40+60*a,40);
+                    hexagon.setFill(Color.BLUE);
+                    hexagons[(int)a][(int)b]=hexagon;
+                    tilesList.add(hexagon);
                 }
             }
         }
+
         for (int i = 0; i < parts.length; i++) {
             // Generates the islands
             if (parts[i].startsWith(" i")) {
@@ -84,35 +80,12 @@ public class Viewer extends Application {
                     String[] coords = islands[j].split(",");
                     double x = Double.parseDouble(coords[0]);
                     double y = Double.parseDouble(coords[1]);
-                    double[] spot = new double[2];
-                    spot[0] = x;
-                    spot[1] = y;
-                    if (x % 2 == 0) {
-                        //Side length=40px
-                        Polygon p = new Polygon();
-                        p.getPoints().addAll(69.28 + 69.28 * y, 60 * x,
-                                103.92 + 69.28 * y, 20 + 60 * x,
-                                103.92 + 69.28 * y, 60 + 60 * x,
-                                69.28 + 69.28 * y, 80 + 60 * x,
-                                34.64 + 69.28 * y, 60 + 60 * x,
-                                34.64 + 69.28 * y, 20 + 60 * x);
-                        p.setFill(Color.LIGHTGREEN);
-                        tilesList.add(p);
-                    } else if (x % 2 == 1) {
-                        Polygon p = new Polygon();
-                        p.getPoints().addAll(34.64 + 69.28 * y, 60 * x,
-                                69.28 + 69.28 * y, 20 + 60 * x,
-                                69.28 + 69.28 * y, 60 + 60 * x,
-                                34.64 + 69.28 * y, 80 + 60 * x,
-                                69.28 * y, 60 + 60 * x,
-                                69.28 * y, 20 + 60 * x);
-                        p.setFill(Color.LIGHTGREEN);
-                        tilesList.add(p);
-                    }
+                    hexagon=hexagons[(int)x][(int)y];
+                    hexagon.setFill(Color.LIGHTGREEN);
+                    //tilesList.add(hexagon);
                 }
             }
         }
-
 
         for (int i = 0; i < parts.length; i++) {
             // Generates the stone circles
@@ -123,25 +96,13 @@ public class Viewer extends Application {
                     double x = Double.parseDouble(coords[0]);
                     double y = Double.parseDouble(coords[1]);
                     if (x % 2 == 0) {
-                        Polygon p = new Polygon();
-                        p.getPoints().addAll(69.28 + 69.28 * y, 3 + 60 * x,
-                                100.92 + 69.28 * y, 20 + 60 * x,
-                                100.92 + 69.28 * y, 60 + 60 * x,
-                                69.28 + 69.28 * y, 77 + 60 * x,
-                                37.64 + 69.28 * y, 60 + 60 * x,
-                                37.64 + 69.28 * y, 20 + 60 * x);
-                        p.setFill(Color.DARKSLATEGRAY);
-                        tilesList.add(p);
+                        hexagon=new Hexagon(69.28 + 69.28 * y,40+60*x,35);
+                        hexagon.setFill(Color.DARKSLATEGRAY);
+                        tilesList.add(hexagon);
                     } else {
-                        Polygon p = new Polygon();
-                        p.getPoints().addAll(34.64 + 69.28 * y, 3 + 60 * x,
-                                66.28 + 69.28 * y, 20 + 60 * x,
-                                66.28 + 69.28 * y, 60 + 60 * x,
-                                34.64 + 69.28 * y, 77 + 60 * x,
-                                3 + 69.28 * y, 60 + 60 * x,
-                                3 + 69.28 * y, 20 + 60 * x);
-                        p.setFill(Color.DARKSLATEGRAY);
-                        tilesList.add(p);
+                        hexagon=new Hexagon(34.64 + 69.28 * y,40+60*x,35);
+                        hexagon.setFill(Color.DARKSLATEGRAY);
+                        tilesList.add(hexagon);
                     }
                 }
             }
@@ -167,17 +128,17 @@ public class Viewer extends Application {
                         String[] coords = resources[l].split(",");
                         double x = Double.parseDouble(coords[0]);
                         double y = Double.parseDouble(coords[1]);
-                        Polygon p = new Polygon();
+                        Polygon p=new Polygon();
                         if (x % 2 == 0) {
-                            p.getPoints().addAll(49.28 + 69.28 * y, 20 + 60 * x,
-                                    89.28 + 69.28 * y, 20 + 60 * x,
-                                    89.28 + 69.28 * y, 60 + 60 * x,
-                                    49.28 + 69.28 * y, 60 + 60 * x);
+                            p.getPoints().addAll(54.28 + 69.28 * y, 25 + 60 * x,
+                                    84.28 + 69.28 * y, 25 + 60 * x,
+                                    84.28 + 69.28 * y, 55 + 60 * x,
+                                    54.28 + 69.28 * y, 55 + 60 * x);
                         } else {
-                            p.getPoints().addAll(14.64 + 69.28 * y, 20 + 60 * x,
-                                    54.64 + 69.28 * y, 20 + 60 * x,
-                                    54.64 + 69.28 * y, 60 + 60 * x,
-                                    14.64 + 69.28 * y, 60 + 60 * x);
+                            p.getPoints().addAll(19.64 + 69.28 * y, 25 + 60 * x,
+                                    49.64 + 69.28 * y, 25 + 60 * x,
+                                    49.64 + 69.28 * y, 55 + 60 * x,
+                                    19.64 + 69.28 * y, 55 + 60 * x);
                         }
                         if (flag.equals("C")) {
                             p.setFill(Color.BROWN);
@@ -264,6 +225,14 @@ public class Viewer extends Application {
                 }
             }
         }
+
+        for(int i=0;i<=size-1;i++){
+            if(hexagons[i][i]!=null){
+                hexagon=hexagons[i][i];
+                hexagon.setFill(Color.GOLD);
+            }
+        }
+
         root.getChildren().addAll(tilesList);
         root.getChildren().addAll(villageList);
         int turn=Integer.parseInt(parts[1].substring(3,4));//Which player's turn

@@ -116,7 +116,7 @@ public class BlueLagoon {
         //stateString = " " + stateString;
         String[] statement = stateString.split(";");
         String target = null;
-        for (int i = 0; i < 14; i++) {
+        for (int i = 0; i < statement.length-1; i++) {
             if (statement[i].startsWith(" s")) {
                 target = statement[i];
                 break;
@@ -1573,7 +1573,91 @@ public class BlueLagoon {
      * @return a string representing the new state achieved by following the end of phase rules
      */
     public static String endPhase(String stateString) {
-        return ""; // FIXME Task 12
+        //split state string
+        System.out.println(stateString);
+        String[] statement = stateString.split(";");
+        char turn=statement[1].charAt(statement[1].length()-1);
+        if(turn=='S'){
+            int player=0;
+            int[] points= calculateScores(stateString);
+            for(int i=0;i<=statement.length-1;i++){
+                if(statement[i].startsWith(" p")){
+                    String newString="";
+                    String[] playerStrings=statement[i].split(" ");
+                    playerStrings[3]=""+(points[player]+Integer.parseInt(playerStrings[3]));
+                    for(int j=1;j<=playerStrings.length-1;j++){
+                        newString+=" "+playerStrings[j];
+                    }
+                    statement[i]=newString;
+                    player++;
+                }
+            }
+            String n="";
+            for(int i=0;i<=statement.length-1;i++){
+                n+=statement[i]+";";
+            }
+            return n;
+        }else {
+            int[] points= calculateScores(stateString);
+            stateString=distributeResources(stateString);
+            int circle=0;
+            int first=0;
+            String[] statement2 = stateString.split(";");
+            for(int i=0;i<=statement2.length-1;i++){
+                if(statement2[i].startsWith(" s")){
+                    circle=i;
+                }
+                if(statement2[i].startsWith(" p")){
+                    first=i;
+                    break;
+                }
+            }
+            String[] circleString=statement2[circle].split(" ");
+            List<String> circles=new ArrayList<>();
+            for(int i=0;i<=circleString.length-1;i++){
+                circles.add(circleString[i]);
+            }
+            for(int i=0;i<=statement2.length-1;i++){
+                if(statement2[i].startsWith(" p")){
+                    String nnn="";
+                    String[] pla=statement2[i].split(" ");
+                    String flag="";
+                    for(int m=1;m<= pla.length-1;m++){
+                        if(pla[m].equals("S")){
+                            flag="S";
+                        } else if (pla[m].equals("T")) {
+                            flag="T";
+                        }else {
+
+                        }
+                        if(flag=="S"&&pla[m].contains(",")){
+                            continue;
+                        }
+                        if(flag=="T"&&pla[m].contains(",")&&circles.contains(pla[m])){
+                            continue;
+                        }
+                        if(m==3){
+                            nnn+=" " + points[i-first];
+                        } else if (m>=4&&m<=8) {
+                            nnn+=" " + 0;
+                        } else{
+                            nnn+=" "+pla[m];
+                        }
+
+                    }
+                    statement2[i]=nnn;
+                }
+            }
+            String n="";
+            statement2[1]=statement2[1].substring(0,statement2[1].length()-1)+"S";
+            for(int i=0;i<=statement2.length-1;i++){
+                n+=statement2[i]+";";
+            }
+            return n;
+
+
+        }
+        //return ""; // FIXME Task 12
     }
 
     /**
@@ -1589,6 +1673,7 @@ public class BlueLagoon {
      * @return a string representing the new state after the move is applied to the board
      */
     public static String applyMove(String stateString, String moveString) {
+
         return ""; // FIXME Task 13
     }
 

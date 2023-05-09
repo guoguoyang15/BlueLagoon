@@ -1194,48 +1194,119 @@ public class BlueLagoon {
      */
 
     public static int[] calculateIslandLinksScore(String stateString) {
+        stateString = " " + stateString;
+        String[] statement = stateString.split(";");
+        int playerNum = Integer.parseInt(statement[0].substring(statement[0].length() - 1, statement[0].length()));
+        int[] point = new int[playerNum];
 
-        return null; // FIXME Task 11
+        //Get the size of the map
+        String[] arrangement = statement[0].split(" ");
+        int size = Integer.parseInt(arrangement[2]);
+
+        //set up a map of spots
+        Spot[][] spots = new Spot[size][size];
+        for (int i = 0; i <= size - 1; i++) {
+            for (int j = 0; j <= size - 1; j++) {
+                spots[i][j] = new Spot();
+            }
+        }
+
+        String[] land;
+        String[] landXY;
+        int landx;
+        int landy;
+        int numofisland = 0;
+        //initialize land spots on the map
+        for (int i = 0; i <= statement.length - 1; i++) {
+            //when this statement is island string
+            if (statement[i].charAt(1) == 'i') {
+                numofisland++;
+                land = statement[i].split(" ");
+                for (int j = 3; j <= land.length - 1; j++) {//land[0]="",land[1]="i",land[2]="6/8/10"
+                    landXY = land[j].split(",");
+                    landx = Integer.parseInt(landXY[0]);
+                    landy = Integer.parseInt(landXY[1]);
+                    spots[landx][landy].spotType = 1;
+                    spots[landx][landy].island = numofisland;//Start from 1, to 8
+                }
+            }
+        }
+        int firstPlayer = 0;
+        for (int p = 0; p <= statement.length - 1; p++) {
+            if (statement[p].charAt(1) == 'p') {
+                firstPlayer = p;
+                break;
+            }
+        }
+
+        for (int p = firstPlayer; p <= statement.length - 1; p++) {
+            List<int[]> posList = new ArrayList<>();
+            //Add all spots of this player to a hash set
+            String[] info = statement[p].split(" ");
+            for (int i = 0; i <= info.length - 1; i++) {
+                if (info[i].contains(",")) {
+                    int[] pos = new int[2];//Position of each point
+                    String[] xy = info[i].split(",");
+                    pos[0] = Integer.parseInt(xy[0]);
+                    pos[1] = Integer.parseInt(xy[1]);
+                    posList.add(pos);
+                }
+            }
+            //We need to calculate all possible links of this player
+            List<List<int[]>> linkSet = new ArrayList<>();
+            if (posList.size() == 0) {
+                point[p - firstPlayer] = 0;
+            } else {
+                while (!posList.isEmpty()) {
+                    Stack<int[]> posStack = new Stack<>();
+                    List<int[]> component = new ArrayList<>();
+                    posStack.push(posList.get(0));
+                    posList.remove(posList.get(0));
+                    while (!posStack.empty()) {
+                        int[] g = posStack.pop();
+                        component.add(g);
+                        List<int[]> adj = getAdjacentSpots(g, posList);
+                        posStack.addAll(adj);
+                        posList.removeAll(adj);
+                    }
+                    linkSet.add(component);
+                }
+
+                //Now we know all possible links of the player in linkSet
+                int maxIsland = 0;
+                for (List<int[]> link : linkSet) {
+                    int[] islandOccupied = new int[numofisland];
+                    for (int[] cord : link) {
+                        if (spots[cord[0]][cord[1]].island != 100) {
+                            islandOccupied[spots[cord[0]][cord[1]].island - 1]++;
+                        }
+                    }
+                    int thisLinkIsland = 0;
+                    for (int i = 0; i <= numofisland - 1; i++) {
+                        if (islandOccupied[i] != 0) {
+                            thisLinkIsland++;
+                        }
+                    }
+                    if (thisLinkIsland > maxIsland) {
+                        maxIsland = thisLinkIsland;
+                    }
+                }
+                point[p - firstPlayer] = maxIsland * 5;
+                //In the end of a player calculation, clear spots set to empty set
+                posList.clear();
+            }
+        }
+        return point; // FIXME Task 11
     }
 
-    //Zhou Linsheng(u7630421) adds this Depth First Search to calculate island link score
-    public static Set<List<int[]>> DFSearch(int[] lastPos, Set<int[]> posSet, List<int[]> visited) {
-        Set<List<int[]>> linkSet = new HashSet<>();
-        List<int[]> visit = new ArrayList<>();
-        for (int i = 0; i <= visited.size() - 1; i++) {
-            visit.add(visited.get(i));
-        }
-        Collections.copy(visit, visited);
-        int numOfAdjacentPos = 0;
-        for (int[] cord : posSet) {
-            if (!visited.contains(cord)) {
-                if (!ifAdjacent(lastPos[0], lastPos[1], cord[0], cord[1])) {
-                    continue;
-                }
-                numOfAdjacentPos++;
-                visit.add(cord);
-                linkSet.addAll(DFSearch(cord, posSet, visit));
-                visit.remove(visit.size() - 1);
+    public static List<int[]> getAdjacentSpots(int[] cord, List<int[]> listSet) {
+        List<int[]> adj = new ArrayList<>();
+        for(int[] cc:listSet){
+            if(ifAdjacent(cord[0],cord[1],cc[0],cc[1])){
+                adj.add(cc);
             }
         }
-        if (numOfAdjacentPos == 0) {
-            List<int[]> visit1 = new ArrayList<>();
-            for (int i = 0; i <= visited.size() - 1; i++) {
-                visit1.add(visited.get(i));
-            }
-            System.out.print("Link:");
-            for (int[] h : visit1) {
-                System.out.print(h[0] + "," + h[1] + ";");
-            }
-            System.out.print("\n");
-
-            Set<List<int[]>> linkSet1 = new HashSet<>();
-            linkSet1.add(visit1);
-
-            return linkSet1;
-        } else {
-            return linkSet;
-        }
+        return adj;
     }
 
     /**

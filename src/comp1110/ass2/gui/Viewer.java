@@ -223,12 +223,10 @@ public class Viewer extends Application {
                                 p.getPoints().addAll(69.28 + 69.28 * y, 20 + 60 * x,
                                         89.28 + 69.28 * y, 60 + 60 * x,
                                         49.28+69.28 * y, 60 + 60 * x);
-                                System.out.println(p);
                             } else {
                                 p.getPoints().addAll(34.64 + 69.28 * y, 20 + 60 * x,
                                         54.64 + 69.28 * y, 60 + 60 * x,
                                         14.64 + 69.28 * y, 60 + 60 * x);
-                                System.out.println(p);
                             }
                             if(noPlayer==0){
                                 p.setFill(Color.PINK);

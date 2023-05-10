@@ -23,8 +23,8 @@ import java.util.Set;
 
 public class Viewer extends Application {
 
-    private static final int VIEWER_WIDTH = 1200;
-    private static final int VIEWER_HEIGHT = 700;
+    private static final int VIEWER_WIDTH = 1300;
+    private static final int VIEWER_HEIGHT = 800;
 
     private final Group root = new Group();
     private final Group controls = new Group();

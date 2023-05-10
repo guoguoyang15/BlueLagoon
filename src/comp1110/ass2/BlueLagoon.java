@@ -111,8 +111,7 @@ public class BlueLagoon {
      * @return a string of the game state with resources randomly distributed
      */
     //Zhang Zhining completes Task 6
-    //Zhou Linsheng(u7630421) first finished task6 in March. But due to code review of D2E, he had to add one contribution
-    //otherwise he has no contribution at all
+
     public static String distributeResources(String stateString) {
         //add a space at front to make sure that for every statement, the second char of the substring is the type of statement
         //stateString = " " + stateString;
@@ -1405,15 +1404,16 @@ public class BlueLagoon {
             }
             //We suppose only 2 players on the board because it's easy to compare
             if (playerNum == 2) {
-                if (occupiers[0] != 0 || occupiers[1] != 0) {
-                    if (occupiers[0] > occupiers[1]) {
-                        playerPoints[0] += islandPoints[i];
-                    } else if (occupiers[0] < occupiers[1]) {
-                        playerPoints[1] += islandPoints[i];
-                    } else {
-                        playerPoints[0] += islandPoints[i] / 2;
-                        playerPoints[1] += islandPoints[i] / 2;
-                    }
+                if (occupiers[0] == 0 && occupiers[1] == 0) {
+                    continue;
+                }
+            } else if (playerNum==3) {
+                if (occupiers[0] == 0 && occupiers[1] == 0&&occupiers[2]==0) {
+                    continue;
+                }
+            }else {
+                if (occupiers[0] == 0&& occupiers[1] != 0||occupiers[2]!=0||occupiers[3]!=0) {
+
                 }
             }
         }

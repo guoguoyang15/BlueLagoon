@@ -154,7 +154,7 @@ public class BlueLagoon {
         String replaceString = " r C " + C + "B " + B + "W " + W + "P " + P + "S " + S;
         //Direct string addition, first with a separate string resource declaration
 
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < statement.length; i++) {
             if (statement[i].startsWith(" r")) {
                 stateString = stateString.replace(statement[i], replaceString);
             }
@@ -192,7 +192,7 @@ public class BlueLagoon {
         String[] statement = stateString.split(";");
         char turn = statement[1].charAt(3);//which player is moving
         char phase = statement[1].charAt(statement[1].length() - 1);//which phase, E(xpolaration) or S(ettlement)
-        int playerStringNum = 0;//the statue of this player is stored in which statement
+        int playerStringNum = 0;//the state of this player is stored in which statement
         for (int i = 2; i <= statement.length - 1; i++) {
             if (statement[i].charAt(1) == 'p') {
                 if (statement[i].charAt(3) == turn) {//this player's status string
@@ -382,7 +382,7 @@ public class BlueLagoon {
         String[] statement = stateString.split(";");
         char turn = statement[1].charAt(3);//which player is moving
         char phase = statement[1].charAt(statement[1].length() - 1);//which phase, E(xpolaration) or S(ettlement)
-        int playerStringNum = 0;//the statue of this player is stored in which statement
+        int playerStringNum = 0;//the state of this player is stored in which statement
         for (int i = 2; i <= statement.length - 1; i++) {
             if (statement[i].charAt(1) == 'p') {
                 if (statement[i].charAt(3) == turn) {//this player's status string
@@ -463,7 +463,7 @@ public class BlueLagoon {
                         String[] setPos = playerPositions[j].split(",");
                         int setx = Integer.parseInt(setPos[0]);
                         int sety = Integer.parseInt(setPos[1]);
-                        spots[setx][sety].occupiedByPlayer = whichplayer;
+                        spots[setx][sety].occupiedByPlayer = whichplayer;//from 0 to 3
                     }
                 }
             }
@@ -559,7 +559,6 @@ public class BlueLagoon {
                         }
                     }
                 }
-                return stringSet;
             } else {
                 for (int i = 0; i <= size - 1; i++) {
                     for (int j = 0; j <= size - 1; j++) {
@@ -606,8 +605,8 @@ public class BlueLagoon {
                         }
                     }
                 }
-                return stringSet;
             }
+            return stringSet;
             // FIXME Task 8
         } else {
             for (int i = 0; i <= size - 1; i++)
@@ -813,7 +812,7 @@ public class BlueLagoon {
         //The first method as usual
         stateString = " " + stateString;
         String[] statement = stateString.split(";");
-        int playerNumber = Integer.parseInt(statement[0].substring(statement[0].length() - 1, statement[0].length()));
+        int playerNumber = Integer.parseInt(statement[0].substring(statement[0].length() - 1, statement[0].length()));//Number of players of this game
         int[][] playerResources = new int[playerNumber][4];//E.G. playerResources[1][2] means the number of water possessed by player 2
         int player = 0;
         for (int i = 0; i <= statement.length - 1; i++) {
@@ -833,8 +832,9 @@ public class BlueLagoon {
                 sumOfResources = sumOfResources + playerResources[i][j];
             }
         }
+        //if all resources have been collected
         boolean allResources = sumOfResources == 24;
-
+        //flag means the number of players who have run out of moves
         int flag = 0;
         String newString = "";
         statement[0] = statement[0].substring(1, statement[0].length());

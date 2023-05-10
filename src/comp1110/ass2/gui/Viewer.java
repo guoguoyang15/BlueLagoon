@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -236,6 +237,8 @@ public class Viewer extends Application {
         root.getChildren().addAll(tilesList);
         root.getChildren().addAll(villageList);
         int turn=Integer.parseInt(parts[1].substring(3,4));//Which player's turn
+
+        //Display current phase
         char phase=parts[1].charAt(5);
         String phaseString;
         if(phase=='E'){
@@ -245,11 +248,25 @@ public class Viewer extends Application {
         }
         Label phaseLabel = new Label(phaseString+" Phase      ");
         Label turnLabel = new Label("Player "+(turn+1)+ " is moving.");
-
         HBox hBox=new HBox();
         hBox.getChildren().addAll(phaseLabel,turnLabel);
         hBox.setLayoutX(950);
         hBox.setLayoutY(10);
+        //Display players info
+        int firstPlayer=0;
+        for(int i=0;i<= parts.length-1;i++){
+            if(parts[i].startsWith(" p")){
+                firstPlayer=i;
+                break;
+            }
+        }
+
+        //HBox[] playerInfo=new HBox[];
+        for(int p=firstPlayer;p<= parts.length-1;p++){
+
+        }
+
+
         controls.getChildren().add(hBox);
     }
 

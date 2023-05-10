@@ -111,6 +111,8 @@ public class BlueLagoon {
      * @return a string of the game state with resources randomly distributed
      */
     //Zhang Zhining completes Task 6
+    //Zhou Linsheng(u7630421) first finished task6 in March. But due to code review of D2E, he had to add one contribution
+    //otherwise he has no contribution at all
     public static String distributeResources(String stateString) {
         //add a space at front to make sure that for every statement, the second char of the substring is the type of statement
         //stateString = " " + stateString;
@@ -1077,7 +1079,7 @@ public class BlueLagoon {
      * @return an integer array containing the calculated "Islands" portion of
      * the score for each player
      */
-    //Zhou Linsheng(u7630421) completes the following function
+    //Zhou Linsheng(u7630421) completes all methods in Task 11
     public static int[] calculateTotalIslandsScore(String stateString) {
         //split state string
         stateString = " " + stateString;
@@ -1275,12 +1277,16 @@ public class BlueLagoon {
                 //Now we know all possible links of the player in linkSet
                 int maxIsland = 0;
                 for (List<int[]> link : linkSet) {
+                    //A boolean array marking which islands occupied by this link
                     int[] islandOccupied = new int[numofisland];
+                    //if a node occupies No.i island
                     for (int[] cord : link) {
+                        //if a node occupies No.i island
                         if (spots[cord[0]][cord[1]].island != 100) {
                             islandOccupied[spots[cord[0]][cord[1]].island - 1]++;
                         }
                     }
+                    //Number of islands this link occupies
                     int thisLinkIsland = 0;
                     for (int i = 0; i <= numofisland - 1; i++) {
                         if (islandOccupied[i] != 0) {
@@ -1298,7 +1304,7 @@ public class BlueLagoon {
         }
         return point; // FIXME Task 11
     }
-
+    //Zhou Linsheng added this function to return a list of all adjacent position of a player given a certain spot
     public static List<int[]> getAdjacentSpots(int[] cord, List<int[]> listSet) {
         List<int[]> adj = new ArrayList<>();
         for(int[] cc:listSet){
@@ -1572,14 +1578,19 @@ public class BlueLagoon {
      * @param stateString a string representing a game state at the end of a phase
      * @return a string representing the new state achieved by following the end of phase rules
      */
+    //Zhou Linsheng(u7630421) finished Task 12
     public static String endPhase(String stateString) {
         //split state string
-        System.out.println(stateString);
         String[] statement = stateString.split(";");
+        //Which player is moving now
         char turn=statement[1].charAt(statement[1].length()-1);
+        //In settlement phase, we only need to calculate points
         if(turn=='S'){
+            //No. players
             int player=0;
+            //Calculate current points of players
             int[] points= calculateScores(stateString);
+            //Add new points to players
             for(int i=0;i<=statement.length-1;i++){
                 if(statement[i].startsWith(" p")){
                     String newString="";
@@ -1597,10 +1608,15 @@ public class BlueLagoon {
                 n+=statement[i]+";";
             }
             return n;
-        }else {
+        }//In exploration phase
+        else {
+            //Calculate points of players
             int[] points= calculateScores(stateString);
+            //Reset resources distribution
             stateString=distributeResources(stateString);
+            //Index of stone circle string
             int circle=0;
+            //Index of player 0 string
             int first=0;
             String[] statement2 = stateString.split(";");
             for(int i=0;i<=statement2.length-1;i++){
@@ -1612,15 +1628,19 @@ public class BlueLagoon {
                     break;
                 }
             }
+            //Split the stone circle string
             String[] circleString=statement2[circle].split(" ");
             List<String> circles=new ArrayList<>();
+            //Set up a list of stone circles coordinates
             for(int i=0;i<=circleString.length-1;i++){
                 circles.add(circleString[i]);
             }
             for(int i=0;i<=statement2.length-1;i++){
                 if(statement2[i].startsWith(" p")){
+                    //Prepare a new empty string
                     String nnn="";
                     String[] pla=statement2[i].split(" ");
+                    //Whether a position means settlers or villages
                     String flag="";
                     for(int m=1;m<= pla.length-1;m++){
                         if(pla[m].equals("S")){
@@ -1630,15 +1650,19 @@ public class BlueLagoon {
                         }else {
 
                         }
+                        //Skip all settlers
                         if(flag=="S"&&pla[m].contains(",")){
                             continue;
                         }
+                        //Skip all villages on stone circles
                         if(flag=="T"&&pla[m].contains(",")&&circles.contains(pla[m])){
                             continue;
                         }
+                        //change points of this player
                         if(m==3){
                             nnn+=" " + points[i-first];
                         } else if (m>=4&&m<=8) {
+                            //reset all resources that this player got in exploration phase
                             nnn+=" " + 0;
                         } else{
                             nnn+=" "+pla[m];
@@ -1649,13 +1673,13 @@ public class BlueLagoon {
                 }
             }
             String n="";
+            //Change of second string, set the phase character from 'E' to 'S'
             statement2[1]=statement2[1].substring(0,statement2[1].length()-1)+"S";
+            //Assemble a new statestring
             for(int i=0;i<=statement2.length-1;i++){
                 n+=statement2[i]+";";
             }
             return n;
-
-
         }
         //return ""; // FIXME Task 12
     }

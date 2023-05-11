@@ -1,32 +1,66 @@
 package comp1110.ass2;
+import static comp1110.ass2.BlueLagoon.isStateStringWellFormed;
 
-import javax.swing.plaf.synth.SynthTableUI;
 
 public class Player {
-    private Integer playerNumber = 0;
-    private Integer score = 0;
-    private Integer settlers = 0;
-    private Integer villages = 0;
-    private Integer bamboo = 0;
-    private Integer coconut = 0;
-    private Integer stone = 0;
-    private Integer water = 0;
-    private Integer statuette = 0;
-
+    private Integer playerNumber;
+    private Integer score;
+    private Integer coconut;
+    private Integer bamboo;
+    private Integer water;
+    private Integer stone;
+    private Integer statuette;
+    private Integer settlers;
+    private Integer villages;
     public Player() {
     }
 
-    public Player(Integer playerNumber, Integer score, Integer settlers, Integer villages, Integer bamboo, Integer coconut, Integer stone, Integer water, Integer statuette) {
+    public Player(Integer playerNumber, Integer score, Integer coconut, Integer bamboo, Integer water, Integer stone, Integer statuette, Integer settlers, Integer villages) {
         this.playerNumber = playerNumber;
         this.score = score;
+        this.coconut = coconut;
+        this.bamboo = bamboo;
+        this.water = water;
+        this.stone = stone;
+        this.statuette = statuette;
         this.settlers = settlers;
         this.villages = villages;
-        this.bamboo = bamboo;
-        this.coconut = coconut;
-        this.stone = stone;
-        this.water = water;
-        this.statuette = statuette;
 
+    }
+
+    public Player getStats(int playerNumber, String stateString) throws Exception {
+        String[] playerStatements = stateString.split("; p ");
+
+        if (!isStateStringWellFormed(stateString)) {
+            throw new Exception("State is not well-formed");
+        }
+
+        else {
+            String[] stats = playerStatements[playerNumber+1].split(" ");
+            this.playerNumber = Integer.parseInt(stats[0]);
+            this.score = Integer.parseInt(stats[1]);
+            this.coconut = Integer.parseInt(stats[2]);
+            this.bamboo = Integer.parseInt(stats[3]);
+            this.water = Integer.parseInt(stats[4]);
+            this.stone = Integer.parseInt(stats[5]);
+            this.statuette = Integer.parseInt(stats[6]);
+
+            int settlers = 0;
+            int villages = 0;
+            int i = 0;
+            while (!stats[8 + i].matches("T")) {
+                settlers++;
+                i++;
+            }
+            int j = 0;
+            while (!stats[8 + settlers + j].matches("")) {
+                villages++;
+                j++;
+            }
+            this.settlers = settlers;
+            this.villages = villages;
+        }
+        return new Player(playerNumber, score, coconut, bamboo, water, stone, statuette, settlers, villages);
     }
 }
 

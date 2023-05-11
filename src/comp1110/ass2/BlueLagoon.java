@@ -111,7 +111,6 @@ public class BlueLagoon {
      * @return a string of the game state with resources randomly distributed
      */
     //Zhang Zhining completes Task 6
-
     public static String distributeResources(String stateString) {
         //add a space at front to make sure that for every statement, the second char of the substring is the type of statement
         //stateString = " " + stateString;
@@ -1408,27 +1407,27 @@ public class BlueLagoon {
                 if (occupiers[0] == 0 && occupiers[1] == 0) {
                     continue;
                 }
-            } else if (playerNum==3) {
-                if (occupiers[0] == 0 && occupiers[1] == 0&&occupiers[2]==0) {
+            } else if (playerNum == 3) {
+                if (occupiers[0] == 0 && occupiers[1] == 0 && occupiers[2] == 0) {
                     continue;
                 }
-            }else {
-                if (occupiers[0] == 0&& occupiers[1] == 0&&occupiers[2]==0&&occupiers[3]==0) {
+            } else {
+                if (occupiers[0] == 0 && occupiers[1] == 0 && occupiers[2] == 0 && occupiers[3] == 0) {
                     continue;
                 }
             }
             int max = Arrays.stream(occupiers).max().getAsInt();
-            int maxNum=0;
-            boolean[] maxPlayers=new boolean[playerNum];
-            for(int y=0;y<= maxPlayers.length-1;y++){
-                if(occupiers[y]==max){
-                    maxPlayers[y]=true;
+            int maxNum = 0;
+            boolean[] maxPlayers = new boolean[playerNum];
+            for (int y = 0; y <= maxPlayers.length - 1; y++) {
+                if (occupiers[y] == max) {
+                    maxPlayers[y] = true;
                     maxNum++;
                 }
             }
-            for(int y=0;y<= maxPlayers.length-1;y++){
-                if(maxPlayers[y]){
-                    playerPoints[y]+=islandPoints[i]/maxNum;
+            for (int y = 0; y <= maxPlayers.length - 1; y++) {
+                if (maxPlayers[y]) {
+                    playerPoints[y] += islandPoints[i] / maxNum;
                 }
             }
         }
@@ -1712,37 +1711,159 @@ public class BlueLagoon {
      * @return a string representing the new state after the move is applied to the board
      */
     public static String applyMove(String stateString, String moveString) {
+        String copy = stateString;//用于找到比赛人数
+        int playerNumber = 0;
+        while (copy.indexOf("p") != -1) {
+            copy = copy.substring(copy.indexOf("p") + 5);
+            playerNumber++;
+        }
         stateString = placePiece(stateString, moveString);
         if (isPhaseOver(stateString)) {
             if (stateString.indexOf("S;") < 20 && stateString.indexOf("S;") > 0) {
                 stateString = endPhase(stateString);
             } else {
                 stateString = endPhase(stateString);
-                if(stateString.indexOf("T;")<0){
-                    if (stateString.indexOf(" c 0") > 0) {
-                        stateString = stateString.replace(" c 0", " c 1");
-                    } else {
-                        stateString = stateString.replace(" c 1", " c 0");
+                if (stateString.indexOf("T;") < 0) {
+                    switch (playerNumber) {
+                        case 2:
+                            if (stateString.indexOf(" c 0") > 0) {
+                                stateString = stateString.replace(" c 0", " c 1");
+                            } else {
+                                stateString = stateString.replace(" c 1", " c 0");
+                            }
+                            break;
+                        case 3:
+                            if (stateString.indexOf(" c 0") > 0) {
+                                stateString = stateString.replace(" c 0", " c 1");
+                            } else if (stateString.indexOf(" c 1") > 0) {
+                                stateString = stateString.replace(" c 1", " c 2");
+                            } else {
+                                stateString = stateString.replace(" c 2", " c 0");
+                            }
+                            break;
+                        case 4:
+                            if (stateString.indexOf(" c 0") > 0) {
+                                stateString = stateString.replace(" c 0", " c 1");
+                            } else if (stateString.indexOf(" c 1") > 0) {
+                                stateString = stateString.replace(" c 1", " c 2");
+                            } else if (stateString.indexOf(" c 2") > 0) {
+                                stateString = stateString.replace(" c 2", " c 3");
+                            } else {
+                                stateString = stateString.replace(" c 3", " c 0");
+                            }
+                            break;
+
+
+                    }
+                } else {
+                    String[] findVillage = stateString.split(";");
+                    switch (playerNumber) {
+                        case 2:
+                            if (stateString.indexOf("c 0") > 0 && findVillage[findVillage.length - 1].indexOf("T ") > 0) {
+                                stateString = stateString.replace("c 0", "c 1");
+                            }
+                            break;//会出现第一个玩家没村子，但是第二个玩家还有的情况，这个时候依然可以改变游玩玩家
+                        case 3:
+                            if (stateString.indexOf("c 0") > 0 && findVillage[findVillage.length - 2].indexOf("T ") > 0) {
+                                stateString = stateString.replace("c 0", "c 1");
+                            }
+                            if (stateString.indexOf("c 2") > 0 && findVillage[findVillage.length - 3].indexOf("T ") < 0) {
+                                stateString = stateString.replace("c 2", "c 1");
+                            }
+                            break;
+                        case 4:
+                            if (stateString.indexOf("c 3") > 0) {
+                                if (generateAllValidMoves(stateString.replace("c 3", "c 0")).size() > 0) {
+                                    stateString = stateString.replace("c 3", "c 0");
+                                } else if (generateAllValidMoves(stateString.replace("c 3", "c 1")).size() > 0) {
+                                    stateString = stateString.replace("c 3", "c 1");
+                                }
+                            }
+
                     }
                 }
+
+
             }
+
         } else {
-            if (stateString.indexOf(" c 0") > 0) {
-                if (generateAllValidMoves(stateString.replace(" c 0", " c 1")).size() > 0) {
-                    return stateString.replace(" c 0", " c 1");
-                } else {
-                    return stateString;
-                }
-            } else {
-                if (generateAllValidMoves(stateString.replace(" c 1", " c 0")).size() > 0) {
-                    return stateString.replace(" c 1", " c 0");
-                } else {
-                    return stateString;
-                }
+            switch (playerNumber) {
+                case 2:
+                    if (stateString.indexOf(" c 0") > 0) {
+                        if (generateAllValidMoves(stateString.replace(" c 0", " c 1")).size() > 0) {
+                            return stateString.replace(" c 0", " c 1");
+                        } else {
+                            return stateString;
+                        }
+                    } else {
+                        if (generateAllValidMoves(stateString.replace(" c 1", " c 0")).size() > 0) {
+                            return stateString.replace(" c 1", " c 0");
+                        } else {
+                            return stateString;
+                        }
+                    }
+                case 3:
+                    if (stateString.indexOf(" c 0") > 0) {
+                        if (generateAllValidMoves(stateString.replace(" c 0", " c 1")).size() > 0) {
+                            stateString = stateString.replace(" c 0", " c 1");
+                        } else if (generateAllValidMoves(stateString.replace(" c 0", " c 2")).size() > 0) {
+                            stateString = stateString.replace(" c 0", " c 2");
+                        }
+                    } else if (stateString.indexOf(" c 1") > 0) {
+                        stateString = stateString.replace(" c 1", " c 2");
+                        if (generateAllValidMoves(stateString).size() == 0) {
+                            stateString = stateString.replace(" c 2", " c 0");
+                        }
+                    } else {
+                        if (generateAllValidMoves(stateString.replace(" c 2", " c 0")).size() == 0) {
+                            stateString = stateString.replace(" c 2", " c 1");
+                        } else {
+                            stateString = stateString.replace(" c 2", " c 0");
+                        }
 
+                    }
+                    break;
+                case 4:
+                    if (stateString.indexOf("c 0") > 0) {
+
+                        if (generateAllValidMoves(stateString.replace(" c 0", " c 1")).size() > 0) {
+                            stateString = stateString.replace(" c 0", " c 1");
+                        } else if (generateAllValidMoves(stateString.replace(" c 0", " c 2")).size() > 0) {
+                            stateString = stateString.replace(" c 0", " c 2");
+                        } else if (generateAllValidMoves(stateString.replace(" c 0", " c 3")).size() > 0) {
+                            stateString = stateString.replace(" c 0", " c 3");
+                        }break;
+
+                    } else if (stateString.indexOf("c 1") > 0) {
+                        if (generateAllValidMoves(stateString.replace("c 1", "c 2")).size() > 0) {
+                            stateString = stateString.replace("c 1", "c 2");
+                        } else if (generateAllValidMoves(stateString.replace("c 1", "c 3")).size() > 0) {
+                            stateString = stateString.replace("c 1", "c 3");
+                        } else if (generateAllValidMoves(stateString.replace("c 1", "c 0")).size() > 0) {
+                            stateString = stateString.replace("c 1", "c 0");
+                        }break;
+                    }
+                    else if (stateString.indexOf("c 2") > 0) {
+                        if (generateAllValidMoves(stateString.replace("c 2", "c 3")).size() > 0) {
+                            stateString = stateString.replace("c 2", "c 3");
+                        } else if (generateAllValidMoves(stateString.replace("c 2", "c 0")).size() > 0) {
+                            stateString = stateString.replace("c 2", "c 0");
+                        } else if (generateAllValidMoves(stateString.replace("c 2", "c 1")).size() > 0) {
+                            stateString = stateString.replace("c 2", "c 1");
+                        }break;
+                    }
+                    else if (stateString.indexOf("c 3") > 0) {
+                        if (generateAllValidMoves(stateString.replace("c 3", "c 0")).size() > 0) {
+                            stateString = stateString.replace("c 3", "c 0");
+                        } else if (generateAllValidMoves(stateString.replace("c 3", "c 1")).size() > 0) {
+                            stateString = stateString.replace("c 3", "c 1");
+                        } else if (generateAllValidMoves(stateString.replace("c 3", "c 2")).size() > 0) {
+                            stateString = stateString.replace("c 3", "c 2");
+                        }break;
+                    }
             }
 
-        }
+            }
 
 
         /*stateString=placePiece(stateString,moveString);
@@ -1798,32 +1919,32 @@ public class BlueLagoon {
         //如果是定居阶段结束，那么就直接返回最终结果状态字符串
 
          */
-        // FIXME Task 13
-        return stateString;
-    }
-
-    /**
-     * Given a state string, returns a valid move generated by your AI.
-     * <p>
-     * As a hint, generateAllValidMoves() may prove a useful starting point,
-     * maybe if you could use some form of heuristic to see which of these
-     * moves is best?
-     * <p>
-     * Your AI should perform better than randomly generating moves,
-     * see how good you can make it!
-     *
-     * @param stateString a string representing a game state
-     * @return a move string generated by an AI
-     */
-    public static String generateAIMove(String stateString) {
-
-        Random r = new Random();
-        int n = r.nextInt(generateAllValidMoves(stateString).size());
-        ArrayList<String> list = new ArrayList<>();
-        for (String move : generateAllValidMoves(stateString)) {
-            list.add(move);
+            // FIXME Task 13
+            return stateString;
         }
-        return list.get(n); // FIXME Task 16
 
+        /**
+         * Given a state string, returns a valid move generated by your AI.
+         * <p>
+         * As a hint, generateAllValidMoves() may prove a useful starting point,
+         * maybe if you could use some form of heuristic to see which of these
+         * moves is best?
+         * <p>
+         * Your AI should perform better than randomly generating moves,
+         * see how good you can make it!
+         *
+         * @param stateString a string representing a game state
+         * @return a move string generated by an AI
+         */
+        public static String generateAIMove (String stateString){
+
+            Random r = new Random();
+            int n = r.nextInt(generateAllValidMoves(stateString).size());
+            ArrayList<String> list = new ArrayList<>();
+            for (String move : generateAllValidMoves(stateString)) {
+                list.add(move);
+            }
+            return list.get(n); // FIXME Task 16
+
+        }
     }
-}

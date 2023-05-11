@@ -1413,8 +1413,22 @@ public class BlueLagoon {
                     continue;
                 }
             }else {
-                if (occupiers[0] == 0&& occupiers[1] != 0||occupiers[2]!=0||occupiers[3]!=0) {
-
+                if (occupiers[0] == 0&& occupiers[1] == 0&&occupiers[2]==0&&occupiers[3]==0) {
+                    continue;
+                }
+            }
+            int max = Arrays.stream(occupiers).max().getAsInt();
+            int maxNum=0;
+            boolean[] maxPlayers=new boolean[playerNum];
+            for(int y=0;y<= maxPlayers.length-1;y++){
+                if(occupiers[y]==max){
+                    maxPlayers[y]=true;
+                    maxNum++;
+                }
+            }
+            for(int y=0;y<= maxPlayers.length-1;y++){
+                if(maxPlayers[y]){
+                    playerPoints[y]+=islandPoints[i]/maxNum;
                 }
             }
         }

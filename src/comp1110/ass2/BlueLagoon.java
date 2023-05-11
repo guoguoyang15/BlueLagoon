@@ -111,12 +111,13 @@ public class BlueLagoon {
      * @return a string of the game state with resources randomly distributed
      */
     //Zhang Zhining completes Task 6
+
     public static String distributeResources(String stateString) {
         //add a space at front to make sure that for every statement, the second char of the substring is the type of statement
         //stateString = " " + stateString;
         String[] statement = stateString.split(";");
         String target = null;
-        for (int i = 0; i < statement.length-1; i++) {
+        for (int i = 0; i < statement.length - 1; i++) {
             if (statement[i].startsWith(" s")) {
                 target = statement[i];
                 break;
@@ -154,7 +155,7 @@ public class BlueLagoon {
         String replaceString = " r C " + C + "B " + B + "W " + W + "P " + P + "S " + S;
         //Direct string addition, first with a separate string resource declaration
 
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < statement.length; i++) {
             if (statement[i].startsWith(" r")) {
                 stateString = stateString.replace(statement[i], replaceString);
             }
@@ -192,7 +193,7 @@ public class BlueLagoon {
         String[] statement = stateString.split(";");
         char turn = statement[1].charAt(3);//which player is moving
         char phase = statement[1].charAt(statement[1].length() - 1);//which phase, E(xpolaration) or S(ettlement)
-        int playerStringNum = 0;//the statue of this player is stored in which statement
+        int playerStringNum = 0;//the state of this player is stored in which statement
         for (int i = 2; i <= statement.length - 1; i++) {
             if (statement[i].charAt(1) == 'p') {
                 if (statement[i].charAt(3) == turn) {//this player's status string
@@ -382,7 +383,7 @@ public class BlueLagoon {
         String[] statement = stateString.split(";");
         char turn = statement[1].charAt(3);//which player is moving
         char phase = statement[1].charAt(statement[1].length() - 1);//which phase, E(xpolaration) or S(ettlement)
-        int playerStringNum = 0;//the statue of this player is stored in which statement
+        int playerStringNum = 0;//the state of this player is stored in which statement
         for (int i = 2; i <= statement.length - 1; i++) {
             if (statement[i].charAt(1) == 'p') {
                 if (statement[i].charAt(3) == turn) {//this player's status string
@@ -463,7 +464,7 @@ public class BlueLagoon {
                         String[] setPos = playerPositions[j].split(",");
                         int setx = Integer.parseInt(setPos[0]);
                         int sety = Integer.parseInt(setPos[1]);
-                        spots[setx][sety].occupiedByPlayer = whichplayer;
+                        spots[setx][sety].occupiedByPlayer = whichplayer;//from 0 to 3
                     }
                 }
             }
@@ -559,7 +560,6 @@ public class BlueLagoon {
                         }
                     }
                 }
-                return stringSet;
             } else {
                 for (int i = 0; i <= size - 1; i++) {
                     for (int j = 0; j <= size - 1; j++) {
@@ -606,8 +606,8 @@ public class BlueLagoon {
                         }
                     }
                 }
-                return stringSet;
             }
+            return stringSet;
             // FIXME Task 8
         } else {
             for (int i = 0; i <= size - 1; i++)
@@ -813,7 +813,7 @@ public class BlueLagoon {
         //The first method as usual
         stateString = " " + stateString;
         String[] statement = stateString.split(";");
-        int playerNumber = Integer.parseInt(statement[0].substring(statement[0].length() - 1, statement[0].length()));
+        int playerNumber = Integer.parseInt(statement[0].substring(statement[0].length() - 1, statement[0].length()));//Number of players of this game
         int[][] playerResources = new int[playerNumber][4];//E.G. playerResources[1][2] means the number of water possessed by player 2
         int player = 0;
         for (int i = 0; i <= statement.length - 1; i++) {
@@ -833,8 +833,9 @@ public class BlueLagoon {
                 sumOfResources = sumOfResources + playerResources[i][j];
             }
         }
+        //if all resources have been collected
         boolean allResources = sumOfResources == 24;
-
+        //flag means the number of players who have run out of moves
         int flag = 0;
         String newString = "";
         statement[0] = statement[0].substring(1, statement[0].length());
@@ -1077,7 +1078,7 @@ public class BlueLagoon {
      * @return an integer array containing the calculated "Islands" portion of
      * the score for each player
      */
-    //Zhou Linsheng(u7630421) completes the following function
+    //Zhou Linsheng(u7630421) completes all methods in Task 11
     public static int[] calculateTotalIslandsScore(String stateString) {
         //split state string
         stateString = " " + stateString;
@@ -1275,12 +1276,16 @@ public class BlueLagoon {
                 //Now we know all possible links of the player in linkSet
                 int maxIsland = 0;
                 for (List<int[]> link : linkSet) {
+                    //A boolean array marking which islands occupied by this link
                     int[] islandOccupied = new int[numofisland];
+                    //if a node occupies No.i island
                     for (int[] cord : link) {
+                        //if a node occupies No.i island
                         if (spots[cord[0]][cord[1]].island != 100) {
                             islandOccupied[spots[cord[0]][cord[1]].island - 1]++;
                         }
                     }
+                    //Number of islands this link occupies
                     int thisLinkIsland = 0;
                     for (int i = 0; i <= numofisland - 1; i++) {
                         if (islandOccupied[i] != 0) {
@@ -1299,10 +1304,11 @@ public class BlueLagoon {
         return point; // FIXME Task 11
     }
 
+    //Zhou Linsheng added this function to return a list of all adjacent position of a player given a certain spot
     public static List<int[]> getAdjacentSpots(int[] cord, List<int[]> listSet) {
         List<int[]> adj = new ArrayList<>();
-        for(int[] cc:listSet){
-            if(ifAdjacent(cord[0],cord[1],cc[0],cc[1])){
+        for (int[] cc : listSet) {
+            if (ifAdjacent(cord[0], cord[1], cc[0], cc[1])) {
                 adj.add(cc);
             }
         }
@@ -1399,15 +1405,30 @@ public class BlueLagoon {
             }
             //We suppose only 2 players on the board because it's easy to compare
             if (playerNum == 2) {
-                if (occupiers[0] != 0 || occupiers[1] != 0) {
-                    if (occupiers[0] > occupiers[1]) {
-                        playerPoints[0] += islandPoints[i];
-                    } else if (occupiers[0] < occupiers[1]) {
-                        playerPoints[1] += islandPoints[i];
-                    } else {
-                        playerPoints[0] += islandPoints[i] / 2;
-                        playerPoints[1] += islandPoints[i] / 2;
-                    }
+                if (occupiers[0] == 0 && occupiers[1] == 0) {
+                    continue;
+                }
+            } else if (playerNum==3) {
+                if (occupiers[0] == 0 && occupiers[1] == 0&&occupiers[2]==0) {
+                    continue;
+                }
+            }else {
+                if (occupiers[0] == 0&& occupiers[1] == 0&&occupiers[2]==0&&occupiers[3]==0) {
+                    continue;
+                }
+            }
+            int max = Arrays.stream(occupiers).max().getAsInt();
+            int maxNum=0;
+            boolean[] maxPlayers=new boolean[playerNum];
+            for(int y=0;y<= maxPlayers.length-1;y++){
+                if(occupiers[y]==max){
+                    maxPlayers[y]=true;
+                    maxNum++;
+                }
+            }
+            for(int y=0;y<= maxPlayers.length-1;y++){
+                if(maxPlayers[y]){
+                    playerPoints[y]+=islandPoints[i]/maxNum;
                 }
             }
         }
@@ -1572,90 +1593,108 @@ public class BlueLagoon {
      * @param stateString a string representing a game state at the end of a phase
      * @return a string representing the new state achieved by following the end of phase rules
      */
+    //Zhou Linsheng(u7630421) finished Task 12
     public static String endPhase(String stateString) {
         //split state string
-        System.out.println(stateString);
         String[] statement = stateString.split(";");
-        char turn=statement[1].charAt(statement[1].length()-1);
-        if(turn=='S'){
-            int player=0;
-            int[] points= calculateScores(stateString);
-            for(int i=0;i<=statement.length-1;i++){
-                if(statement[i].startsWith(" p")){
-                    String newString="";
-                    String[] playerStrings=statement[i].split(" ");
-                    playerStrings[3]=""+(points[player]+Integer.parseInt(playerStrings[3]));
-                    for(int j=1;j<=playerStrings.length-1;j++){
-                        newString+=" "+playerStrings[j];
+        //Which player is moving now
+        char turn = statement[1].charAt(statement[1].length() - 1);
+        //In settlement phase, we only need to calculate points
+        if (turn == 'S') {
+            //No. players
+            int player = 0;
+            //Calculate current points of players
+            int[] points = calculateScores(stateString);
+            //Add new points to players
+            for (int i = 0; i <= statement.length - 1; i++) {
+                if (statement[i].startsWith(" p")) {
+                    String newString = "";
+                    String[] playerStrings = statement[i].split(" ");
+                    playerStrings[3] = "" + (points[player] + Integer.parseInt(playerStrings[3]));
+                    for (int j = 1; j <= playerStrings.length - 1; j++) {
+                        newString += " " + playerStrings[j];
                     }
-                    statement[i]=newString;
+                    statement[i] = newString;
                     player++;
                 }
             }
-            String n="";
-            for(int i=0;i<=statement.length-1;i++){
-                n+=statement[i]+";";
+            String n = "";
+            for (int i = 0; i <= statement.length - 1; i++) {
+                n += statement[i] + ";";
             }
             return n;
-        }else {
-            int[] points= calculateScores(stateString);
-            stateString=distributeResources(stateString);
-            int circle=0;
-            int first=0;
+        }//In exploration phase
+        else {
+            //Calculate points of players
+            int[] points = calculateScores(stateString);
+            //Reset resources distribution
+            stateString = distributeResources(stateString);
+            //Index of stone circle string
+            int circle = 0;
+            //Index of player 0 string
+            int first = 0;
             String[] statement2 = stateString.split(";");
-            for(int i=0;i<=statement2.length-1;i++){
-                if(statement2[i].startsWith(" s")){
-                    circle=i;
+            for (int i = 0; i <= statement2.length - 1; i++) {
+                if (statement2[i].startsWith(" s")) {
+                    circle = i;
                 }
-                if(statement2[i].startsWith(" p")){
-                    first=i;
+                if (statement2[i].startsWith(" p")) {
+                    first = i;
                     break;
                 }
             }
-            String[] circleString=statement2[circle].split(" ");
-            List<String> circles=new ArrayList<>();
-            for(int i=0;i<=circleString.length-1;i++){
+            //Split the stone circle string
+            String[] circleString = statement2[circle].split(" ");
+            List<String> circles = new ArrayList<>();
+            //Set up a list of stone circles coordinates
+            for (int i = 0; i <= circleString.length - 1; i++) {
                 circles.add(circleString[i]);
             }
-            for(int i=0;i<=statement2.length-1;i++){
-                if(statement2[i].startsWith(" p")){
-                    String nnn="";
-                    String[] pla=statement2[i].split(" ");
-                    String flag="";
-                    for(int m=1;m<= pla.length-1;m++){
-                        if(pla[m].equals("S")){
-                            flag="S";
+            for (int i = 0; i <= statement2.length - 1; i++) {
+                if (statement2[i].startsWith(" p")) {
+                    //Prepare a new empty string
+                    String nnn = "";
+                    String[] pla = statement2[i].split(" ");
+                    //Whether a position means settlers or villages
+                    String flag = "";
+                    for (int m = 1; m <= pla.length - 1; m++) {
+                        if (pla[m].equals("S")) {
+                            flag = "S";
                         } else if (pla[m].equals("T")) {
-                            flag="T";
-                        }else {
+                            flag = "T";
+                        } else {
 
                         }
-                        if(flag=="S"&&pla[m].contains(",")){
+                        //Skip all settlers
+                        if (flag == "S" && pla[m].contains(",")) {
                             continue;
                         }
-                        if(flag=="T"&&pla[m].contains(",")&&circles.contains(pla[m])){
+                        //Skip all villages on stone circles
+                        if (flag == "T" && pla[m].contains(",") && circles.contains(pla[m])) {
                             continue;
                         }
-                        if(m==3){
-                            nnn+=" " + points[i-first];
-                        } else if (m>=4&&m<=8) {
-                            nnn+=" " + 0;
-                        } else{
-                            nnn+=" "+pla[m];
+                        //change points of this player
+                        if (m == 3) {
+                            nnn += " " + points[i - first];
+                        } else if (m >= 4 && m <= 8) {
+                            //reset all resources that this player got in exploration phase
+                            nnn += " " + 0;
+                        } else {
+                            nnn += " " + pla[m];
                         }
 
                     }
-                    statement2[i]=nnn;
+                    statement2[i] = nnn;
                 }
             }
-            String n="";
-            statement2[1]=statement2[1].substring(0,statement2[1].length()-1)+"S";
-            for(int i=0;i<=statement2.length-1;i++){
-                n+=statement2[i]+";";
+            String n = "";
+            //Change of second string, set the phase character from 'E' to 'S'
+            statement2[1] = statement2[1].substring(0, statement2[1].length() - 1) + "S";
+            //Assemble a new statestring
+            for (int i = 0; i <= statement2.length - 1; i++) {
+                n += statement2[i] + ";";
             }
             return n;
-
-
         }
         //return ""; // FIXME Task 12
     }
@@ -1673,8 +1712,94 @@ public class BlueLagoon {
      * @return a string representing the new state after the move is applied to the board
      */
     public static String applyMove(String stateString, String moveString) {
+        stateString = placePiece(stateString, moveString);
+        if (isPhaseOver(stateString)) {
+            if (stateString.indexOf("S;") < 20 && stateString.indexOf("S;") > 0) {
+                stateString = endPhase(stateString);
+            } else {
+                stateString = endPhase(stateString);
+                if(stateString.indexOf("T;")<0){
+                    if (stateString.indexOf(" c 0") > 0) {
+                        stateString = stateString.replace(" c 0", " c 1");
+                    } else {
+                        stateString = stateString.replace(" c 1", " c 0");
+                    }
+                }
+            }
+        } else {
+            if (stateString.indexOf(" c 0") > 0) {
+                if (generateAllValidMoves(stateString.replace(" c 0", " c 1")).size() > 0) {
+                    return stateString.replace(" c 0", " c 1");
+                } else {
+                    return stateString;
+                }
+            } else {
+                if (generateAllValidMoves(stateString.replace(" c 1", " c 0")).size() > 0) {
+                    return stateString.replace(" c 1", " c 0");
+                } else {
+                    return stateString;
+                }
 
-        return ""; // FIXME Task 13
+            }
+
+        }
+
+
+        /*stateString=placePiece(stateString,moveString);
+        String copy=stateString;//用于找到比赛人数
+        int playerNumber=0;
+        while (copy.indexOf("p")!=-1){
+            copy=copy.substring(copy.indexOf("p")+5);
+            playerNumber++;
+        }
+        int currentPlayer=stateString.charAt(stateString.indexOf("c")+2);
+        int initialPlayer=currentPlayer;
+        //先将状态字符串转化为移动后的样子
+        if(isPhaseOver(stateString))//判断阶段是否结束
+        {
+            stateString=endPhase(stateString);
+            if(stateString.indexOf("E")>0)//判断是否是探索阶段结束
+            {
+                currentPlayer=(currentPlayer+1)%playerNumber;
+                boolean []isPlayerHaveVillage=new boolean[playerNumber];
+                copy=stateString;
+                for (int i = 0; i < playerNumber;i++) {
+                    if (copy.charAt(copy.indexOf('T')+1)!=';')
+                    {
+                        isPlayerHaveVillage[i]=true;
+                    }
+                    else {isPlayerHaveVillage[i]=false;}
+                    copy=copy.replaceFirst("T","");
+                }
+                while (isPlayerHaveVillage[currentPlayer]==false)
+                {
+                    currentPlayer=(currentPlayer+1)%playerNumber;
+                }
+                stateString=stateString.replace("c "+initialPlayer,"c "+currentPlayer);
+                //判断下一任棋手有没有村庄
+                }
+
+
+            return stateString;
+        }
+        else {
+            if(stateString.indexOf("c 0")>0)
+            {
+                stateString=stateString.replace("c 0","c 1");
+            }
+            else {
+                stateString=stateString.replace("c 1","c 0");
+            }
+            return stateString;
+        }
+        //先调用判断阶段结束的方法，看看是否结束
+        //如果结束，再进行判断
+        //如果是探索阶段结束，那么就调用结束的方法，转换成阶段2，然后判断下一个棋手有没有村庄，如果有，就交给他，否则再换下一个棋手，返回状态字符串
+        //如果是定居阶段结束，那么就直接返回最终结果状态字符串
+
+         */
+        // FIXME Task 13
+        return stateString;
     }
 
     /**
@@ -1691,7 +1816,14 @@ public class BlueLagoon {
      * @return a move string generated by an AI
      */
     public static String generateAIMove(String stateString) {
-        return ""; // FIXME Task 16
+
+        Random r = new Random();
+        int n = r.nextInt(generateAllValidMoves(stateString).size());
+        ArrayList<String> list = new ArrayList<>();
+        for (String move : generateAllValidMoves(stateString)) {
+            list.add(move);
+        }
+        return list.get(n); // FIXME Task 16
 
     }
 }

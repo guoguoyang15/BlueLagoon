@@ -1,6 +1,7 @@
 package comp1110.ass2.gui;
 
 import comp1110.ass2.Player;
+//import comp1110.ass2.Player.getStats;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -24,29 +25,54 @@ public class Game extends Application {
 
         TableColumn<Player, Integer> column1 =
             new TableColumn<>("Player #");
-
         column1.setCellValueFactory(
             new PropertyValueFactory<>("playerNumber"));
-
         TableColumn<Player, Integer> column2 =
             new TableColumn<>("Score");
-
         column2.setCellValueFactory(
             new PropertyValueFactory<>("score"));
-
         TableColumn<Player, Integer> column3 =
-            new TableColumn<>("Settlers");
-
+            new TableColumn<>("C");
         column3.setCellValueFactory(
-            new PropertyValueFactory<>("settlers"));
+            new PropertyValueFactory<>("coconut"));
+        TableColumn<Player, Integer> column4 =
+                new TableColumn<>("B");
+        column4.setCellValueFactory(
+                new PropertyValueFactory<>("bamboo"));
+        TableColumn<Player, Integer> column5 =
+                new TableColumn<>("W");
+        column5.setCellValueFactory(
+                new PropertyValueFactory<>("water"));
+        TableColumn<Player, Integer> column6 =
+                new TableColumn<>("P");
+        column6.setCellValueFactory(
+                new PropertyValueFactory<>("stone"));
+        TableColumn<Player, Integer> column7 =
+                new TableColumn<>("S");
+        column7.setCellValueFactory(
+                new PropertyValueFactory<>("statuette"));
+        TableColumn<Player, Integer> column8 =
+                new TableColumn<>("Settlers");
+        column8.setCellValueFactory(
+                new PropertyValueFactory<>("settlers"));
+        TableColumn<Player, Integer> column9 =
+                new TableColumn<>("Villages");
+        column9.setCellValueFactory(
+                new PropertyValueFactory<>("villages"));
 
 
         scores.getColumns().add(column1);
         scores.getColumns().add(column2);
-        scores.getColumns().add(column2);
+        scores.getColumns().add(column3);
+        scores.getColumns().add(column4);
+        scores.getColumns().add(column5);
+        scores.getColumns().add(column6);
+        scores.getColumns().add(column7);
+        scores.getColumns().add(column8);
+        scores.getColumns().add(column9);
 
-        scores.getItems().add(
-            new Player());
+//        scores.getItems().add(
+//            new getStats(0, stateString));
         scores.getItems().add(
             new Player());
 

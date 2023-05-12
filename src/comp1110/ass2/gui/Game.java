@@ -1,20 +1,29 @@
 package comp1110.ass2.gui;
 
 import comp1110.ass2.Player;
-//import comp1110.ass2.Player.getStats;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 
 // FIXME Task 14
 // FIXME Task 15
+
 public class Game extends Application {
+    private final Group root = new Group();
+    private final Group controls = new Group();
+    private static final int WINDOW_WIDTH = 1200;
+    private static final int WINDOW_HEIGHT = 700;
+    private TextField stateTextField;
+    final VBox scoreTable = new VBox();
+
     // Written by Tyler
     public static void main(String[] args) {
         launch(args);
@@ -51,15 +60,6 @@ public class Game extends Application {
                 new TableColumn<>("S");
         column7.setCellValueFactory(
                 new PropertyValueFactory<>("statuette"));
-        TableColumn<Player, Integer> column8 =
-                new TableColumn<>("Settlers");
-        column8.setCellValueFactory(
-                new PropertyValueFactory<>("settlers"));
-        TableColumn<Player, Integer> column9 =
-                new TableColumn<>("Villages");
-        column9.setCellValueFactory(
-                new PropertyValueFactory<>("villages"));
-
 
         scores.getColumns().add(column1);
         scores.getColumns().add(column2);
@@ -68,25 +68,41 @@ public class Game extends Application {
         scores.getColumns().add(column5);
         scores.getColumns().add(column6);
         scores.getColumns().add(column7);
-        scores.getColumns().add(column8);
-        scores.getColumns().add(column9);
 
-//        scores.getItems().add(
-//            new getStats(0, stateString));
         scores.getItems().add(
-            new Player());
+            new Player(0, stateString));
+        scores.getItems().add(
+            new Player(1, stateString));
 
-        VBox vbox = new VBox(scores);
-        Scene scene = new Scene(vbox);
+        scoreTable.getChildren().addAll(scores);
         }
 
-    private final Group root = new Group();
-    private static final int WINDOW_WIDTH = 1200;
-    private static final int WINDOW_HEIGHT = 700;
+    private void makeControls() {
+        Label playerLabel = new Label("Game State:");
+        stateTextField = new TextField();
+        stateTextField.setPrefWidth(200);
+        Button button = new Button("Refresh");
+        button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {scoreboard(stateTextField.getText());
+            }
+        });
+        HBox hb = new HBox();
+        hb.getChildren().addAll(playerLabel, stateTextField, button);
+        hb.setSpacing(10);
+        hb.setLayoutX(50);
+        hb.setLayoutY(WINDOW_HEIGHT - 50);
+        controls.getChildren().add(hb);
+    }
 
     @Override
     public void start(Stage stage) throws Exception {
         Scene scene = new Scene(this.root, WINDOW_WIDTH, WINDOW_HEIGHT);
+        stage.setScene(scene);
+        root.getChildren().addAll(controls, scoreTable);
+
+        makeControls();
+
         stage.setScene(scene);
         stage.show();
     }

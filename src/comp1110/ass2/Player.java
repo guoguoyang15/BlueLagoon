@@ -1,6 +1,4 @@
 package comp1110.ass2;
-import static comp1110.ass2.BlueLagoon.isStateStringWellFormed;
-
 
 public class Player {
     private Integer playerNumber;
@@ -12,55 +10,40 @@ public class Player {
     private Integer statuette;
     private Integer settlers;
     private Integer villages;
-    public Player() {
-    }
+    private Integer PlayerNumber;
 
-    public Player(Integer playerNumber, Integer score, Integer coconut, Integer bamboo, Integer water, Integer stone, Integer statuette, Integer settlers, Integer villages) {
+    public Player(int playerNumber, String stateString) {
+        String[] playerStatements = stateString.split(";");
+        int thisindex=0;
+        for(int i=0;i<=playerStatements.length-1;i++){
+            if(playerStatements[i].charAt(3)==playerNumber+48){
+                thisindex=i;
+            }
+        }
+
+        String[] stats = playerStatements[thisindex].split(" ");
+        this.score = Integer.parseInt(stats[3]);
+        this.coconut = Integer.parseInt(stats[4]);
+        this.bamboo = Integer.parseInt(stats[5]);
+        this.water = Integer.parseInt(stats[6]);
+        this.stone = Integer.parseInt(stats[7]);
+        this.statuette = Integer.parseInt(stats[8]);
         this.playerNumber = playerNumber;
-        this.score = score;
-        this.coconut = coconut;
-        this.bamboo = bamboo;
-        this.water = water;
-        this.stone = stone;
-        this.statuette = statuette;
+
+        int settlers = 0;
+        int villages = 0;
+        int i = 0;
+        while (!stats[8 + i].matches("T(;)?")) {
+            settlers++;
+            i++;
+        }
+        int j = 0;
+        while (!stats[8 + settlers + j].matches("[T(;)?| ]")) {
+            villages++;
+            j++;
+        }
         this.settlers = settlers;
         this.villages = villages;
-
-    }
-
-    public Player getStats(int playerNumber, String stateString) throws Exception {
-        String[] playerStatements = stateString.split("; p ");
-
-        if (!isStateStringWellFormed(stateString)) {
-            throw new Exception("State is not well-formed");
-        }
-
-        else {
-            String[] stats = playerStatements[playerNumber+1].split(" ");
-            this.playerNumber = Integer.parseInt(stats[0]);
-            this.score = Integer.parseInt(stats[1]);
-            this.coconut = Integer.parseInt(stats[2]);
-            this.bamboo = Integer.parseInt(stats[3]);
-            this.water = Integer.parseInt(stats[4]);
-            this.stone = Integer.parseInt(stats[5]);
-            this.statuette = Integer.parseInt(stats[6]);
-
-            int settlers = 0;
-            int villages = 0;
-            int i = 0;
-            while (!stats[8 + i].matches("T")) {
-                settlers++;
-                i++;
-            }
-            int j = 0;
-            while (!stats[8 + settlers + j].matches("")) {
-                villages++;
-                j++;
-            }
-            this.settlers = settlers;
-            this.villages = villages;
-        }
-        return new Player(playerNumber, score, coconut, bamboo, water, stone, statuette, settlers, villages);
     }
 }
 

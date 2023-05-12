@@ -32,7 +32,7 @@ public class GenerateAllCoordinatesTest {
         evenArray[10] = new Coordinate(0, 10);
         evenArray[11] = new Coordinate(0, 11);
 
-        Assertions.assertArrayEquals(evenArray, generateAllCoordinates(0));
+        Assertions. assertArrayEquals(evenArray, generateAllCoordinates(0));
     }
 
     @Test

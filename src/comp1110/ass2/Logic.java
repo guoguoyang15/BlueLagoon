@@ -160,7 +160,6 @@ public class Logic {
         if (b.getBoard()[coordinate.x][coordinate.y].occupiedByPlayer != 100) {
             return false;
         }else {
-            System.out.println(coordinate.x+","+ coordinate.y);
             if (coordinate.x % 2 == 0) {
                 if((coordinate.x - 1) >=0 && (coordinate.y + 1) <= b.getSize() - 1 && b.getBoard()[coordinate.x - 1][coordinate.y + 1].occupiedByPlayer == b.getTurn()){
                     return true;
@@ -182,7 +181,6 @@ public class Logic {
                 }
                 return false;
             } else {
-                System.out.println(coordinate.x+","+ coordinate.y);
                 if((coordinate.x - 1) >=0 && (coordinate.y - 1) >=0 && b.getBoard()[coordinate.x - 1][coordinate.y - 1].occupiedByPlayer == b.getTurn()){
                     return true;
                 }
@@ -198,7 +196,7 @@ public class Logic {
                 if((coordinate.x + 1) <= b.getSize() - 1 &&coordinate.y!= b.getSize()-1&& b.getBoard()[coordinate.x + 1][coordinate.y].occupiedByPlayer == b.getTurn()){
                     return true;
                 }
-                if((coordinate.y + 1) <= b.getSize() - 2 && b.getBoard()[coordinate.x][coordinate.y + 1].occupiedByPlayer == b.getTurn()){
+                if((coordinate.y + 1) <= b.getSize() - 1 && b.getBoard()[coordinate.x][coordinate.y + 1].occupiedByPlayer == b.getTurn()){
                     return true;
                 }
                 return false;

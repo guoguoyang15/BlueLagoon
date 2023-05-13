@@ -193,8 +193,15 @@ public class Viewer extends Application {
                             if(noPlayer==0){
                                 p.setFill(Color.PINK);
                                 tilesList.add(p);
-                            } else  {
+                            } else if(noPlayer==1) {
                                 p.setFill(Color.CRIMSON);
+                                tilesList.add(p);
+                            }else if(noPlayer==2) {
+                                p.setFill(Color.PURPLE);
+                                tilesList.add(p);
+                            }
+                            else {
+                                p.setFill(Color.YELLOWGREEN);
                                 tilesList.add(p);
                             }
                         }

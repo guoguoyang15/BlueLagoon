@@ -4,6 +4,79 @@ import static comp1110.ass2.BlueLagoon.isStateStringWellFormed;
 
 public class Player {
     private Integer playerNumber;
+
+    public Integer getPlayerNumber() {
+        return playerNumber;
+    }
+
+    public void setPlayerNumber(Integer playerNumber) {
+        this.playerNumber = playerNumber;
+    }
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
+    }
+
+    public Integer getCoconut() {
+        return coconut;
+    }
+
+    public void setCoconut(Integer coconut) {
+        this.coconut = coconut;
+    }
+
+    public Integer getBamboo() {
+        return bamboo;
+    }
+
+    public void setBamboo(Integer bamboo) {
+        this.bamboo = bamboo;
+    }
+
+    public Integer getWater() {
+        return water;
+    }
+
+    public void setWater(Integer water) {
+        this.water = water;
+    }
+
+    public Integer getStone() {
+        return stone;
+    }
+
+    public void setStone(Integer stone) {
+        this.stone = stone;
+    }
+
+    public Integer getStatuette() {
+        return statuette;
+    }
+
+    public void setStatuette(Integer statuette) {
+        this.statuette = statuette;
+    }
+
+    public Integer getSettlers() {
+        return settlers;
+    }
+
+    public void setSettlers(Integer settlers) {
+        this.settlers = settlers;
+    }
+
+    public Integer getVillages() {
+        return villages;
+    }
+
+    public void setVillages(Integer villages) {
+        this.villages = villages;
+    }
+
     private Integer score;
     private Integer coconut;
     private Integer bamboo;

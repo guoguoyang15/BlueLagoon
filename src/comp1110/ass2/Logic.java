@@ -1,6 +1,9 @@
 package comp1110.ass2;
 
+import java.util.Random;
+
 public class Logic {
+    //Task 3
     public static boolean isStateStringWellFormed1(String stateString) {
         // Written by Tyler and edited by Zhining
         String[] parts = stateString.split(";");
@@ -49,10 +52,159 @@ public class Logic {
             return false;
         }
     }
-
+    //Task 4
     public static boolean isMoveStringWellFormed1(String moveString) {
         // Written by Tyler
         // Checks if Move string is properly formatted
         return moveString.matches("[S|T]\s\\d{1,2},\\d{1,2}");
     }
+
+    //Task 6
+    public static String distributeResources1(String stateString) {
+        //add a space at front to make sure that for every statement, the second char of the substring is the type of statement
+        //stateString = " " + stateString;
+        String[] statement = stateString.split(";");
+        String target = null;
+        for (int i = 0; i < statement.length - 1; i++) {
+            if (statement[i].startsWith(" s")) {
+                target = statement[i];
+                break;
+            }
+        }
+        //First use target to intercept a string starting with s
+        target = target.replace(" s ", "");
+        //Cut out the extraneous characters at the beginning
+        String[] stoneCircle = target.split(" ");
+        //Separating out sequential characters in a string
+        String[] random = new String[32];
+        //Also set up a new array of strings
+        Random r = new Random();
+        int[] a = new int[32];
+        int rand;
+        for (int i = 0; i < 32; i++) {
+            do {
+                rand = r.nextInt(32);
+                if (a[rand] == 0) {
+                    a[rand] = i;
+                    break;
+                }
+            } while (true);
+        }
+        for (int i = 0; i < 32; i++) {
+            random[i] = stoneCircle[a[i]];
+        }
+        // Randomize an array from 0 to 31 and record the new data into a new string
+        String C = random[0] + " " + random[1] + " " + random[2] + " " + random[3] + " " + random[4] + " " + random[5] + " ";
+        String B = random[6] + " " + random[7] + " " + random[8] + " " + random[9] + " " + random[10] + " " + random[11] + " ";
+        String W = random[12] + " " + random[13] + " " + random[14] + " " + random[15] + " " + random[16] + " " + random[17] + " ";
+        String P = random[18] + " " + random[19] + " " + random[20] + " " + random[21] + " " + random[22] + " " + random[23] + " ";
+        String S = random[24] + " " + random[25] + " " + random[26] + " " + random[27] + " " + random[28] + " " + random[29] + " " + random[30] + " " + random[31];
+        //Start with a string representation of the individual resources
+        String replaceString = " r C " + C + "B " + B + "W " + W + "P " + P + "S " + S;
+        //Direct string addition, first with a separate string resource declaration
+
+        for (int i = 0; i < statement.length; i++) {
+            if (statement[i].startsWith(" r")) {
+                stateString = stateString.replace(statement[i], replaceString);
+            }
+        }
+
+        return stateString;
+    }
+    public static boolean isPosInIndex(int size, int x, int y) {
+        if (x < 0 || x >= size) {
+            return false;
+        } else {
+            if (x % 2 == 0) {
+                if (y < 0 || y > size - 2)
+                    return false;
+            } else {
+                if (y < 0 || y > size - 1)
+                    return false;
+            }
+        }
+        return true;
+    }
+    //Task 7
+    public static boolean isMoveValid1(Board b,char type, Coordinate coordinate) {
+        if(b.isPhase()){//In exploration phase
+            if(type=='S'){
+                if(b.getSettlerLimit()<=b.getPlayers()[b.getTurn()].getSettlers()){
+                    return false;
+                }
+            }else {
+                if(b.getVillageLimit()<=b.getPlayers()[b.getTurn()].getVillages()){
+                    return false;
+                }
+            }
+        }else {//In settlement phase
+            if(type=='S'){
+                if(b.getSettlerLimit()<=b.getPlayers()[b.getTurn()].getSettlers()){
+                    return false;
+                }
+            }else {
+                return false;
+            }
+        }
+        //whether the coordinate is out of the board
+        if (!isPosInIndex(b.getSize(), coordinate.x, coordinate.y)) {
+            return false;
+        }
+
+        if (b.isPhase()) {
+            if (b.getBoard()[coordinate.x][coordinate.y].spotType == 0)
+                return type == 'S' && b.getBoard()[coordinate.x][coordinate.y].occupiedByPlayer == 100;
+        }
+        if (b.getBoard()[coordinate.x][coordinate.y].occupiedByPlayer != 100) {
+            return false;
+        }else {
+            System.out.println(coordinate.x+","+ coordinate.y);
+            if (coordinate.x % 2 == 0) {
+                if((coordinate.x - 1) >=0 && (coordinate.y + 1) <= b.getSize() - 1 && b.getBoard()[coordinate.x - 1][coordinate.y + 1].occupiedByPlayer == b.getTurn()){
+                    return true;
+                }
+                if((coordinate.x + 1) <= b.getSize() - 1 && (coordinate.y + 1) <= b.getSize() - 1 && b.getBoard()[coordinate.x + 1][coordinate.y + 1].occupiedByPlayer == b.getTurn()){
+                    return true;
+                }
+                if((coordinate.y - 1) >= 0 && b.getBoard()[coordinate.x][coordinate.y - 1].occupiedByPlayer == b.getTurn()){
+                    return true;
+                }
+                if((coordinate.x - 1) >= 0 && b.getBoard()[coordinate.x - 1][coordinate.y].occupiedByPlayer == b.getTurn()){
+                    return true;
+                }
+                if((coordinate.x + 1) <= b.getSize() - 1 && b.getBoard()[coordinate.x + 1][coordinate.y].occupiedByPlayer == b.getTurn()){
+                    return true;
+                }
+                if((coordinate.y + 1) <= b.getSize() - 2 && b.getBoard()[coordinate.x][coordinate.y + 1].occupiedByPlayer == b.getTurn()){
+                    return true;
+                }
+                return false;
+            } else {
+                System.out.println(coordinate.x+","+ coordinate.y);
+                if((coordinate.x - 1) >=0 && (coordinate.y - 1) >=0 && b.getBoard()[coordinate.x - 1][coordinate.y - 1].occupiedByPlayer == b.getTurn()){
+                    return true;
+                }
+                if((coordinate.x + 1) <= b.getSize() - 1 && (coordinate.y - 1) >=0 && b.getBoard()[coordinate.x + 1][coordinate.y - 1].occupiedByPlayer == b.getTurn()){
+                    return true;
+                }
+                if((coordinate.y - 1) >= 0 && b.getBoard()[coordinate.x][coordinate.y - 1].occupiedByPlayer == b.getTurn()){
+                    return true;
+                }
+                if((coordinate.x - 1) >= 0 &&coordinate.y!= b.getSize()-1&& b.getBoard()[coordinate.x - 1][coordinate.y].occupiedByPlayer == b.getTurn()){
+                    return true;
+                }
+                if((coordinate.x + 1) <= b.getSize() - 1 &&coordinate.y!= b.getSize()-1&& b.getBoard()[coordinate.x + 1][coordinate.y].occupiedByPlayer == b.getTurn()){
+                    return true;
+                }
+                if((coordinate.y + 1) <= b.getSize() - 2 && b.getBoard()[coordinate.x][coordinate.y + 1].occupiedByPlayer == b.getTurn()){
+                    return true;
+                }
+                return false;
+            }
+        }
+    }
+
+
+
+
 }

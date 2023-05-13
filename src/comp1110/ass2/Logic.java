@@ -54,6 +54,7 @@ public class Logic {
             return false;
         }
     }
+
     //Task 4
     public static boolean isMoveStringWellFormed1(String moveString) {
         // Written by Tyler
@@ -113,6 +114,7 @@ public class Logic {
 
         return stateString;
     }
+
     public static boolean isPosInIndex(int size, int x, int y) {
         if (x < 0 || x >= size) {
             return false;
@@ -127,24 +129,25 @@ public class Logic {
         }
         return true;
     }
+
     //Task 7
-    public static boolean isMoveValid1(Board b,char type, Coordinate coordinate) {
-        if(b.isPhase()){//In exploration phase
-            if(type=='S'){
-                if(b.getSettlerLimit()<=b.getPlayers()[b.getTurn()].getSettlers()){
+    public static boolean isMoveValid1(Board b, char type, Coordinate coordinate) {
+        if (b.isPhase()) {//In exploration phase
+            if (type == 'S') {
+                if (b.getSettlerLimit() <= b.getPlayers()[b.getTurn()].getSettlers()) {
                     return false;
                 }
-            }else {
-                if(b.getVillageLimit()<=b.getPlayers()[b.getTurn()].getVillages()){
+            } else {
+                if (b.getVillageLimit() <= b.getPlayers()[b.getTurn()].getVillages()) {
                     return false;
                 }
             }
-        }else {//In settlement phase
-            if(type=='S'){
-                if(b.getSettlerLimit()<=b.getPlayers()[b.getTurn()].getSettlers()){
+        } else {//In settlement phase
+            if (type == 'S') {
+                if (b.getSettlerLimit() <= b.getPlayers()[b.getTurn()].getSettlers()) {
                     return false;
                 }
-            }else {
+            } else {
                 return false;
             }
         }
@@ -159,44 +162,44 @@ public class Logic {
         }
         if (b.getBoard()[coordinate.x][coordinate.y].occupiedByPlayer != 100) {
             return false;
-        }else {
+        } else {
             if (coordinate.x % 2 == 0) {
-                if((coordinate.x - 1) >=0 && (coordinate.y + 1) <= b.getSize() - 1 && b.getBoard()[coordinate.x - 1][coordinate.y + 1].occupiedByPlayer == b.getTurn()){
+                if ((coordinate.x - 1) >= 0 && (coordinate.y + 1) <= b.getSize() - 1 && b.getBoard()[coordinate.x - 1][coordinate.y + 1].occupiedByPlayer == b.getTurn()) {
                     return true;
                 }
-                if((coordinate.x + 1) <= b.getSize() - 1 && (coordinate.y + 1) <= b.getSize() - 1 && b.getBoard()[coordinate.x + 1][coordinate.y + 1].occupiedByPlayer == b.getTurn()){
+                if ((coordinate.x + 1) <= b.getSize() - 1 && (coordinate.y + 1) <= b.getSize() - 1 && b.getBoard()[coordinate.x + 1][coordinate.y + 1].occupiedByPlayer == b.getTurn()) {
                     return true;
                 }
-                if((coordinate.y - 1) >= 0 && b.getBoard()[coordinate.x][coordinate.y - 1].occupiedByPlayer == b.getTurn()){
+                if ((coordinate.y - 1) >= 0 && b.getBoard()[coordinate.x][coordinate.y - 1].occupiedByPlayer == b.getTurn()) {
                     return true;
                 }
-                if((coordinate.x - 1) >= 0 && b.getBoard()[coordinate.x - 1][coordinate.y].occupiedByPlayer == b.getTurn()){
+                if ((coordinate.x - 1) >= 0 && b.getBoard()[coordinate.x - 1][coordinate.y].occupiedByPlayer == b.getTurn()) {
                     return true;
                 }
-                if((coordinate.x + 1) <= b.getSize() - 1 && b.getBoard()[coordinate.x + 1][coordinate.y].occupiedByPlayer == b.getTurn()){
+                if ((coordinate.x + 1) <= b.getSize() - 1 && b.getBoard()[coordinate.x + 1][coordinate.y].occupiedByPlayer == b.getTurn()) {
                     return true;
                 }
-                if((coordinate.y + 1) <= b.getSize() - 2 && b.getBoard()[coordinate.x][coordinate.y + 1].occupiedByPlayer == b.getTurn()){
+                if ((coordinate.y + 1) <= b.getSize() - 2 && b.getBoard()[coordinate.x][coordinate.y + 1].occupiedByPlayer == b.getTurn()) {
                     return true;
                 }
                 return false;
             } else {
-                if((coordinate.x - 1) >=0 && (coordinate.y - 1) >=0 && b.getBoard()[coordinate.x - 1][coordinate.y - 1].occupiedByPlayer == b.getTurn()){
+                if ((coordinate.x - 1) >= 0 && (coordinate.y - 1) >= 0 && b.getBoard()[coordinate.x - 1][coordinate.y - 1].occupiedByPlayer == b.getTurn()) {
                     return true;
                 }
-                if((coordinate.x + 1) <= b.getSize() - 1 && (coordinate.y - 1) >=0 && b.getBoard()[coordinate.x + 1][coordinate.y - 1].occupiedByPlayer == b.getTurn()){
+                if ((coordinate.x + 1) <= b.getSize() - 1 && (coordinate.y - 1) >= 0 && b.getBoard()[coordinate.x + 1][coordinate.y - 1].occupiedByPlayer == b.getTurn()) {
                     return true;
                 }
-                if((coordinate.y - 1) >= 0 && b.getBoard()[coordinate.x][coordinate.y - 1].occupiedByPlayer == b.getTurn()){
+                if ((coordinate.y - 1) >= 0 && b.getBoard()[coordinate.x][coordinate.y - 1].occupiedByPlayer == b.getTurn()) {
                     return true;
                 }
-                if((coordinate.x - 1) >= 0 &&coordinate.y!= b.getSize()-1&& b.getBoard()[coordinate.x - 1][coordinate.y].occupiedByPlayer == b.getTurn()){
+                if ((coordinate.x - 1) >= 0 && coordinate.y != b.getSize() - 1 && b.getBoard()[coordinate.x - 1][coordinate.y].occupiedByPlayer == b.getTurn()) {
                     return true;
                 }
-                if((coordinate.x + 1) <= b.getSize() - 1 &&coordinate.y!= b.getSize()-1&& b.getBoard()[coordinate.x + 1][coordinate.y].occupiedByPlayer == b.getTurn()){
+                if ((coordinate.x + 1) <= b.getSize() - 1 && coordinate.y != b.getSize() - 1 && b.getBoard()[coordinate.x + 1][coordinate.y].occupiedByPlayer == b.getTurn()) {
                     return true;
                 }
-                if((coordinate.y + 1) <= b.getSize() - 1 && b.getBoard()[coordinate.x][coordinate.y + 1].occupiedByPlayer == b.getTurn()){
+                if ((coordinate.y + 1) <= b.getSize() - 1 && b.getBoard()[coordinate.x][coordinate.y + 1].occupiedByPlayer == b.getTurn()) {
                     return true;
                 }
                 return false;
@@ -207,7 +210,7 @@ public class Logic {
     //Task 8
     public static Set<String> generateAllValidMoves1(Board b) {
         Set<String> stringSet = new HashSet<String>();//Create a new empty HashSet of movestrings
-        boolean firstStep = b.getPlayers()[b.getTurn()].getSettlers()== 0 && b.getPlayers()[b.getTurn()].getVillages() == 0;
+        boolean firstStep = b.getPlayers()[b.getTurn()].getSettlers() == 0 && b.getPlayers()[b.getTurn()].getVillages() == 0;
         boolean canMoveSettler = false;//if this player can move settlers in this phase
         boolean canMoveVillage = false;//if this player can move villages in this phase+
         if (b.isPhase()) {//in phase 1
@@ -223,7 +226,7 @@ public class Logic {
             }
             canMoveVillage = false;
         }
-        if (b.isPhase() ==false || !firstStep) {
+        if (b.isPhase() == false || !firstStep) {
             if (b.isPhase()) {
                 for (int i = 0; i <= b.getSize() - 1; i++) {
                     for (int j = 0; j <= b.getSize() - 1; j++) {
@@ -313,7 +316,7 @@ public class Logic {
                 }
             } else {
                 for (int i = 0; i <= b.getSize() - 1; i++) {
-                    for (int j = 0; j <=b.getSize() - 1; j++) {
+                    for (int j = 0; j <= b.getSize() - 1; j++) {
                         if (isPosInIndex(b.getSize(), i, j)) if (b.getBoard()[i][j].occupiedByPlayer == 100) {
                             if (i % 2 == 1) {
                                 if (isPosInIndex(b.getSize(), i - 1, j - 1) && b.getBoard()[i - 1][j - 1].occupiedByPlayer == b.getTurn())
@@ -322,7 +325,7 @@ public class Logic {
                                 if (isPosInIndex(b.getSize(), i + 1, j - 1) && b.getBoard()[i + 1][j - 1].occupiedByPlayer == b.getTurn())
                                     if (canMoveSettler)
                                         stringSet.add("S " + i + "," + j);
-                                if (isPosInIndex(b.getSize(), i, j - 1) && b.getBoard()[i][j - 1].occupiedByPlayer ==b.getTurn())
+                                if (isPosInIndex(b.getSize(), i, j - 1) && b.getBoard()[i][j - 1].occupiedByPlayer == b.getTurn())
                                     if (canMoveSettler)
                                         stringSet.add("S " + i + "," + j);
                                 if (isPosInIndex(b.getSize(), i - 1, j) && b.getBoard()[i - 1][j].occupiedByPlayer == b.getTurn())
@@ -369,22 +372,71 @@ public class Logic {
             return stringSet;
         }
     }
-
-    public static boolean isPhaseOver1(Board b){
+    //Task 9
+    public static boolean isPhaseOver1(Board b) {
         //Count the number of resources collected by all players
-        int allResources=0;
-        for(int i=0;i<=b.getPlayerNum()-1;i++){
-            allResources+=b.getPlayers()[i].getBamboo()+b.getPlayers()[i].getCoconut()+b.getPlayers()[i].getWater()+b.getPlayers()[i].getStone();
+        int allResources = 0;
+        for (int i = 0; i <= b.getPlayerNum() - 1; i++) {
+            allResources += b.getPlayers()[i].getBamboo() + b.getPlayers()[i].getCoconut() + b.getPlayers()[i].getWater() + b.getPlayers()[i].getStone();
         }
-        boolean collectedAll=allResources==24;
-        int noMoves=0;
-        for(int i=0;i<=b.getPlayerNum()-1;i++){
+        boolean collectedAll = allResources == 24;
+        int noMoves = 0;
+        for (int i = 0; i <= b.getPlayerNum() - 1; i++) {
             b.setTurn(i);
-            if(generateAllValidMoves1(b).size()==0){
+            if (generateAllValidMoves1(b).size() == 0) {
                 noMoves++;
             }
         }
-        return collectedAll||noMoves==b.getPlayerNum();
+        return collectedAll || noMoves == b.getPlayerNum();
+    }
+
+    //Zhou Linsheng(u7630421) completes the following function to sort positions in state string
+    public static boolean comparePos(String pos1, String pos2) {
+        String[] posString1 = pos1.split(",");
+        String[] posString2 = pos2.split(",");
+        int x1 = Integer.parseInt(posString1[0]);
+        int y1 = Integer.parseInt(posString1[1]);
+        int x2 = Integer.parseInt(posString2[0]);
+        int y2 = Integer.parseInt(posString2[1]);
+        if (x1 > x2) {
+            return true;
+        } else if (x1 < x2) {
+            return false;
+        } else {
+            return y1 > y2;
+        }
+    }
+
+    public static String placePiece1(Board b, char type, Coordinate coordinate) {
+        //Change occupier
+        b.getBoard()[coordinate.x][coordinate.y].occupiedByPlayer=b.getTurn();
+        //Change settler or village
+        if(type=='S'){
+            b.getBoard()[coordinate.x][coordinate.y].settlerOrVillage= Spot.SettlerOrVillage.SETTLER;
+        }else {
+            b.getBoard()[coordinate.x][coordinate.y].settlerOrVillage= Spot.SettlerOrVillage.VILLAGE;
+        }
+        if(b.getBoard()[coordinate.x][coordinate.y].resources!=Resource.NULL){
+            if(b.getBoard()[coordinate.x][coordinate.y].resources==Resource.COCONUT){
+                int n=b.getPlayers()[b.getTurn()].getCoconut();
+                b.getPlayers()[b.getTurn()].setCoconut(n+1);
+            }else if(b.getBoard()[coordinate.x][coordinate.y].resources==Resource.BAMBOO){
+                int n=b.getPlayers()[b.getTurn()].getBamboo();
+                b.getPlayers()[b.getTurn()].setBamboo(n+1);
+            }else if(b.getBoard()[coordinate.x][coordinate.y].resources==Resource.WATER){
+                int n=b.getPlayers()[b.getTurn()].getWater();
+                b.getPlayers()[b.getTurn()].setWater(n+1);
+            }else if(b.getBoard()[coordinate.x][coordinate.y].resources==Resource.PRECIOUSSTONE){
+                int n=b.getPlayers()[b.getTurn()].getStone();
+                b.getPlayers()[b.getTurn()].setStone(n+1);
+            }else if(b.getBoard()[coordinate.x][coordinate.y].resources==Resource.STATUETTE){
+                int n=b.getPlayers()[b.getTurn()].getStatuette();
+                b.getPlayers()[b.getTurn()].setStatuette(n+1);
+            }
+            b.getBoard()[coordinate.x][coordinate.y].resources=Resource.NULL;
+        }
+
+        return b.toString();
     }
 
 

@@ -242,6 +242,110 @@ public class Board {
         this.players = p;
         this.board=spots;
     }
+    //Return the statestring representing this board
+    public String toString(){
+        String stateString="";
+        //"a 13 2;"
+        stateString+="a "+size+" "+playerNum+";";
+        //" c 0 E"
+        stateString+=" c "+turn+" ";
+        if(isPhase()){
+            stateString+="E;";
+        }
+        else{
+            stateString+="S;";
+        }
+        //Set up island strings
+        for(int i=0;i<=islandNum-1;i++){
+            stateString+=" i "+weight[i];
+            //Iterator the board
+            for(int j=0;j<=size-1;j++){
+                for(int k=0;k<=size-1;k++){
+                     if(board[j][k]!=null&&board[j][k].island==i){
+                         stateString+=" "+j+","+k;
+                     }
+                }
+            }
+            stateString+=";";
+        }
+        //Set up stone circle string
+        stateString+=" s";
+        for(int j=0;j<=size-1;j++){
+            for(int k=0;k<=size-1;k++){
+                if(board[j][k]!=null&&board[j][k].circle){
+                    stateString+=" "+j+","+k;
+                }
+            }
+        }
+        stateString+=";";
+        //Set up resources string
+        stateString+=" r";
+        stateString+=" C";
+        for(int j=0;j<=size-1;j++){
+            for(int k=0;k<=size-1;k++){
+                if(board[j][k]!=null&&board[j][k].resources==Resource.COCONUT){
+                    stateString+=" "+j+","+k;
+                }
+            }
+        }
+        stateString+=" B";
+        for(int j=0;j<=size-1;j++){
+            for(int k=0;k<=size-1;k++){
+                if(board[j][k]!=null&&board[j][k].resources==Resource.BAMBOO){
+                    stateString+=" "+j+","+k;
+                }
+            }
+        }
+        stateString+=" W";
+        for(int j=0;j<=size-1;j++){
+            for(int k=0;k<=size-1;k++){
+                if(board[j][k]!=null&&board[j][k].resources==Resource.WATER){
+                    stateString+=" "+j+","+k;
+                }
+            }
+        }
+        stateString+=" P";
+        for(int j=0;j<=size-1;j++){
+            for(int k=0;k<=size-1;k++){
+                if(board[j][k]!=null&&board[j][k].resources==Resource.PRECIOUSSTONE){
+                    stateString+=" "+j+","+k;
+                }
+            }
+        }
+        stateString+=" S";
+        for(int j=0;j<=size-1;j++){
+            for(int k=0;k<=size-1;k++){
+                if(board[j][k]!=null&&board[j][k].resources==Resource.STATUETTE){
+                    stateString+=" "+j+","+k;
+                }
+            }
+        }
+        stateString+=";";
+        //Set up player strings
+        for(int i=0;i<=playerNum-1;i++){
+            stateString+=" p "+i+" "+players[i].getScore()+" "+players[i].getCoconut()+" "+players[i].getBamboo()+" "+players[i].getWater()+" "+players[i].getStone()+" "+players[i].getStatuette();
+            stateString+=" S";
+            //Add settlers
+            for(int j=0;j<=size-1;j++){
+                for(int k=0;k<=size-1;k++){
+                    if(board[j][k]!=null&&board[j][k].occupiedByPlayer==i&&board[j][k].settlerOrVillage== Spot.SettlerOrVillage.SETTLER){
+                        stateString+=" "+j+","+k;
+                    }
+                }
+            }
+            stateString+=" T";
+            //Add villages
+            for(int j=0;j<=size-1;j++){
+                for(int k=0;k<=size-1;k++){
+                    if(board[j][k]!=null&&board[j][k].occupiedByPlayer==i&&board[j][k].settlerOrVillage== Spot.SettlerOrVillage.VILLAGE){
+                        stateString+=" "+j+","+k;
+                    }
+                }
+            }
+            stateString+=";";
+        }
 
+        return stateString;
+    }
 
 }

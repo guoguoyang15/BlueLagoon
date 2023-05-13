@@ -1,11 +1,13 @@
 package comp1110.ass2;
 
 import java.util.*;
-import java.util.Collections;
 
-import static comp1110.ass2.Logic.generateAllValidMoves1;
-import static comp1110.ass2.Logic.isPosInIndex;
+import static comp1110.ass2.Logic.comparePos;
 
+// Author comments:
+// Tyler finished Task 3 and 4 and dynamic GUI
+// Zhang Zhining finished Task 6, 13 and 16, as well as examining Task 17
+// Zhou Linsheng finished Task 7, 8, 9, 10, 11, 12 as well as displaying static board given a statestring on GUI
 public class BlueLagoon {
     // The Game Strings for five maps have been created for you.
     // They have only been encoded for two players. However, they are
@@ -138,22 +140,7 @@ public class BlueLagoon {
         return Logic.isPhaseOver1(b);
     }
 
-    //Zhou Linsheng(u7630421) completes the following function to sort positions in state string
-    public static boolean comparePos(String pos1, String pos2) {
-        String[] posString1 = pos1.split(",");
-        String[] posString2 = pos2.split(",");
-        int x1 = Integer.parseInt(posString1[0]);
-        int y1 = Integer.parseInt(posString1[1]);
-        int x2 = Integer.parseInt(posString2[0]);
-        int y2 = Integer.parseInt(posString2[1]);
-        if (x1 > x2) {
-            return true;
-        } else if (x1 < x2) {
-            return false;
-        } else {
-            return y1 > y2;
-        }
-    }
+
 
     /**
      * Given a state string and a move string, place the piece associated with the
@@ -168,179 +155,15 @@ public class BlueLagoon {
      */
     //Zhou Linsheng(u7630421) completes Task 10
     public static String placePiece(String stateString, String moveString) {
-        stateString = " " + stateString;
-        String[] statement = stateString.split(";");
-        char turn = statement[1].charAt(3);//which player is moving
-        int thisPlayer = 0;//Index of state string of this player in this turn
-        int re = 0;//Index of resource state string
-        for (int i = 0; i <= statement.length - 1; i++) {
-            if (statement[i].charAt(1) == 'p' && statement[i].charAt(3) == turn)
-                thisPlayer = i;
-            if (statement[i].charAt(1) == 'r')
-                re = i;
-        }
-
-        // ID of this player
-        int player = (int) turn - 48;
-        String[] moveStrings = moveString.split(" ");
-        String phase = moveStrings[0];
-        String pos = moveStrings[1];
-        String[] xy = pos.split(",");
-
-        if (phase.equals("S")) {
-            String[] playerStrings = statement[thisPlayer].split(" ");
-            int pre = 0;
-            boolean flag = true;
-            for (int i = 0; i <= playerStrings.length - 1; i++) {
-                if (playerStrings[i].equals("S")) {
-                    while (!playerStrings[i + 1].equals("T")) {
-                        if (comparePos(playerStrings[i + 1], pos)) {
-                            flag = false;
-                            break;
-                        } else {
-                            i++;
-                        }
-                    }
-                    pre = i;
-                    if (!flag)
-                        break;
-                }
-            }
-            statement[thisPlayer] = "";
-            for (int i = 0; i <= playerStrings.length - 1; i++) {
-                statement[thisPlayer] = statement[thisPlayer] + " " + playerStrings[i];
-                if (i == pre)
-                    statement[thisPlayer] = statement[thisPlayer] + " " + pos;
-            }
-        }
-
-        if (phase.equals("T")) {
-            boolean flag = true;
-            String[] playerStrings = statement[thisPlayer].split(" ");
-            int pre = 0;
-            for (int i = 0; i <= playerStrings.length - 1; i++) {
-                if (playerStrings[i].equals("T")) {
-                    while (i + 1 <= playerStrings.length - 1) {
-                        if (comparePos(playerStrings[i + 1], pos)) {
-                            flag = false;
-                            break;
-                        } else {
-                            i++;
-                        }
-                    }
-                    pre = i;//Position of the prior position of this new position
-                    if (!flag)
-                        break;
-                }
-            }
-
-            //Create a new state string for this player
-            statement[thisPlayer] = "";
-            for (int i = 0; i <= playerStrings.length - 1; i++) {
-                statement[thisPlayer] = statement[thisPlayer] + " " + playerStrings[i];
-                if (i == pre)
-                    statement[thisPlayer] = statement[thisPlayer] + " " + pos;
-            }
-        }
-        //split again
-        statement[thisPlayer] = statement[thisPlayer].substring(1, statement[thisPlayer].length());
-        String[] playerStrings = statement[thisPlayer].split(" ");
-        //f is the type of resource on this spot
-        char f = 'v';
-        //ff is whether this spot has resource on it or not
-        boolean ff = false;
-        //split the resources state string
-        String[] subRe = statement[re].split(" ");
-        for (int b = 0; b <= subRe.length - 1; b++) {
-            if (subRe[b].equals("C")) {
-                while (!subRe[b + 1].equals("B")) {
-                    if (subRe[b + 1].equals(pos)) {
-                        //on this spot there is a bamboo
-                        f = 'c';
-                        ff = true;
-                        break;
-                    }
-                    b++;
-                }
-                if (ff)
-                    break;
-            }
-            if (subRe[b].equals("B")) {
-                while (!subRe[b + 1].equals("W")) {
-                    if (subRe[b + 1].equals(pos)) {
-                        f = 'b';
-                        ff = true;
-                        break;
-                    }
-                    b++;
-                }
-                if (ff)
-                    break;
-            }
-            if (subRe[b].equals("W")) {
-                while (!subRe[b + 1].equals("P")) {
-                    if (subRe[b + 1].equals(pos)) {
-                        f = 'w';
-                        ff = true;
-                        break;
-                    }
-                    b++;
-                }
-                if (ff)
-                    break;
-            }
-            if (subRe[b].equals("P")) {
-                while (!subRe[b + 1].equals("S")) {
-                    if (subRe[b + 1].equals(pos)) {
-                        f = 'p';
-                        ff = true;
-                        break;
-                    }
-                    b++;
-                }
-                if (ff)
-                    break;
-            }
-            if (subRe[b].equals("S")) {
-                while (b + 1 <= subRe.length - 1) {
-                    if (subRe[b + 1].equals(pos)) {
-                        f = 's';
-                        ff = true;
-                        break;
-                    }
-                    b++;
-                }
-                if (ff)
-                    break;
-            }
-        }
-        // Add 1 to the number of such resources in this player's state string
-        if (f == 'c') {
-            playerStrings[4] = "" + (Integer.parseInt(playerStrings[4]) + 1);
-        } else if (f == 'b') {
-            playerStrings[5] = "" + (Integer.parseInt(playerStrings[5]) + 1);
-        } else if (f == 'w') {
-            playerStrings[6] = "" + (Integer.parseInt(playerStrings[6]) + 1);
-        } else if (f == 'p') {
-            playerStrings[7] = "" + (Integer.parseInt(playerStrings[7]) + 1);
-        } else if (f == 's') {
-            playerStrings[8] = "" + (Integer.parseInt(playerStrings[8]) + 1);
-        } else {
-        }
-        //Assembly new string
-        statement[thisPlayer] = "";
-        for (int p = 0; p <= playerStrings.length - 1; p++)
-            statement[thisPlayer] += " " + playerStrings[p];
-        statement[thisPlayer] = statement[thisPlayer].substring(1, statement[thisPlayer].length());
-        String[] reString = statement[re].split(" ");
-        statement[re] = "";
-        for (int i = 1; i <= reString.length - 1; i++)
-            if (!reString[i].equals(pos))
-                statement[re] = statement[re] + " " + reString[i];
-        String newString = "";
-        for (int i = 0; i <= statement.length - 1; i++)
-            newString = newString + statement[i] + ";";
-        return newString.substring(1, newString.length()); // FIXME Task 10
+        Board b=new Board(stateString);
+        char type=moveString.charAt(0);
+        String[] moves=moveString.split(" ");
+        String[] XY=moves[1].split(",");
+        int x=Integer.parseInt(XY[0]);
+        int y=Integer.parseInt(XY[1]);
+        Coordinate coordinate=new Coordinate(x,y);
+        return Logic.placePiece1(b,type,coordinate);
+ // FIXME Task 10
     }
 
     /**

@@ -2,7 +2,7 @@ package comp1110.ass2;
 
 import java.util.*;
 
-import static comp1110.ass2.Logic.comparePos;
+import static comp1110.ass2.Logic.*;
 
 // Author comments:
 // Tyler finished Task 3 and 4 and dynamic GUI
@@ -140,8 +140,6 @@ public class BlueLagoon {
         return Logic.isPhaseOver1(b);
     }
 
-
-
     /**
      * Given a state string and a move string, place the piece associated with the
      * move on the board. Ensure the player collects any corresponding resource or
@@ -163,7 +161,6 @@ public class BlueLagoon {
         int y=Integer.parseInt(XY[1]);
         Coordinate coordinate=new Coordinate(x,y);
         return Logic.placePiece1(b,type,coordinate);
- // FIXME Task 10
     }
 
     /**
@@ -181,102 +178,11 @@ public class BlueLagoon {
      * @return an integer array containing the calculated "Islands" portion of
      * the score for each player
      */
+
     //Zhou Linsheng(u7630421) completes all methods in Task 11
     public static int[] calculateTotalIslandsScore(String stateString) {
-        //split state string
-        stateString = " " + stateString;
-        String[] statement = stateString.split(";");
-        //Number of player on this board
-        int playerNumber = Integer.parseInt(statement[0].substring(statement[0].length() - 1, statement[0].length()));
-        //Points array of players
-        int[] islandPoints = new int[playerNumber];
-        int firstPlayer = 0;
-        //Find index of first player's statement string
-        for (int i = 0; i <= statement.length - 1; i++) {
-            if (statement[i].charAt(1) == 'p') {
-                firstPlayer = i;
-                break;
-            }
-        }
-
-        //Get the size of the map
-        String[] arrangement = statement[0].split(" ");
-        int size = Integer.parseInt(arrangement[2]);
-        //set up a map of spots
-        Spot[][] spots = new Spot[size][size];
-        for (int i = 0; i <= size - 1; i++) {
-            for (int j = 0; j <= size - 1; j++) {
-                spots[i][j] = new Spot();
-            }
-        }
-
-        int numofisland = 0;
-        //initialize land spots on the map
-        for (int i = 0; i <= statement.length - 1; i++) {
-            //when this statement is island string
-            if (statement[i].charAt(1) == 'i') {
-                //This is the i-th island
-                numofisland++;
-                //split this island state string
-                String[] land = statement[i].split(" ");
-                for (int j = 3; j <= land.length - 1; j++) {//land[0]="",land[1]="i",land[2]="6/8/10"
-                    String[] landXY = land[j].split(",");
-                    int landx = Integer.parseInt(landXY[0]);
-                    int landy = Integer.parseInt(landXY[1]);
-                    spots[landx][landy].spotType = 1;//This is land, not sea
-                    spots[landx][landy].island = numofisland;//This is No.i island
-                }
-            }
-        }
-        //Number of islands this player occupies
-        for (int p = firstPlayer; p <= statement.length - 1; p++) {
-            int islandOfThisPlayer;
-            islandOfThisPlayer = 0;
-            String[] thisPlayer = statement[p].split(" ");
-            for (int i = 1; i <= numofisland; i++) {
-                for (int j = 0; j <= thisPlayer.length - 1; j++) {
-                    if (thisPlayer[j].contains(",")) {
-                        String[] xy = thisPlayer[j].split(",");
-                        int x = Integer.parseInt(xy[0]);
-                        int y = Integer.parseInt(xy[1]);
-                        if (spots[x][y].island == i) {
-                            islandOfThisPlayer++;
-                            break;
-                        }
-                    }
-                }
-            }
-
-            //Calculate island points for this player
-            if (islandOfThisPlayer >= 8) {
-                islandPoints[p - firstPlayer] = 20;
-            } else if (islandOfThisPlayer == 7) {
-                islandPoints[p - firstPlayer] = 10;
-            } else {
-                islandPoints[p - firstPlayer] = 0;
-            }
-
-        }
-        //return points array
-        return islandPoints; // FIXME Task 11
-    }
-
-    //Zhou Linsheng(u7630421) adds ifAdjacent to examine if two spots next to each other
-    //ifAdjacent is to judge if the two coordinates are next to each other
-    public static boolean ifAdjacent(int x1, int y1, int x2, int y2) {
-        //four positions are true for all rows
-        if (x1 == x2 && Math.abs(y1 - y2) == 1) {
-            return true;
-        }
-        if (y1 == y2 && Math.abs(x1 - x2) == 1) {
-            return true;
-        }
-        //sometimes we need to consider two cases: odd rows and even rows
-        if (x1 % 2 == 0) {
-            return Math.abs(x1 - x2) == 1 && (y2 - y1) == 1;
-        } else {
-            return Math.abs(x1 - x2) == 1 && (y1 - y2) == 1;
-        }
+        Board b=new Board(stateString);
+        return calculateTotalIslandsScore1(b);
     }
 
     /**
@@ -298,124 +204,9 @@ public class BlueLagoon {
      */
 
     public static int[] calculateIslandLinksScore(String stateString) {
-        stateString = " " + stateString;
-        String[] statement = stateString.split(";");
-        int playerNum = Integer.parseInt(statement[0].substring(statement[0].length() - 1, statement[0].length()));
-        int[] point = new int[playerNum];
-
-        //Get the size of the map
-        String[] arrangement = statement[0].split(" ");
-        int size = Integer.parseInt(arrangement[2]);
-
-        //set up a map of spots
-        Spot[][] spots = new Spot[size][size];
-        for (int i = 0; i <= size - 1; i++) {
-            for (int j = 0; j <= size - 1; j++) {
-                spots[i][j] = new Spot();
-            }
-        }
-
-        String[] land;
-        String[] landXY;
-        int landx;
-        int landy;
-        int numofisland = 0;
-        //initialize land spots on the map
-        for (int i = 0; i <= statement.length - 1; i++) {
-            //when this statement is island string
-            if (statement[i].charAt(1) == 'i') {
-                numofisland++;
-                land = statement[i].split(" ");
-                for (int j = 3; j <= land.length - 1; j++) {//land[0]="",land[1]="i",land[2]="6/8/10"
-                    landXY = land[j].split(",");
-                    landx = Integer.parseInt(landXY[0]);
-                    landy = Integer.parseInt(landXY[1]);
-                    spots[landx][landy].spotType = 1;
-                    spots[landx][landy].island = numofisland;//Start from 1, to 8
-                }
-            }
-        }
-        int firstPlayer = 0;
-        for (int p = 0; p <= statement.length - 1; p++) {
-            if (statement[p].charAt(1) == 'p') {
-                firstPlayer = p;
-                break;
-            }
-        }
-
-        for (int p = firstPlayer; p <= statement.length - 1; p++) {
-            List<int[]> posList = new ArrayList<>();
-            //Add all spots of this player to a hash set
-            String[] info = statement[p].split(" ");
-            for (int i = 0; i <= info.length - 1; i++) {
-                if (info[i].contains(",")) {
-                    int[] pos = new int[2];//Position of each point
-                    String[] xy = info[i].split(",");
-                    pos[0] = Integer.parseInt(xy[0]);
-                    pos[1] = Integer.parseInt(xy[1]);
-                    posList.add(pos);
-                }
-            }
-            //We need to calculate all possible links of this player
-            List<List<int[]>> linkSet = new ArrayList<>();
-            if (posList.size() == 0) {
-                point[p - firstPlayer] = 0;
-            } else {
-                while (!posList.isEmpty()) {
-                    Stack<int[]> posStack = new Stack<>();
-                    List<int[]> component = new ArrayList<>();
-                    posStack.push(posList.get(0));
-                    posList.remove(posList.get(0));
-                    while (!posStack.empty()) {
-                        int[] g = posStack.pop();
-                        component.add(g);
-                        List<int[]> adj = getAdjacentSpots(g, posList);
-                        posStack.addAll(adj);
-                        posList.removeAll(adj);
-                    }
-                    linkSet.add(component);
-                }
-
-                //Now we know all possible links of the player in linkSet
-                int maxIsland = 0;
-                for (List<int[]> link : linkSet) {
-                    //A boolean array marking which islands occupied by this link
-                    int[] islandOccupied = new int[numofisland];
-                    //if a node occupies No.i island
-                    for (int[] cord : link) {
-                        //if a node occupies No.i island
-                        if (spots[cord[0]][cord[1]].island != 100) {
-                            islandOccupied[spots[cord[0]][cord[1]].island - 1]++;
-                        }
-                    }
-                    //Number of islands this link occupies
-                    int thisLinkIsland = 0;
-                    for (int i = 0; i <= numofisland - 1; i++) {
-                        if (islandOccupied[i] != 0) {
-                            thisLinkIsland++;
-                        }
-                    }
-                    if (thisLinkIsland > maxIsland) {
-                        maxIsland = thisLinkIsland;
-                    }
-                }
-                point[p - firstPlayer] = maxIsland * 5;
-                //In the end of a player calculation, clear spots set to empty set
-                posList.clear();
-            }
-        }
-        return point; // FIXME Task 11
-    }
-
-    //Zhou Linsheng added this function to return a list of all adjacent position of a player given a certain spot
-    public static List<int[]> getAdjacentSpots(int[] cord, List<int[]> listSet) {
-        List<int[]> adj = new ArrayList<>();
-        for (int[] cc : listSet) {
-            if (ifAdjacent(cord[0], cord[1], cc[0], cc[1])) {
-                adj.add(cc);
-            }
-        }
-        return adj;
+        Board b=new Board(stateString);
+        return Logic.calculateIslandLinksScore1(b);
+        // FIXME Task 11
     }
 
     /**
@@ -440,103 +231,9 @@ public class BlueLagoon {
 
     //Zhou Linsheng(u7630421) completes the following function
     public static int[] calculateIslandMajoritiesScore(String stateString) {
-        //split state string
-        stateString = " " + stateString;
-        String[] statement = stateString.split(";");
-        //Number of player on this board
-        int playerNum = Integer.parseInt(statement[0].substring(statement[0].length() - 1, statement[0].length()));
-        //Get the size of the map
-        String[] arrangement = statement[0].split(" ");
-        int size = Integer.parseInt(arrangement[2]);
-        //Number of islands of this map
-        int numOfIslands = 0;
-        for (int j = 0; j <= statement.length - 1; j++) {
-            if (statement[j].charAt(1) == 'i') {
-                numOfIslands++;
-            }
-        }//Point array of majority island of players
-        int[] islandPoints = new int[numOfIslands];
-        //set up a map of spots
-        Spot[][] spots = new Spot[size][size];
-        for (int i = 0; i <= size - 1; i++) {
-            for (int j = 0; j <= size - 1; j++) {
-                spots[i][j] = new Spot();
-            }
-        }
-        //initialize land spots on the map
-        for (int i = 0; i <= statement.length - 1; i++) {
-            //when this statement is island string
-            if (statement[i].charAt(1) == 'i') {
-                String[] land = statement[i].split(" ");
-                islandPoints[i - 2] = Integer.parseInt(land[2]);
-                for (int j = 3; j <= land.length - 1; j++) {//land[0]="",land[1]="i",land[2]="6/8/10"
-                    String[] landXY = land[j].split(",");
-                    int landx = Integer.parseInt(landXY[0]);
-                    int landy = Integer.parseInt(landXY[1]);
-                    spots[landx][landy].spotType = 1;
-                    spots[landx][landy].island = i - 2;//Index of islands
-                }
-            }
-            if (statement[i].charAt(1) == 'p') {
-                String[] playerPositions = statement[i].split(" ");
-                int whichplayer = Integer.parseInt(playerPositions[2]);//which player occupies these following spots
-                for (int j = 0; j <= playerPositions.length - 1; j++) {
-                    if (playerPositions[j].contains(",")) {
-                        String[] setPos = playerPositions[j].split(",");
-                        int setx = Integer.parseInt(setPos[0]);
-                        int sety = Integer.parseInt(setPos[1]);
-                        spots[setx][sety].occupiedByPlayer = whichplayer;//This spot is occupied by this player
-                    }
-                }
-            }
-        }
-        //Point array of this sub calculation
-        int[] playerPoints = new int[playerNum];
-        //Occupiers of a certain island
-        int[] occupiers = new int[playerNum];
-        for (int i = 0; i <= numOfIslands - 1; i++) {
-            for (int g = 0; g <= playerNum - 1; g++) {
-                occupiers[g] = 0;
-            }
-            for (int j = 0; j <= size - 1; j++) {
-                for (int k = 0; k <= size - 1; k++) {
-                    //If this spot is not sea and occupied by a player
-                    if (spots[j][k].island == i && spots[j][k].occupiedByPlayer != 100) {
-                        occupiers[spots[j][k].occupiedByPlayer]++;
-                    }
-                }
-            }
-            //We suppose only 2 players on the board because it's easy to compare
-            if (playerNum == 2) {
-                if (occupiers[0] == 0 && occupiers[1] == 0) {
-                    continue;
-                }
-            } else if (playerNum == 3) {
-                if (occupiers[0] == 0 && occupiers[1] == 0 && occupiers[2] == 0) {
-                    continue;
-                }
-            } else {
-                if (occupiers[0] == 0 && occupiers[1] == 0 && occupiers[2] == 0 && occupiers[3] == 0) {
-                    continue;
-                }
-            }
-            int max = Arrays.stream(occupiers).max().getAsInt();
-            int maxNum = 0;
-            boolean[] maxPlayers = new boolean[playerNum];
-            for (int y = 0; y <= maxPlayers.length - 1; y++) {
-                if (occupiers[y] == max) {
-                    maxPlayers[y] = true;
-                    maxNum++;
-                }
-            }
-            for (int y = 0; y <= maxPlayers.length - 1; y++) {
-                if (maxPlayers[y]) {
-                    playerPoints[y] += islandPoints[i] / maxNum;
-                }
-            }
-        }
-        //Return point array of majority criteria
-        return playerPoints; // FIXME Task 11
+        Board b=new Board(stateString);
+        return Logic.calculateIslandMajoritiesScore1(b);
+        // FIXME Task 11
     }
 
     /**
@@ -564,76 +261,9 @@ public class BlueLagoon {
      */
     //Zhou Linsheng(u7630421) completes the following function
     public static int[] calculateResourcesAndStatuettesScore(String stateString) {
-        //split state string
-        stateString = " " + stateString;
-        String[] statement = stateString.split(";");
-        int playerNumber = Integer.parseInt(statement[0].substring(statement[0].length() - 1, statement[0].length()));
-
-        //Points array of scores
-        int[] scores = new int[playerNumber];
-        //Index of the first player string
-        int firstPlayer = 0;
-        for (int i = 0; i <= statement.length - 1; i++) {
-            if (statement[i].charAt(1) == 'p') {
-                firstPlayer = i;
-                break;
-            }
-        }
-        //Loop of these players
-        for (int p = firstPlayer; p <= statement.length - 1; p++) {
-            String[] playerString = statement[p].split(" ");
-            int score = 0;
-            //Withdraw the number of these resources
-            int coconut = Integer.parseInt(playerString[4]);
-            int bamboo = Integer.parseInt(playerString[5]);
-            int water = Integer.parseInt(playerString[6]);
-            int prestone = Integer.parseInt(playerString[7]);
-            int statuette = Integer.parseInt(playerString[8]);
-            //Calculate points of these resources
-            if (coconut >= 4) {
-                score += 20;
-            } else if (coconut == 3) {
-                score += 10;
-            } else if (coconut == 2) {
-                score += 5;
-            } else {
-                score += 0;
-            }
-            if (water >= 4) {
-                score += 20;
-            } else if (water == 3) {
-                score += 10;
-            } else if (water == 2) {
-                score += 5;
-            } else {
-                score += 0;
-            }
-            if (prestone >= 4) {
-                score += 20;
-            } else if (prestone == 3) {
-                score += 10;
-            } else if (prestone == 2) {
-                score += 5;
-            } else {
-                score += 0;
-            }
-            if (bamboo >= 4) {
-                score += 20;
-            } else if (bamboo == 3) {
-                score += 10;
-            } else if (bamboo == 2) {
-                score += 5;
-            } else {
-                score += 0;
-            }
-            score += 4 * statuette;
-            if (coconut > 0 && bamboo > 0 && water > 0 && prestone > 0) {
-                score += 10;
-            }
-            scores[p - firstPlayer] = score;
-        }
-        //return scores
-        return scores; // FIXME Task 11
+        Board b=new Board(stateString);
+        return Logic.calculateResourcesAndStatuettesScore1(b);
+         // FIXME Task 11
     }
 
     /**
@@ -649,34 +279,10 @@ public class BlueLagoon {
      */
     //Zhou Linsheng(u7630421) completes the following function
     public static int[] calculateScores(String stateString) {
-        //split state string
-        String stateString1 = " " + stateString;
-        String[] statement = stateString1.split(";");
-        int playerNumber = Integer.parseInt(statement[0].substring(statement[0].length() - 1, statement[0].length()));
-        //Points array of scores
-        int[] scores = new int[playerNumber];
-        int[] majority = calculateIslandMajoritiesScore(stateString);
-        int[] link = calculateIslandLinksScore(stateString);
-        int[] resources = calculateResourcesAndStatuettesScore(stateString);
-        int[] islands = calculateTotalIslandsScore(stateString);
-        //Index of the first player string
-        int firstPlayer = 0;
-        for (int i = 0; i <= statement.length - 1; i++) {
-            if (statement[i].charAt(1) == 'p') {
-                firstPlayer = i;
-                break;
-            }
-        }
-        //Calculate the points of this player in last phase
-        for (int p = firstPlayer; p >= statement.length - 1; p++) {
-            String[] pl = statement[p].split(" ");
-            scores[p - firstPlayer] = Integer.parseInt(pl[3]);
-        }
-        //Add current`points to this player
-        for (int i = 0; i <= playerNumber - 1; i++) {
-            scores[i] += majority[i] + link[i] + resources[i] + islands[i];
-        }
-        return scores; // FIXME Task 11
+
+        Board b=new Board(stateString);
+        return Logic.calculateScores1(b);
+        // FIXME Task 11
     }
 
     /**

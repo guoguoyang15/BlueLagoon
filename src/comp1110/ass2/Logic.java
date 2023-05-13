@@ -1,8 +1,8 @@
 package comp1110.ass2;
 
-import comp1110.ass2.gittest.C;
-
 import java.util.*;
+
+import static comp1110.ass2.BlueLagoon.placePiece;
 
 public class Logic {
     //Task 3
@@ -372,6 +372,7 @@ public class Logic {
             return stringSet;
         }
     }
+
     //Task 9
     public static boolean isPhaseOver1(Board b) {
         //Count the number of resources collected by all players
@@ -407,65 +408,33 @@ public class Logic {
         }
     }
 
-    public static String placePiece1(Board b, char type, Coordinate coordinate) {
-        //Change occupier
-        b.getBoard()[coordinate.x][coordinate.y].occupiedByPlayer=b.getTurn();
-        //Change settler or village
-        if(type=='S'){
-            b.getBoard()[coordinate.x][coordinate.y].settlerOrVillage= Spot.SettlerOrVillage.SETTLER;
-        }else {
-            b.getBoard()[coordinate.x][coordinate.y].settlerOrVillage= Spot.SettlerOrVillage.VILLAGE;
-        }
-        if(b.getBoard()[coordinate.x][coordinate.y].resources!=Resource.NULL){
-            if(b.getBoard()[coordinate.x][coordinate.y].resources==Resource.COCONUT){
-                int n=b.getPlayers()[b.getTurn()].getCoconut();
-                b.getPlayers()[b.getTurn()].setCoconut(n+1);
-            }else if(b.getBoard()[coordinate.x][coordinate.y].resources==Resource.BAMBOO){
-                int n=b.getPlayers()[b.getTurn()].getBamboo();
-                b.getPlayers()[b.getTurn()].setBamboo(n+1);
-            }else if(b.getBoard()[coordinate.x][coordinate.y].resources==Resource.WATER){
-                int n=b.getPlayers()[b.getTurn()].getWater();
-                b.getPlayers()[b.getTurn()].setWater(n+1);
-            }else if(b.getBoard()[coordinate.x][coordinate.y].resources==Resource.PRECIOUSSTONE){
-                int n=b.getPlayers()[b.getTurn()].getStone();
-                b.getPlayers()[b.getTurn()].setStone(n+1);
-            }else if(b.getBoard()[coordinate.x][coordinate.y].resources==Resource.STATUETTE){
-                int n=b.getPlayers()[b.getTurn()].getStatuette();
-                b.getPlayers()[b.getTurn()].setStatuette(n+1);
-            }
-            b.getBoard()[coordinate.x][coordinate.y].resources=Resource.NULL;
-        }
-
-        return b.toString();
-    }
-
     //Task 11 A
     public static int[] calculateTotalIslandsScore1(Board b) {
         //Array of points in this part
-        int[] points=new int[b.getPlayerNum()];
-        for(int i=0;i<=b.getPlayerNum()-1;i++){
+        int[] points = new int[b.getPlayerNum()];
+        for (int i = 0; i <= b.getPlayerNum() - 1; i++) {
             //Array length of 8
-            int[] occupiedIsland=new int[b.getIslandNum()];
-            for(int j=0;j<=b.getSize()-1;j++){
-                for(int k=0;k<=b.getSize()-1;k++){
-                    if(b.getBoard()[j][k]!=null&&b.getBoard()[j][k].occupiedByPlayer==i&&b.getBoard()[j][k].island!=100){
+            int[] occupiedIsland = new int[b.getIslandNum()];
+            for (int j = 0; j <= b.getSize() - 1; j++) {
+                for (int k = 0; k <= b.getSize() - 1; k++) {
+                    if (b.getBoard()[j][k] != null && b.getBoard()[j][k].occupiedByPlayer == i && b.getBoard()[j][k].island != 100) {
                         occupiedIsland[b.getBoard()[j][k].island]++;
                     }
                 }
             }
             //number of islands not occupied by this player
-            int noZero=0;
-            for(int m=0;m<=b.getIslandNum()-1;m++){
-                if(occupiedIsland[m]!=0){
+            int noZero = 0;
+            for (int m = 0; m <= b.getIslandNum() - 1; m++) {
+                if (occupiedIsland[m] != 0) {
                     noZero++;
                 }
             }
-            if(noZero>=8){
-                points[i]=20;
-            } else if (noZero==7) {
-                points[i]=10;
-            }else {
-                points[i]=0;
+            if (noZero >= 8) {
+                points[i] = 20;
+            } else if (noZero == 7) {
+                points[i] = 10;
+            } else {
+                points[i] = 0;
             }
         }
         return points;
@@ -491,13 +460,13 @@ public class Logic {
 
     //Task 11 B
     public static int[] calculateIslandLinksScore1(Board b) {
-        int[] points=new int[b.getPlayerNum()];
-        for (int p = 0; p <= b.getPlayerNum()-1; p++) {
+        int[] points = new int[b.getPlayerNum()];
+        for (int p = 0; p <= b.getPlayerNum() - 1; p++) {
             List<Coordinate> posList = new ArrayList<>();
-            for(int j=0;j<=b.getSize()-1;j++){
-                for(int k=0;k<=b.getSize()-1;k++){
-                    if(b.getBoard()[j][k]!=null&&b.getBoard()[j][k].occupiedByPlayer==p){
-                        posList.add(new Coordinate(j,k));
+            for (int j = 0; j <= b.getSize() - 1; j++) {
+                for (int k = 0; k <= b.getSize() - 1; k++) {
+                    if (b.getBoard()[j][k] != null && b.getBoard()[j][k].occupiedByPlayer == p) {
+                        posList.add(new Coordinate(j, k));
                     }
                 }
             }
@@ -571,13 +540,13 @@ public class Logic {
         //Occupiers of a certain island
         int[] occupiers = new int[b.getPlayerNum()];
         for (int i = 0; i <= b.getIslandNum() - 1; i++) {
-            for (int g = 0; g <= b.getPlayerNum()- 1; g++) {
+            for (int g = 0; g <= b.getPlayerNum() - 1; g++) {
                 occupiers[g] = 0;
             }
             for (int j = 0; j <= b.getSize() - 1; j++) {
                 for (int k = 0; k <= b.getSize() - 1; k++) {
                     //If this spot is not sea and occupied by a player
-                    if (b.getBoard()[j][k]!=null&&b.getBoard()[j][k].island == i && b.getBoard()[j][k].occupiedByPlayer != 100) {
+                    if (b.getBoard()[j][k] != null && b.getBoard()[j][k].island == i && b.getBoard()[j][k].occupiedByPlayer != 100) {
                         occupiers[b.getBoard()[j][k].occupiedByPlayer]++;
                     }
                 }
@@ -616,10 +585,10 @@ public class Logic {
     }
 
     //Task 11 D
-    public static int[] calculateResourcesAndStatuettesScore1(Board b){
+    public static int[] calculateResourcesAndStatuettesScore1(Board b) {
         int[] points = new int[b.getPlayerNum()];
-        for(int i=0;i<=b.getPlayerNum()-1;i++){
-            int p=0;
+        for (int i = 0; i <= b.getPlayerNum() - 1; i++) {
+            int p = 0;
             //Calculate points of these resources
             if (b.getPlayers()[i].getCoconut() >= 4) {
                 p += 20;
@@ -628,28 +597,28 @@ public class Logic {
             } else if (b.getPlayers()[i].getCoconut() == 2) {
                 p += 5;
             } else {
-               p += 0;
+                p += 0;
             }
             if (b.getPlayers()[i].getWater() >= 4) {
-                p+= 20;
+                p += 20;
             } else if (b.getPlayers()[i].getWater() == 3) {
                 p += 10;
             } else if (b.getPlayers()[i].getWater() == 2) {
                 p += 5;
             } else {
-                p+= 0;
+                p += 0;
             }
             if (b.getPlayers()[i].getStone() >= 4) {
-                p+= 20;
+                p += 20;
             } else if (b.getPlayers()[i].getStone() == 3) {
                 p += 10;
             } else if (b.getPlayers()[i].getStone() == 2) {
                 p += 5;
             } else {
-                p+= 0;
+                p += 0;
             }
             if (b.getPlayers()[i].getBamboo() >= 4) {
-                p+= 20;
+                p += 20;
             } else if (b.getPlayers()[i].getBamboo() == 3) {
                 p += 10;
             } else if (b.getPlayers()[i].getBamboo() == 2) {
@@ -665,6 +634,7 @@ public class Logic {
         }
         return points;
     }
+
     //Task 11 E
     public static int[] calculateScores1(Board b) {
         //Points array of scores
@@ -679,5 +649,99 @@ public class Logic {
             scores[i] += majority[i] + link[i] + resources[i] + islands[i];
         }
         return scores;
+    }
+
+    //Task 12
+    public static String endPhase1(Board b) {
+        if (b.isPhase()) {
+            b.setPhase(false);
+            //Calculate current points of players
+            int[] points = calculateScores1(b);
+            for (int i = 0; i <= b.getPlayerNum() - 1; i++) {
+                b.getPlayers()[i].setScore(b.getPlayers()[i].getScore() + points[i]);
+                b.getPlayers()[i].setCoconut(0);
+                b.getPlayers()[i].setBamboo(0);
+                b.getPlayers()[i].setWater(0);
+                b.getPlayers()[i].setStone(0);
+                b.getPlayers()[i].setStatuette(0);
+            }
+            for (int j = 0; j <= b.getSize() - 1; j++) {
+                for (int k = 0; k <= b.getSize() - 1; k++) {
+                    if (b.getBoard()[j][k] != null) {
+                        if (b.getBoard()[j][k].occupiedByPlayer != 100) {
+                            if (b.getBoard()[j][k].settlerOrVillage == Spot.SettlerOrVillage.SETTLER) {
+                                b.getBoard()[j][k].occupiedByPlayer = 100;
+                                b.getBoard()[j][k].settlerOrVillage = Spot.SettlerOrVillage.NULL;
+                            }
+                            if (b.getBoard()[j][k].settlerOrVillage == Spot.SettlerOrVillage.VILLAGE && b.getBoard()[j][k].circle) {
+                                b.getBoard()[j][k].occupiedByPlayer = 100;
+                                b.getBoard()[j][k].settlerOrVillage = Spot.SettlerOrVillage.NULL;
+                            }
+                        }
+                    }
+                }
+            }
+            String s = b.toString();
+            return distributeResources1(s);
+
+        } else {
+            //Calculate current points of players
+            int[] points = calculateScores1(b);
+            for (int i = 0; i <= b.getPlayerNum() - 1; i++) {
+                b.getPlayers()[i].setScore(b.getPlayers()[i].getScore() + points[i]);
+            }
+        }
+        return b.toString();
+    }
+
+    //Task 13
+    public static String applyMove(Board b, char type, Coordinate coordinate) {
+        int turn = b.getTurn();
+        String s = placePiece1(b, type, coordinate);
+        b = new Board(s);
+        if (isPhaseOver1(b)) {
+            String newphase=endPhase1(b);
+            b=new Board(newphase);
+        }
+        for (int i = 0; i <= b.getPlayerNum() - 1; i++) {
+            b.setTurn((turn + 1 + i) % b.getPlayerNum());
+            if (generateAllValidMoves1(b).size() >= 1) {
+                break;
+            }
+        }
+        return b.toString();
+    }
+
+    //Task 10
+    public static String placePiece1(Board b, char type, Coordinate coordinate) {
+        //Change occupier
+        b.getBoard()[coordinate.x][coordinate.y].occupiedByPlayer = b.getTurn();
+        //Change settler or village
+        if (type == 'S') {
+            b.getBoard()[coordinate.x][coordinate.y].settlerOrVillage = Spot.SettlerOrVillage.SETTLER;
+        } else {
+            b.getBoard()[coordinate.x][coordinate.y].settlerOrVillage = Spot.SettlerOrVillage.VILLAGE;
+        }
+        if (b.getBoard()[coordinate.x][coordinate.y].resources != Resource.NULL) {
+            if (b.getBoard()[coordinate.x][coordinate.y].resources == Resource.COCONUT) {
+                int n = b.getPlayers()[b.getTurn()].getCoconut();
+                b.getPlayers()[b.getTurn()].setCoconut(n + 1);
+            } else if (b.getBoard()[coordinate.x][coordinate.y].resources == Resource.BAMBOO) {
+                int n = b.getPlayers()[b.getTurn()].getBamboo();
+                b.getPlayers()[b.getTurn()].setBamboo(n + 1);
+            } else if (b.getBoard()[coordinate.x][coordinate.y].resources == Resource.WATER) {
+                int n = b.getPlayers()[b.getTurn()].getWater();
+                b.getPlayers()[b.getTurn()].setWater(n + 1);
+            } else if (b.getBoard()[coordinate.x][coordinate.y].resources == Resource.PRECIOUSSTONE) {
+                int n = b.getPlayers()[b.getTurn()].getStone();
+                b.getPlayers()[b.getTurn()].setStone(n + 1);
+            } else if (b.getBoard()[coordinate.x][coordinate.y].resources == Resource.STATUETTE) {
+                int n = b.getPlayers()[b.getTurn()].getStatuette();
+                b.getPlayers()[b.getTurn()].setStatuette(n + 1);
+            } else {
+            }
+            b.getBoard()[coordinate.x][coordinate.y].resources = Resource.NULL;
+        }
+        return b.toString();
     }
 }

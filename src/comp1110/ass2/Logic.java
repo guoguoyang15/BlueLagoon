@@ -1,6 +1,8 @@
 package comp1110.ass2;
 
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 public class Logic {
     //Task 3
@@ -204,7 +206,188 @@ public class Logic {
         }
     }
 
+    //Task 8
+    public static Set<String> generateAllValidMoves1(Board b) {
+        Set<String> stringSet = new HashSet<String>();//Create a new empty HashSet of movestrings
+        boolean firstStep = b.getPlayers()[b.getTurn()].getSettlers()== 0 && b.getPlayers()[b.getTurn()].getVillages() == 0;
+        boolean canMoveSettler = false;//if this player can move settlers in this phase
+        boolean canMoveVillage = false;//if this player can move villages in this phase+
+        if (b.isPhase()) {//in phase 1
+            if (b.getPlayers()[b.getTurn()].getSettlers() < b.getSettlerLimit()) {
+                canMoveSettler = true;
+            }
+            if (b.getPlayers()[b.getTurn()].getVillages() < b.getVillageLimit()) {
+                canMoveVillage = true;
+            }
+        } else {//in phase 2
+            if (b.getPlayers()[b.getTurn()].getSettlers() < b.getSettlerLimit()) {
+                canMoveSettler = true;
+            }
+            canMoveVillage = false;
+        }
+        if (b.isPhase() ==false || !firstStep) {
+            if (b.isPhase()) {
+                for (int i = 0; i <= b.getSize() - 1; i++) {
+                    for (int j = 0; j <= b.getSize() - 1; j++) {
+                        if (isPosInIndex(b.getSize(), i, j)) {
+                            if (b.getBoard()[i][j].spotType == 0 && b.getBoard()[i][j].occupiedByPlayer == 100) //This sea spot isn't occupied by any player
+                                if (canMoveSettler)
+                                    stringSet.add("S " + i + "," + j);
+                            if (b.getBoard()[i][j].spotType != 1 || b.getBoard()[i][j].occupiedByPlayer != 100)
+                                continue;
+                            if (i % 2 != 1) {
+                                if (isPosInIndex(b.getSize(), i - 1, j + 1) && b.getBoard()[i - 1][j + 1].occupiedByPlayer == b.getTurn()) {
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                    if (canMoveVillage)
+                                        stringSet.add("T " + i + "," + j);
+                                }
+                                if (isPosInIndex(b.getSize(), i + 1, j + 1) && b.getBoard()[i + 1][j + 1].occupiedByPlayer == b.getTurn()) {
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                    if (canMoveVillage)
+                                        stringSet.add("T " + i + "," + j);
+                                }
+                                if (isPosInIndex(b.getSize(), i, j - 1) && b.getBoard()[i][j - 1].occupiedByPlayer == b.getTurn()) {
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                    if (canMoveVillage)
+                                        stringSet.add("T " + i + "," + j);
+                                }
+                                if (isPosInIndex(b.getSize(), i - 1, j) && b.getBoard()[i - 1][j].occupiedByPlayer == b.getTurn()) {
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                    if (canMoveVillage)
+                                        stringSet.add("T " + i + "," + j);
+                                }
+                                if (isPosInIndex(b.getSize(), i + 1, j) && b.getBoard()[i + 1][j].occupiedByPlayer == b.getTurn()) {
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                    if (canMoveVillage)
+                                        stringSet.add("T " + i + "," + j);
+                                }
+                                if (isPosInIndex(b.getSize(), i, j + 1) && b.getBoard()[i][j + 1].occupiedByPlayer == b.getTurn()) {
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                    if (canMoveVillage)
+                                        stringSet.add("T " + i + "," + j);
+                                }
+                            } else {
+                                if (isPosInIndex(b.getSize(), i - 1, j - 1) && b.getBoard()[i - 1][j - 1].occupiedByPlayer == b.getTurn()) {
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                    if (canMoveVillage)
+                                        stringSet.add("T " + i + "," + j);
+                                }
+                                if (isPosInIndex(b.getSize(), i + 1, j - 1) && b.getBoard()[i + 1][j - 1].occupiedByPlayer == b.getTurn()) {
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                    if (canMoveVillage)
+                                        stringSet.add("T " + i + "," + j);
+                                }
+                                if (isPosInIndex(b.getSize(), i, j - 1) && b.getBoard()[i][j - 1].occupiedByPlayer == b.getTurn()) {
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                    if (canMoveVillage)
+                                        stringSet.add("T " + i + "," + j);
+                                }
+                                if (isPosInIndex(b.getSize(), i - 1, j) && b.getBoard()[i - 1][j].occupiedByPlayer == b.getTurn()) {
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                    if (canMoveVillage)
+                                        stringSet.add("T " + i + "," + j);
+                                }
+                                if (isPosInIndex(b.getSize(), i + 1, j) && b.getBoard()[i + 1][j].occupiedByPlayer == b.getTurn()) {
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                    if (canMoveVillage)
+                                        stringSet.add("T " + i + "," + j);
+                                }
+                                if (isPosInIndex(b.getSize(), i, j + 1) && b.getBoard()[i][j + 1].occupiedByPlayer == b.getTurn()) {
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                    if (canMoveVillage)
+                                        stringSet.add("T " + i + "," + j);
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                for (int i = 0; i <= b.getSize() - 1; i++) {
+                    for (int j = 0; j <=b.getSize() - 1; j++) {
+                        if (isPosInIndex(b.getSize(), i, j)) if (b.getBoard()[i][j].occupiedByPlayer == 100) {
+                            if (i % 2 == 1) {
+                                if (isPosInIndex(b.getSize(), i - 1, j - 1) && b.getBoard()[i - 1][j - 1].occupiedByPlayer == b.getTurn())
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                if (isPosInIndex(b.getSize(), i + 1, j - 1) && b.getBoard()[i + 1][j - 1].occupiedByPlayer == b.getTurn())
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                if (isPosInIndex(b.getSize(), i, j - 1) && b.getBoard()[i][j - 1].occupiedByPlayer ==b.getTurn())
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                if (isPosInIndex(b.getSize(), i - 1, j) && b.getBoard()[i - 1][j].occupiedByPlayer == b.getTurn())
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                if (isPosInIndex(b.getSize(), i + 1, j) && b.getBoard()[i + 1][j].occupiedByPlayer == b.getTurn())
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                if (isPosInIndex(b.getSize(), i, j + 1) && b.getBoard()[i][j + 1].occupiedByPlayer == b.getTurn())
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                            } else {
+                                if (isPosInIndex(b.getSize(), i - 1, j + 1) && b.getBoard()[i - 1][j + 1].occupiedByPlayer == b.getTurn())
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                if (isPosInIndex(b.getSize(), i + 1, j + 1) && b.getBoard()[i + 1][j + 1].occupiedByPlayer == b.getTurn())
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                if (isPosInIndex(b.getSize(), i, j - 1) && b.getBoard()[i][j - 1].occupiedByPlayer == b.getTurn())
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                if (isPosInIndex(b.getSize(), i - 1, j) && b.getBoard()[i - 1][j].occupiedByPlayer == b.getTurn())
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                if (isPosInIndex(b.getSize(), i + 1, j) && b.getBoard()[i + 1][j].occupiedByPlayer == b.getTurn())
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                                if (isPosInIndex(b.getSize(), i, j + 1) && b.getBoard()[i][j + 1].occupiedByPlayer == b.getTurn())
+                                    if (canMoveSettler)
+                                        stringSet.add("S " + i + "," + j);
+                            }
+                        }
+                    }
+                }
+            }
+            return stringSet;
+            // FIXME Task 8
+        } else {
+            for (int i = 0; i <= b.getSize() - 1; i++)
+                for (int j = 0; j <= b.getSize() - 1; j++)
+                    if (isPosInIndex(b.getSize(), i, j))
+                        if (b.getBoard()[i][j].spotType == 0 && b.getBoard()[i][j].occupiedByPlayer == 100) //This sea spot isn't occupied by any player
+                            stringSet.add("S " + i + "," + j);
+            return stringSet;
+        }
+    }
 
+    public static boolean isPhaseOver1(Board b){
+        //Count the number of resources collected by all players
+        int allResources=0;
+        for(int i=0;i<=b.getPlayerNum()-1;i++){
+            allResources+=b.getPlayers()[i].getBamboo()+b.getPlayers()[i].getCoconut()+b.getPlayers()[i].getWater()+b.getPlayers()[i].getStone();
+        }
+        boolean collectedAll=allResources==24;
+        int noMoves=0;
+        for(int i=0;i<=b.getPlayerNum()-1;i++){
+            b.setTurn(i);
+            if(generateAllValidMoves1(b).size()==0){
+                noMoves++;
+            }
+        }
+        return collectedAll||noMoves==b.getPlayerNum();
+    }
 
 
 }

@@ -277,6 +277,7 @@ public class Board {
                 }
             }
         }
+
         stateString+=";";
         //Set up resources string
         stateString+=" r";

@@ -85,12 +85,24 @@ public class Player {
     private Integer villages;
     private Integer PlayerNumber;
 
-    public Player(int playerNumber, String stateString) {
+    public Player(Integer playerNumber, Integer score, Integer coconut, Integer bamboo, Integer water, Integer stone, Integer statuette, Integer settlers, Integer villages) {
+        this.playerNumber = playerNumber;
+        this.score = score;
+        this.coconut = coconut;
+        this.bamboo = bamboo;
+        this.water = water;
+        this.stone = stone;
+        this.statuette = statuette;
+        this.settlers = settlers;
+        this.villages = villages;
+    }
+
+    public Player method(int playerNumber, String stateString) {
         String[] playerStatements = stateString.split(";");
         int thisindex=0;
-        for(int i=0;i<=playerStatements.length-1;i++){
-            if(playerStatements[i].charAt(3)==playerNumber+48){
-                thisindex=i;
+        for(int i = 0; i <= playerStatements.length-1; i++){
+            if(playerStatements[i].charAt(3) == playerNumber + 48) {
+                thisindex = i;
             }
         }
 
@@ -117,6 +129,8 @@ public class Player {
         }
         this.settlers = settlers;
         this.villages = villages;
+
+        return new Player(playerNumber, score, coconut,bamboo,water,stone,statuette,settlers, villages);
     }
 }
 

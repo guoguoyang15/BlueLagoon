@@ -1,5 +1,6 @@
 package comp1110.ass2.gui;
 
+import comp1110.ass2.Board;
 import comp1110.ass2.Player;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -30,6 +31,8 @@ public class Game extends Application {
     }
     // Displays the scoreboard using a table
     public void scoreboard(String stateString) {
+        Board b = new Board(stateString);
+
         TableView scores = new TableView();
 
         TableColumn<Player, Integer> column1 =
@@ -69,10 +72,10 @@ public class Game extends Application {
         scores.getColumns().add(column6);
         scores.getColumns().add(column7);
 
-        scores.getItems().add(
-            new Player(0, stateString));
-        scores.getItems().add(
-            new Player(1, stateString));
+//        for (int i = 0; i < b.getPlayerNum(); i++) {
+//            scores.getItems().add(
+////                    new Player(i, stateString));
+//        }
 
         scoreTable.getChildren().addAll(scores);
         }

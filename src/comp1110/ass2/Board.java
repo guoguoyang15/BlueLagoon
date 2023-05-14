@@ -46,7 +46,7 @@ public class Board {
     public int[] weight;
     public Player[] players;
 
-    private int villageLimit=5;
+    private int villageLimit = 5;
     private int settlerLimit;
 
     public int getIslandNum() {
@@ -124,7 +124,7 @@ public class Board {
         //Create array of weights of islands
         int[] weightOfIslands=new int[numOfIslands];
         //Create array of players on this board
-        Player[] p=new Player[playerNum];
+        Player[] p = new Player[playerNum];
         //Create an empty board first
         Spot[][] spots=new Spot[size][size];
         for (int i = 0; i <= size - 1; i++) {
@@ -204,17 +204,17 @@ public class Board {
             }
 
             if (statement[i].startsWith(" p")) {
-                String flag="";
+                String flag = "";
                 int settlerNum=0;
                 int villageNum=0;
                 String[] playerPositions = statement[i].split(" ");
                 int whichplayer = Integer.parseInt(playerPositions[2]);//which player occupies these following spots
                 for (int j = 0; j <= playerPositions.length - 1; j++) {
                     if(playerPositions[j].equals("S")){
-                        flag="S";
+                        flag = "S";
                     }
                     if(playerPositions[j].equals("T")){
-                        flag="T";
+                        flag = "T";
                     }
                     if (playerPositions[j].contains(",")) {
                         String[] setPos = playerPositions[j].split(",");
@@ -231,7 +231,7 @@ public class Board {
                         }
                     }
                 }
-                p[whichplayer]=new Player(Integer.parseInt(playerPositions[2]),Integer.parseInt(playerPositions[3]),
+                p[whichplayer] = new Player(Integer.parseInt(playerPositions[2]),Integer.parseInt(playerPositions[3]),
                         Integer.parseInt(playerPositions[4]),Integer.parseInt(playerPositions[5]),
                         Integer.parseInt(playerPositions[6]),Integer.parseInt(playerPositions[7]),
                         Integer.parseInt(playerPositions[8]),settlerNum,villageNum);

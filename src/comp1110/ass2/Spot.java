@@ -11,60 +11,18 @@ public class Spot {
     public int spotType;
     public Resource resources;
     public int island;//No. of island the spot belongs to
+    public boolean circle;//If this spot has a stone circle, then it's true or it's false
     public SettlerOrVillage settlerOrVillage;
 
     public Spot() {
         this.occupiedByPlayer=100;//there are players 0~3, at first nobody occupies this spot
         this.spotType=0;//We can change it later, those are still not changed will be sea
         this.resources=Resource.NULL;
-        this.island=100;//we change it later
+        this.island=100;//we change it later,from 0 to 7
         this.settlerOrVillage=SettlerOrVillage.NULL;//At first nothing this spot
-    }
-
-    public int getOccupiedByPlayer() {
-        return occupiedByPlayer;
-    }
-
-    public void setOccupiedByPlayer(int occupiedByPlayer) {
-        this.occupiedByPlayer = occupiedByPlayer;
-    }
-
-    public int getSpotType() {
-        return spotType;
-    }
-
-    public void setSpotType(int spotType) {
-        this.spotType = spotType;
-    }
-
-    public Resource getResources() {
-        return resources;
-    }
-
-    public void setResources(Resource resources) {
-        this.resources = resources;
-    }
-
-    public int getIsland() {
-        return island;
-    }
-
-    public void setIsland(int island) {
-        this.island = island;
-    }
-
-    public SettlerOrVillage getSettlerOrVillage() {
-        return settlerOrVillage;
-    }
-
-    public void setSettlerOrVillage(SettlerOrVillage settlerOrVillage) {
-        this.settlerOrVillage = settlerOrVillage;
+        this.circle=false;//When meeting a stone circle, change the value to true
     }
 
 
 
-    public static Player[] mojority(int island){
-
-        return null;
-    }
 }

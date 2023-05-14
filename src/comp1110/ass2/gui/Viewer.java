@@ -1,24 +1,22 @@
 package comp1110.ass2.gui;
 
-import comp1110.ass2.Board;
-import comp1110.ass2.Hexagon;
-import comp1110.ass2.Resource;
-import comp1110.ass2.Spot;
+import comp1110.ass2.*;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Text;
+import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -203,6 +201,54 @@ public class Viewer extends Application {
         root.getChildren().addAll(tilesList);
         root.getChildren().addAll(villageList);
 
+        TableView scores = new TableView();
+
+        TableColumn<Player, Integer> column1 =
+                new TableColumn<>("Player #");
+        column1.setCellValueFactory(
+                new PropertyValueFactory<>("playerNumber"));
+        TableColumn<Player, Integer> column2 =
+                new TableColumn<>("Score");
+        column2.setCellValueFactory(
+                new PropertyValueFactory<>("score"));
+        TableColumn<Player, Integer> column3 =
+                new TableColumn<>("C");
+        column3.setCellValueFactory(
+                new PropertyValueFactory<>("coconut"));
+        TableColumn<Player, Integer> column4 =
+                new TableColumn<>("B");
+        column4.setCellValueFactory(
+                new PropertyValueFactory<>("bamboo"));
+        TableColumn<Player, Integer> column5 =
+                new TableColumn<>("W");
+        column5.setCellValueFactory(
+                new PropertyValueFactory<>("water"));
+        TableColumn<Player, Integer> column6 =
+                new TableColumn<>("P");
+        column6.setCellValueFactory(
+                new PropertyValueFactory<>("stone"));
+        TableColumn<Player, Integer> column7 =
+                new TableColumn<>("S");
+        column7.setCellValueFactory(
+                new PropertyValueFactory<>("statuette"));
+
+        scores.getColumns().add(column1);
+        scores.getColumns().add(column2);
+        scores.getColumns().add(column3);
+        scores.getColumns().add(column4);
+        scores.getColumns().add(column5);
+        scores.getColumns().add(column6);
+        scores.getColumns().add(column7);
+
+        Translate tablePosition = new Translate(1500, 0);
+        scores.getTransforms().add(tablePosition);
+
+        for (int i = 0; i < b.getPlayerNum(); i++) {
+            scores.getItems().add(
+                    Player.getStats(i, stateString));
+        }
+        root.getChildren().addAll(scores);
+
     }
 
     /**
@@ -219,6 +265,7 @@ public class Viewer extends Application {
                 displayState(stateTextField.getText());
             }
         });
+
         HBox hb = new HBox();
         hb.getChildren().addAll(playerLabel, stateTextField, button);
         hb.setSpacing(10);

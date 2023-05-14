@@ -94,11 +94,11 @@ public class Board {
         String[] statement=statestring.split(";");
 
         //Extract size of the board
-        String[] org=statement[0].split(" ");
-        this.size=Integer.parseInt(org[1]);
+        String[] org = statement[0].split(" ");
+        this.size = Integer.parseInt(org[1]);
         //Extract number of players on this board
-        this.playerNum=Integer.parseInt(org[2]);
-        if(playerNum==2){
+        this.playerNum = Integer.parseInt(org[2]);
+        if(playerNum == 2){
             this.settlerLimit=30;
         }else if(playerNum==3){
             this.settlerLimit=25;

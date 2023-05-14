@@ -85,6 +85,8 @@ public class Player {
     private Integer villages;
     private Integer PlayerNumber;
 
+    private Board b;
+
     public Player(Integer playerNumber, Integer score, Integer coconut, Integer bamboo, Integer water, Integer stone, Integer statuette, Integer settlers, Integer villages) {
         this.playerNumber = playerNumber;
         this.score = score;
@@ -97,7 +99,7 @@ public class Player {
         this.villages = villages;
     }
 
-    public Player method(int playerNumber, String stateString) {
+    public static Player getStats(int playerNumber, String stateString) {
         String[] playerStatements = stateString.split(";");
         int thisindex=0;
         for(int i = 0; i <= playerStatements.length-1; i++){
@@ -107,29 +109,25 @@ public class Player {
         }
 
         String[] stats = playerStatements[thisindex].split(" ");
-        this.score = Integer.parseInt(stats[3]);
-        this.coconut = Integer.parseInt(stats[4]);
-        this.bamboo = Integer.parseInt(stats[5]);
-        this.water = Integer.parseInt(stats[6]);
-        this.stone = Integer.parseInt(stats[7]);
-        this.statuette = Integer.parseInt(stats[8]);
-        this.playerNumber = playerNumber;
+        int score = Integer.parseInt(stats[3]);
+        int coconut = Integer.parseInt(stats[4]);
+        int bamboo = Integer.parseInt(stats[5]);
+        int water = Integer.parseInt(stats[6]);
+        int stone = Integer.parseInt(stats[7]);
+        int statuette = Integer.parseInt(stats[8]);
 
         int settlers = 0;
         int villages = 0;
         int i = 0;
-        while (!stats[8 + i].matches("T(;)?")) {
+        while (!stats[10 + i].matches("T(;)?")) {
             settlers++;
             i++;
         }
         int j = 0;
-        while (!stats[8 + settlers + j].matches("[T(;)?| ]")) {
+        while (!stats[10 + settlers + j].matches("[T(;)?| ]")) {
             villages++;
             j++;
         }
-        this.settlers = settlers;
-        this.villages = villages;
-
         return new Player(playerNumber, score, coconut,bamboo,water,stone,statuette,settlers, villages);
     }
 }

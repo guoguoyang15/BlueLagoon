@@ -1,6 +1,9 @@
 package comp1110.ass2.gui;
 
+import comp1110.ass2.Board;
 import comp1110.ass2.Hexagon;
+import comp1110.ass2.Resource;
+import comp1110.ass2.Spot;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -41,240 +44,165 @@ public class Viewer extends Application {
      * @param stateString a string representing a game state
      */
     void displayState(String stateString) {
+        Board b = new Board(stateString);
         // Written by Tyler
-        String[] parts = stateString.split(";");
+
         List<Polygon> tilesList = new ArrayList<>();
-        List<Circle> villageList=new ArrayList<>();
-        String[] firstString = parts[0].split(" ");
-        int size = Integer.parseInt(firstString[1]);
-        Hexagon[][] hexagons=new Hexagon[size][size];
-        double a;
-        double b;
-        Hexagon hexagon;
-        for (a = 0; a <= size - 1; a++) {
-            for (b = 0; b <= size - 1; b++) {
-                if (a % 2 == 0 && b == size - 1){
-                    hexagons[(int)a][(int)b]=null;
-                    continue;
-                }
-                if (a % 2 == 0) {
-                    //Side length=40px
-                    //Order is clockwise, the first point is the top one
-                    hexagon=new Hexagon(69.28 + 69.28 * b,40+60*a,40);
-                    hexagon.setFill(Color.BLUE);
-                    hexagons[(int)a][(int)b]=hexagon;
-                    tilesList.add(hexagon);
-                } else if (a % 2 == 1) {
-                    hexagon=new Hexagon(34.64 + 69.28 * b,40+60*a,40);
-                    hexagon.setFill(Color.BLUE);
-                    hexagons[(int)a][(int)b]=hexagon;
-                    tilesList.add(hexagon);
-                }
-            }
-        }
+        List<Circle> villageList = new ArrayList<>();
+        Hexagon[][] hexagons = new Hexagon[b.getSize()][b.getSize()];
 
-        for (int i = 0; i < parts.length; i++) {
-            // Generates the islands
-            if (parts[i].startsWith(" i")) {
-                String[] islands = parts[i].split(" ");
-                for (int j = 3; j < islands.length; j++) {
-                    String[] coords = islands[j].split(",");
-                    double x = Double.parseDouble(coords[0]);
-                    double y = Double.parseDouble(coords[1]);
-                    hexagon=hexagons[(int)x][(int)y];
-                    hexagon.setFill(Color.LIGHTGREEN);
-                    //tilesList.add(hexagon);
-                }
-            }
-        }
-
-        for (int i = 0; i < parts.length; i++) {
-            // Generates the stone circles
-            if (parts[i].startsWith(" s")) {
-                String[] stones = parts[i].split(" ");
-                for (int j = 2; j < stones.length; j++) {
-                    String[] coords = stones[j].split(",");
-                    double x = Double.parseDouble(coords[0]);
-                    double y = Double.parseDouble(coords[1]);
-                    if (x % 2 == 0) {
-                        hexagon=new Hexagon(69.28 + 69.28 * y,40+60*x,35);
-                        hexagon.setFill(Color.DARKSLATEGRAY);
-                        tilesList.add(hexagon);
-                    } else {
-                        hexagon=new Hexagon(34.64 + 69.28 * y,40+60*x,35);
-                        hexagon.setFill(Color.DARKSLATEGRAY);
-                        tilesList.add(hexagon);
-                    }
-                }
-            }
-            // Generates the resources
-            else if (parts[i].startsWith(" r")) {
-                String[] resources = parts[i].split(" ");
-                String flag = "";
-                for (int l = 0; l <= resources.length - 1; l++) {
-                    if (resources[l].equals("C")) {
-                        //current stage of resources
-                        flag = "C";
-                    } else if (resources[l].equals("B")) {
-                        flag = "B";
-                    } else if (resources[l].equals("W")) {
-                        flag = "W";
-                    } else if (resources[l].equals("P")) {
-                        flag = "P";
-                    } else if (resources[l].equals("S")) {
-                        flag = "S";
-                    } else {
-                    }
-                    if (resources[l].contains(",")) {
-                        String[] coords = resources[l].split(",");
-                        double x = Double.parseDouble(coords[0]);
-                        double y = Double.parseDouble(coords[1]);
-                        Polygon p=new Polygon();
-                        if (x % 2 == 0) {
-                            p.getPoints().addAll(54.28 + 69.28 * y, 25 + 60 * x,
-                                    84.28 + 69.28 * y, 25 + 60 * x,
-                                    84.28 + 69.28 * y, 55 + 60 * x,
-                                    54.28 + 69.28 * y, 55 + 60 * x);
+        //Set up spots
+        for (int i = 0; i <= b.getSize() - 1; i++) {
+            for (int j = 0; j <= b.getSize()-1; j++) {
+                if (b.getBoard()[i][j] != null) {
+                    if (i % 2 == 0) {
+                        Hexagon hexagon = new Hexagon(69.28 + 69.28 * j, 40 + 60 * i, 40);
+                        if (b.getBoard()[i][j].spotType == 1) {
+                            hexagon.setFill(Color.LIGHTGREEN);
+                            hexagons[i][j] = hexagon;
+                            tilesList.add(hexagon);
                         } else {
-                            p.getPoints().addAll(19.64 + 69.28 * y, 25 + 60 * x,
-                                    49.64 + 69.28 * y, 25 + 60 * x,
-                                    49.64 + 69.28 * y, 55 + 60 * x,
-                                    19.64 + 69.28 * y, 55 + 60 * x);
+                            hexagon.setFill(Color.BLUE);
+                            hexagons[i][j] = hexagon;
+                            tilesList.add(hexagon);
                         }
-                        if (flag.equals("C")) {
+                    } else {
+                        Hexagon hexagon = new Hexagon(34.64 + 69.28 * j, 40 + 60 * i, 40);
+                        if (b.getBoard()[i][j].spotType == 1) {
+                            hexagon.setFill(Color.LIGHTGREEN);
+                            hexagons[i][j] = hexagon;
+                            tilesList.add(hexagon);
+                        } else {
+                            hexagon.setFill(Color.BLUE);
+                            hexagons[i][j] = hexagon;
+                            tilesList.add(hexagon);
+                        }
+                    }
+                } else {
+                    hexagons[i][j] = null;
+                }
+            }
+        }
+        //Add stone circle
+        for (int i = 0; i <= b.getSize() - 1; i++) {
+            for (int j = 0; j <= b.getSize()-1; j++) {
+                if (b.getBoard()[i][j] != null) {
+                    if (b.getBoard()[i][j].circle) {
+                        if (i % 2 == 0) {
+                            Hexagon hexagon = new Hexagon(69.28 + 69.28 * j, 40 + 60 * i, 35);
+                            hexagon.setFill(Color.DARKGRAY);
+                            hexagons[i][j] = hexagon;
+                            tilesList.add(hexagon);
+                        } else {
+                            Hexagon hexagon = new Hexagon(34.64 + 69.28 * j, 40 + 60 * i, 35);
+                            hexagon.setFill(Color.DARKGRAY);
+                            hexagons[i][j] = hexagon;
+                            tilesList.add(hexagon);
+                        }
+                    }
+                }
+            }
+        }
+
+        //Add resources
+        for (int i = 0; i <= b.getSize() - 1; i++) {
+            for (int j = 0; j <= b.getSize()-1; j++) {
+                if (b.getBoard()[i][j] != null) {
+                    if (b.getBoard()[i][j].resources!= Resource.NULL) {
+                        Polygon p=new Polygon();
+                        if (i % 2 == 0) {
+                            p.getPoints().addAll(54.28 + 69.28 * j, (double)25 + 60 * i,
+                                    84.28 + 69.28 * j, (double)25 + 60 * i,
+                                    84.28 + 69.28 * j, (double)55 + 60 * i,
+                                    54.28 + 69.28 * j, (double)55 + 60 * i);
+                        } else {
+                            p.getPoints().addAll(19.64 + 69.28 * j, (double)25 + 60 * i,
+                                    49.64 + 69.28 * j, (double)25 + 60 * i,
+                                    49.64 + 69.28 * j, (double)55 + 60 * i,
+                                    19.64 + 69.28 * j, (double)55 + 60 * i);
+                        }
+                        if(b.getBoard()[i][j].resources== Resource.COCONUT){
                             p.setFill(Color.BROWN);
                             tilesList.add(p);
-                        } else if (flag.equals("B")) {
+                        } else if (b.getBoard()[i][j].resources== Resource.BAMBOO) {
                             p.setFill(Color.GREEN);
                             tilesList.add(p);
-                        } else if (flag.equals("W")) {
+                        } else if (b.getBoard()[i][j].resources== Resource.WATER) {
                             p.setFill(Color.CYAN);
                             tilesList.add(p);
-                        } else if (flag.equals("P")) {
+                        } else if (b.getBoard()[i][j].resources== Resource.PRECIOUSSTONE) {
                             p.setFill(Color.YELLOW);
                             tilesList.add(p);
-                        } else {
+                        }else {
                             p.setFill(Color.GREY);
                             tilesList.add(p);
                         }
                     }
                 }
             }
-            // Generates villages and settlers
-            else if (parts[i].startsWith(" p")) {
-                String[] pieces = parts[i].split(" ");
-                // Player 0
-                int noPlayer = Integer.parseInt(pieces[2]);
-                String flag = "";
-                int s = 0;
-                for (s = 0; s <= pieces.length - 1; s++) {
-                    if (pieces[s].equals("S")) {
-                        //Current stage of type
-                        flag = "S";
-                    } else if (pieces[s].equals("T")) {
-                        flag = "T";
-                    } else {
-                    }
-                    if (flag.equals("S")) {
-                        if (pieces[s].contains(",")) {//if this string is a coordinate
-                            String[] coords = pieces[s].split(",");
-                            double x = Double.parseDouble(coords[0]);
-                            double y = Double.parseDouble(coords[1]);
-                            Polygon p = new Polygon();
-                            if (x % 2 == 0) {
-                                p.getPoints().addAll(69.28 + 69.28 * y, 20 + 60 * x,
-                                        89.28 + 69.28 * y, 60 + 60 * x,
-                                        49.28+69.28 * y, 60 + 60 * x);
-                            } else {
-                                p.getPoints().addAll(34.64 + 69.28 * y, 20 + 60 * x,
-                                        54.64 + 69.28 * y, 60 + 60 * x,
-                                        14.64 + 69.28 * y, 60 + 60 * x);
-                            }
-                            if(noPlayer==0){
-                                p.setFill(Color.PINK);
-                                tilesList.add(p);
-                            } else if(noPlayer==1) {
-                                p.setFill(Color.CRIMSON);
-                                tilesList.add(p);
-                            }else if(noPlayer==2) {
-                                p.setFill(Color.PURPLE);
-                                tilesList.add(p);
-                            }
-                            else {
-                                p.setFill(Color.YELLOWGREEN);
-                                tilesList.add(p);
-                            }
+        }
+        //Add players
+        for (int i = 0; i <= b.getSize() - 1; i++) {
+            for (int j = 0; j <= b.getSize()-1; j++) {
+                if (b.getBoard()[i][j] != null && b.getBoard()[i][j].occupiedByPlayer != 100) {
+                    if (b.getBoard()[i][j].settlerOrVillage == Spot.SettlerOrVillage.SETTLER) {
+                        Polygon p=new Polygon();
+                        if (i % 2 == 0) {
+                            p.getPoints().addAll(69.28 + 69.28 * j, (double)20 + 60 * i,
+                                    89.28 + 69.28 * j, (double)60 + 60 * i,
+                                    49.28 + 69.28 * j, (double)60 + 60 * i);
+                        } else {
+                            p.getPoints().addAll(34.64 + 69.28 * j,(double) 20 + 60 * i,
+                                    54.64 + 69.28 * j,(double) 60 + 60 * i,
+                                    14.64 + 69.28 * j, (double)60 + 60 * i);
                         }
-                    } else if (flag.equals("T")) {
-                        if (pieces[s].contains(",")) {
-                            String[] coords = pieces[s].split(",");
-                            double x = Double.parseDouble(coords[0]);
-                            double y = Double.parseDouble(coords[1]);
-                            Circle c=new Circle();
-                            if (x % 2 == 0) {
-                                c.setCenterX(69.28+69.28*y);
-                                c.setCenterY(40+60*x);
-                                c.setRadius(30);
-                            } else {
-                                c.setCenterX(34.64+69.28*y);
-                                c.setCenterY(40+60*x);
-                                c.setRadius(30);
-                            }
-                            if(noPlayer==0){
-                                c.setFill(Color.PINK);
-                                villageList.add(c);
-                            } else  {
-                                c.setFill(Color.CRIMSON);
-                                villageList.add(c);
-                            }
+                        if(b.getBoard()[i][j].occupiedByPlayer==0) {
+                            p.setFill(Color.PINK);
+                            tilesList.add(p);
+                        }else if(b.getBoard()[i][j].occupiedByPlayer==1){
+                            p.setFill(Color.CRIMSON);
+                            tilesList.add(p);
+                        } else if (b.getBoard()[i][j].occupiedByPlayer==2) {
+                            p.setFill(Color.PURPLE);
+                            tilesList.add(p);
+                        }else {
+                            p.setFill(Color.YELLOWGREEN);
+                            tilesList.add(p);
                         }
-                    } else {
+
+                    }else {
+                        Circle c = new Circle();
+                        if (i % 2 == 0) {
+                            c.setCenterX(69.28 + 69.28 * j);
+                            c.setCenterY(40 + 60 * i);
+                            c.setRadius(25);
+                        } else {
+                            c.setCenterX(34.64 + 69.28 * j);
+                            c.setCenterY(40 + 60 * i);
+                            c.setRadius(25);
+                        }
+                        if(b.getBoard()[i][j].occupiedByPlayer==0) {
+                            c.setFill(Color.PINK);
+                            villageList.add(c);
+                        }else if(b.getBoard()[i][j].occupiedByPlayer==1){
+                            c.setFill(Color.CRIMSON);
+                            villageList.add(c);
+                        } else if (b.getBoard()[i][j].occupiedByPlayer==2) {
+                            c.setFill(Color.PURPLE);
+                            villageList.add(c);
+                        }else {
+                            c.setFill(Color.YELLOWGREEN);
+                            villageList.add(c);
+                        }
                     }
                 }
             }
         }
 
-        for(int i=0;i<=size-1;i++){
-            if(hexagons[i][i]!=null){
-                hexagon=hexagons[i][i];
-                hexagon.setFill(Color.GOLD);
-            }
-        }
 
         root.getChildren().addAll(tilesList);
         root.getChildren().addAll(villageList);
-        int turn=Integer.parseInt(parts[1].substring(3,4));//Which player's turn
 
-        //Display current phase
-        char phase=parts[1].charAt(5);
-        String phaseString;
-        if(phase=='E'){
-            phaseString="Exploration";
-        }else {
-            phaseString="Settlement";
-        }
-        Label phaseLabel = new Label(phaseString+" Phase      ");
-        Label turnLabel = new Label("Player "+(turn+1)+ " is moving.");
-        HBox hBox=new HBox();
-        hBox.getChildren().addAll(phaseLabel,turnLabel);
-        hBox.setLayoutX(950);
-        hBox.setLayoutY(10);
-        //Display players info
-        int firstPlayer=0;
-        for(int i=0;i<= parts.length-1;i++){
-            if(parts[i].startsWith(" p")){
-                firstPlayer=i;
-                break;
-            }
-        }
-
-        //HBox[] playerInfo=new HBox[];
-        for(int p=firstPlayer;p<= parts.length-1;p++){
-
-        }
-
-
-        controls.getChildren().add(hBox);
     }
 
     /**

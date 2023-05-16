@@ -248,7 +248,14 @@ public class Viewer extends Application {
                     Player.getStats(i, stateString));
         }
         root.getChildren().addAll(scores);
+        String phase="Current phase: ";
+        if(b.isPhase()){
+            phase+="Exploration Phase.";
 
+        }else {
+            phase+="Settlement Phase.";
+        }
+        Text phaseText=new Text(phase);
     }
 
     /**

@@ -320,7 +320,7 @@ public class Game extends Application {
         scores.getColumns().add(column8);
         scores.getColumns().add(column9);
 
-        Translate tablePosition = new Translate(1500, 0);
+        Translate tablePosition = new Translate(1100, 0);
         scores.getTransforms().add(tablePosition);
 
         for (int i = 0; i < b.getPlayerNum(); i++) {
@@ -337,33 +337,6 @@ public class Game extends Application {
         Button twoPlayers = new Button("2");
         Button threePlayers = new Button("3");
         Button fourPlayers = new Button("4");
-        twoPlayers.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                boardString = initializeGame(2);
-                boardString = BlueLagoon.distributeResources(boardString);
-                b=new Board(boardString);
-                displayState(boardString);
-            }
-        });
-        threePlayers.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                boardString = initializeGame(3);
-                boardString = BlueLagoon.distributeResources(boardString);
-                b=new Board(boardString);
-                displayState(boardString);
-            }
-        });
-        fourPlayers.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                boardString = initializeGame(4);
-                boardString = BlueLagoon.distributeResources(boardString);
-                b=new Board(boardString);
-                displayState(boardString);
-            }
-        });
         HBox hb = new HBox();
         hb.getChildren().addAll(playerLabel, twoPlayers, threePlayers, fourPlayers);
         hb.setSpacing(10);
@@ -382,10 +355,47 @@ public class Game extends Application {
         typeTextField.setPrefWidth(50);
         Button button2 = new Button("Apply");
         HBox hb2 = new HBox();
-        hb2.getChildren().addAll(xLabel,yLabel,typeLabel, xTextField,yTextField,typeTextField, button2);
-        hb2.setSpacing(10);
-        hb2.setLayoutX(1000);
-        hb2.setLayoutY(WINDOW_HEIGHT - 50);
+
+        twoPlayers.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                boardString = initializeGame(2);
+                boardString = BlueLagoon.distributeResources(boardString);
+                b=new Board(boardString);
+                hb2.getChildren().addAll(xLabel, yLabel, typeLabel, xTextField,yTextField,typeTextField, button2);
+                hb2.setSpacing(10);
+                hb2.setLayoutX(1100);
+                hb2.setLayoutY(WINDOW_HEIGHT - 50);
+                displayState(boardString);
+            }
+        });
+        threePlayers.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                boardString = initializeGame(3);
+                boardString = BlueLagoon.distributeResources(boardString);
+                b=new Board(boardString);
+                hb2.getChildren().addAll(xLabel, yLabel, typeLabel, xTextField,yTextField,typeTextField, button2);
+                hb2.setSpacing(10);
+                hb2.setLayoutX(1100);
+                hb2.setLayoutY(WINDOW_HEIGHT - 50);
+                displayState(boardString);
+            }
+        });
+        fourPlayers.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                boardString = initializeGame(4);
+                boardString = BlueLagoon.distributeResources(boardString);
+                b=new Board(boardString);
+                hb2.getChildren().addAll(xLabel, yLabel, typeLabel, xTextField,yTextField,typeTextField, button2);
+                hb2.setSpacing(10);
+                hb2.setLayoutX(1100);
+                hb2.setLayoutY(WINDOW_HEIGHT - 50);
+                displayState(boardString);
+            }
+        });
+
         button2.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -398,7 +408,6 @@ public class Game extends Application {
                 displayState(boardString);
             }
         });
-
         controls.getChildren().add(hb2);
     }
 

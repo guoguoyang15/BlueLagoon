@@ -12,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.transform.Translate;
@@ -318,7 +319,18 @@ public class Game extends Application {
 
     public void makeControls() {
         // Written by Tyler
-        // Creates the player number selection screen
+        // Creates the various buttons and menus that the players can interact with
+        // Creates the title screen
+        Text title = new Text("BLUE LAGOON");
+        title.setFill(Color.TEAL);
+        title.setFont(Font.font("Serif", 100));
+
+        HBox titleBox = new HBox();
+        titleBox.getChildren().add(title);
+        titleBox.setLayoutX(590);
+        titleBox.setLayoutY(400);
+
+        // Number of players selection
         Label playerLabel = new Label("Select Number of Players:");
         playerCount = new ChoiceBox<>();
         playerCount.getItems().addAll("2", "3", "4");
@@ -328,9 +340,9 @@ public class Game extends Application {
         HBox playerBox = new HBox();
         playerBox.getChildren().addAll(playerLabel, playerCount, selectPlayerCount);
         playerBox.setSpacing(10);
-        playerBox.setLayoutX(100);
-        playerBox.setLayoutY(650);
-        controls.getChildren().add(playerBox);
+        playerBox.setLayoutX(855);
+        playerBox.setLayoutY(520);
+        controls.getChildren().addAll(playerBox, titleBox);
         
         // Creates the number of AI opponents selection
         Label AILabel = new Label("Select Number of AI Opponents:");
@@ -342,8 +354,8 @@ public class Game extends Application {
         HBox AIBox = new HBox();
         AIBox.getChildren().addAll(AILabel, AICount, start);
         AIBox.setSpacing(10);
-        AIBox.setLayoutX(100);
-        AIBox.setLayoutY(680);
+        AIBox.setLayoutX(820);
+        AIBox.setLayoutY(550);
 
         // Creates menu for entering moves
         Label moveLabel = new Label("Choose the piece and position:");
@@ -385,6 +397,7 @@ public class Game extends Application {
 
         // Action taken when the Player count buttons are pressed
         selectPlayerCount.setOnAction(e -> {
+            controls.getChildren().remove(AIBox);
             controls.getChildren().add(AIBox);
         });
 
@@ -396,6 +409,7 @@ public class Game extends Application {
             }
             else {
                 root.getChildren().remove(badSetup);
+                controls.getChildren().removeAll(titleBox, AIBox, playerBox);
                 boardString = initializeGame(Integer.parseInt((String) playerCount.getValue()));
                 boardString = BlueLagoon.distributeResources(boardString);
                 displayState(boardString);

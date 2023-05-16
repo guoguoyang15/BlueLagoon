@@ -17,6 +17,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.transform.Translate;
 
@@ -283,10 +284,47 @@ public class Game extends Application {
         scores.getColumns().add(column7);
         scores.getColumns().add(column8);
         scores.getColumns().add(column9);
-        Translate tablePosition = new Translate(1500, 0);
+        Translate tablePosition = new Translate(1000, 0);
+
         scores.getTransforms().add(tablePosition);
-
-
+        //Phase and moving player information
+        String info="";
+        if(b.isPhase()){
+            info+="Exploration Phase     ";
+        }else {
+            info+="Settlement Phase      ";
+        }
+        info+="Player "+b.getTurn()+" is moving.";
+        Text phase=new Text(info);
+        phase.setX(1000);
+        phase.setY(640);
+        root.getChildren().add(phase);
+        //Rows hints
+        Text[] rows=new Text[b.getSize()];
+        for(int i=0;i<= rows.length-1;i++){
+            rows[i]=new Text(""+i);
+            rows[i].setX(920);
+            rows[i].setY(60*i+40);
+        }
+        root.getChildren().addAll(rows);
+        //Column hints
+        Text[][] columns=new Text[b.getSize()][b.getSize()];
+        for(int i=0;i<= rows.length-1;i++){
+            for(int j=0;j<= rows.length-1;j++){
+                if(i%2==0&&j==b.getSize()-1){
+                    columns[i][j]=null;
+                }else {
+                    columns[i][j]=new Text(""+j);
+                    if(i%2==0){
+                        columns[i][j].setX(69+69.28*j);
+                    }else {
+                        columns[i][j].setX(34+69.28*j);
+                    }
+                    columns[i][j].setY(75+60*i);
+                    root.getChildren().add(columns[i][j]);
+                }
+            }
+        }
         for (int i = 0; i < b.getPlayerNum(); i++) {
             scores.getItems().add(
                     Player.getStats(i, stateString));

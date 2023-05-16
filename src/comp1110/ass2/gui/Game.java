@@ -33,6 +33,9 @@ public class Game extends Application {
     private ChoiceBox villageOrSettler;
     private ChoiceBox xPosition;
     private ChoiceBox yPosition;
+    private Text phase;
+    private Text[] rows;
+    private Text[][] columns;
     private String pieceType;
     private Board b;
     final VBox scoreTable = new VBox();
@@ -278,30 +281,32 @@ public class Game extends Application {
         scores.getColumns().add(column8);
         scores.getColumns().add(column9);
         scores.getColumns().add(column10);
+
         Translate tablePosition = new Translate(1000, 0);
         scores.getTransforms().add(tablePosition);
-        //Phase and moving player information
-        String info="";
+
+        // Phase and moving player information
+        String info = "";
         if(b.isPhase()){
             info+="Exploration Phase     ";
         }else {
             info+="Settlement Phase      ";
         }
-        info+="Player "+b.getTurn()+" is moving.";
-        Text phase=new Text(info);
+        info+="Player "+b.getTurn()+" to move.";
+        phase = new Text(info);
         phase.setX(1000);
         phase.setY(640);
         root.getChildren().add(phase);
-        //Rows hints
-        Text[] rows=new Text[b.getSize()];
+        // Row coordinates
+        rows = new Text[b.getSize()];
         for(int i=0;i<= rows.length-1;i++){
             rows[i]=new Text(""+i);
             rows[i].setX(920);
-            rows[i].setY(60*i+40);
+            rows[i].setY(61*i+40);
         }
         root.getChildren().addAll(rows);
-        //Column hints
-        Text[][] columns=new Text[b.getSize()][b.getSize()];
+        // Column coordinates
+        columns = new Text[b.getSize()][b.getSize()];
         for(int i=0;i<= rows.length-1;i++){
             for(int j=0;j<= rows.length-1;j++){
                 if(i%2==0&&j==b.getSize()-1){
@@ -309,12 +314,12 @@ public class Game extends Application {
                 }else {
                     columns[i][j]=new Text(""+j);
                     if(i%2==0){
-                        columns[i][j].setX(69+69.28*j);
+                        columns[i][j].setX(65+69.28*j);
                     }else {
-                        columns[i][j].setX(34+69.28*j);
+                        columns[i][j].setX(30+69.28*j);
                     }
                     columns[i][j].setY(75+60*i);
-                    root.getChildren().add(columns[i][j]);
+                    root.getChildren().addAll(columns[i][j]);
                 }
             }
         }
@@ -343,7 +348,7 @@ public class Game extends Application {
         xPosition.setValue("0");
 
         yPosition = new ChoiceBox<>();
-        yPosition.getItems().addAll("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13");
+        yPosition.getItems().addAll("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12");
         yPosition.setValue("0");
 
         Button button2 = new Button("Play");
@@ -385,7 +390,13 @@ public class Game extends Application {
         hb.setLayoutY(WINDOW_HEIGHT - 50);
         controls.getChildren().add(hb);
 
+        Text badMove = new Text("Invalid Move");
+        badMove.setFill(Color.RED);
+        badMove.setX(1000);
+        badMove.setY(700);
+
         button2.setOnAction(e -> {
+            // Encodes the entered move as a moveString
             String xPos = (String) xPosition.getValue();
             String yPos = (String) yPosition.getValue();
             String piece = (String) villageOrSettler.getValue();
@@ -397,8 +408,17 @@ public class Game extends Application {
             }
 
             String move = pieceType + " " + xPos + "," + yPos;
-            boardString = BlueLagoon.applyMove(boardString, move);
-            root.getChildren().remove(scoreTable);
+
+            // Makes "invalid move" text if player enters an invalid move
+            if (BlueLagoon.isMoveValid(boardString, move)) {
+                boardString = BlueLagoon.applyMove(boardString, move);
+                root.getChildren().remove(badMove);
+            } else {
+                root.getChildren().remove(badMove);
+                root.getChildren().add(badMove);
+            }
+
+            root.getChildren().removeAll(scoreTable, phase);
             displayState(boardString);
         });
     }

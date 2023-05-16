@@ -132,7 +132,7 @@ public class Player {
             i++;
         }
         int j = 0;
-        while (!stats[10 + settlers + j].matches("[T(;)?| ]")) {
+        while (stats[10 + settlers + j].contains(",")) {
             villages++;
             j++;
         }

@@ -2,7 +2,6 @@ package comp1110.ass2;
 
 public class Player {
     private Integer playerNumber;
-
     public Integer getPlayerNumber() {
         return playerNumber;
     }
@@ -84,9 +83,10 @@ public class Player {
     private Integer settlers;
     private Integer villages;
     private Integer PlayerNumber;
-
     private Board b;
 
+    // Written by Tyler
+    // Creates a Player object which is later used to make the Board class and the scoreboard in the Game class 
     public Player(Integer playerNumber, Integer score, Integer coconut, Integer bamboo, Integer water, Integer stone, Integer statuette, Integer settlers, Integer villages) {
         this.playerNumber = playerNumber;
         this.score = score;
@@ -99,6 +99,7 @@ public class Player {
         this.villages = villages;
     }
 
+    // Given a player's number and the current gamestate, returns a Player object representing the Player's stats
     public static Player getStats(int playerNumber, String stateString) {
         String[] playerStatements = stateString.split(";");
         int thisindex=0;

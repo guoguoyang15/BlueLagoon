@@ -286,6 +286,7 @@ public class Game extends Application {
         Translate tablePosition = new Translate(1500, 0);
         scores.getTransforms().add(tablePosition);
 
+
         for (int i = 0; i < b.getPlayerNum(); i++) {
             scores.getItems().add(
                     Player.getStats(i, stateString));

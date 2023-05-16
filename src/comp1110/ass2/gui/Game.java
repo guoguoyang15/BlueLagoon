@@ -23,8 +23,34 @@ import javafx.stage.Stage;
 import javafx.scene.transform.Translate;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.scene.input.MouseButton;
 
 public class Game extends Application {
+    public class Hexagon extends Polygon {
+        // Written by Linsheng
+        // Creates a hexagon shape, later used in the Viewer and Game classes to create the board image
+        public double x;
+        public double y;
+        public double side;
+
+
+        public Hexagon(double x,double y, double side){
+            this.x=x;
+            this.y=y;
+            this.side=side;
+            setLayoutX(x);
+            setLayoutY(y);
+            getPoints().addAll((double)0,-side,
+                    (side/2)*Math.sqrt(3),-side/2,
+                    (side/2)*Math.sqrt(3),side/2,
+                    (double)0,side,
+                    -(side/2)*Math.sqrt(3),side/2,
+                    -(side/2)*Math.sqrt(3),-side/2
+            );
+
+        }
+
+    }
     // Written mostly by Tyler, with input from Linsheng and some changes by Zhining
     private final Group root = new Group();
     private final Group controls = new Group();
@@ -58,8 +84,7 @@ public class Game extends Application {
     }
 
     void displayState(String stateString) {
-        Board b = new Board(stateString);
-
+        b = new Board(stateString);
         // Adds images of the tiles
         List<ImageView> imageViews = new ArrayList<>();
         int rand = 0;
@@ -118,6 +143,7 @@ public class Game extends Application {
         precious_stones = new Image(getClass().getResourceAsStream("/image/Resources/precious_stones.png"), 69.28, 80, false, false);
         statuettes = new Image(getClass().getResourceAsStream("/image/Resources/statuettes.png"), 69.28, 80, false, false);
         water = new Image(getClass().getResourceAsStream("/image/Resources/water.png"), 69.28, 80, false, false);
+
         // Sets up all spots
         for (int i = 0; i <= b.getSize() - 1; i++) {
             for (int j = 0; j <= b.getSize() - 1; j++) {
@@ -328,6 +354,72 @@ public class Game extends Application {
                     Player.getStats(i, stateString));
         }
         root.getChildren().addAll(scores);
+        Hexagon[][] hexagons=new Hexagon[b.getSize()][b.getSize()];
+        //Set up a 2D array for hexagons
+        for (int i = 0; i <= b.getSize() - 1; i++) {
+            for (int j = 0; j <= b.getSize() - 1; j++) {
+                if(i%2==0&&j==b.getSize()-1){
+                    hexagons[i][j]=null;
+                }else {
+                    if(i%2==0){
+                        hexagons[i][j]=new Hexagon(69.28+ 69.28 * j,40+60*i,40);
+                        int finalJ1 = j;
+                        int finalI1 = i;
+                        hexagons[i][j].setOnMousePressed(event -> {
+                            if(event.getButton()== MouseButton.PRIMARY){
+                                String str="S "+ finalI1 +","+ finalJ1;
+                                if (BlueLagoon.isMoveValid(boardString, str)) {
+                                    boardString = BlueLagoon.applyMove(boardString, str);
+                                }
+                                root.getChildren().remove(phase);
+                                b=new Board(boardString);
+                                displayState(boardString);
+                            }else if(event.getButton()== MouseButton.SECONDARY){
+                                String str="T "+ finalI1 +","+ finalJ1;
+                                if (BlueLagoon.isMoveValid(boardString, str)) {
+                                    boardString = BlueLagoon.applyMove(boardString, str);
+                                }
+                                root.getChildren().remove(phase);
+                                b=new Board(boardString);
+                                displayState(boardString);
+                            }
+                        });
+                        hexagons[i][j].toBack();
+                        hexagons[i][j].setFill(Color.TRANSPARENT);
+                        root.getChildren().add(hexagons[i][j]);
+                    }else {
+                        hexagons[i][j]=new Hexagon(34.64+ 69.28 * j,40+60*i,40);
+                        int finalJ2 = j;
+                        int finalI2 = i;
+                        int finalI = i;
+                        hexagons[i][j].setOnMousePressed(event -> {
+                            if(event.getButton()== MouseButton.PRIMARY){
+                                String str="S "+ finalI2 +","+ finalJ2;
+                                if (BlueLagoon.isMoveValid(boardString, str)) {
+                                    boardString = BlueLagoon.applyMove(boardString, str);
+                                }
+                                root.getChildren().remove(phase);
+                                b=new Board(boardString);
+                                displayState(boardString);
+                            }else if(event.getButton()== MouseButton.SECONDARY){
+                                String str="T "+ finalI +","+finalJ2;
+                                if (BlueLagoon.isMoveValid(boardString, str)) {
+                                    boardString = BlueLagoon.applyMove(boardString, str);
+
+                                }
+                                root.getChildren().remove(phase);
+                                b=new Board(boardString);
+                                displayState(boardString);
+                            }
+                        });
+                        hexagons[i][j].toBack();
+                        hexagons[i][j].setFill(Color.TRANSPARENT);
+                        root.getChildren().add(hexagons[i][j]);
+                    }
+                }
+            }
+        }
+
     }
     private void makeControls() {
         // Written by Tyler
@@ -383,6 +475,8 @@ public class Game extends Application {
             displayState(boardString);
             controls.getChildren().add(hb2);
         });
+
+
         HBox hb = new HBox();
         hb.getChildren().addAll(playerLabel, twoPlayers, threePlayers, fourPlayers);
         hb.setSpacing(10);

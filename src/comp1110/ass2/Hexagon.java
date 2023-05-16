@@ -1,13 +1,16 @@
 package comp1110.ass2;
 
+import javafx.scene.control.Button;
+import javafx.scene.input.MouseButton;
 import javafx.scene.shape.Polygon;
 
 public class Hexagon extends Polygon {
     // Written by Linsheng
     // Creates a hexagon shape, later used in the Viewer and Game classes to create the board image
-    double x;
-    double y;
-    double side;
+    public double x;
+    public double y;
+    public double side;
+
 
     public Hexagon(double x,double y, double side){
         this.x=x;
@@ -22,6 +25,15 @@ public class Hexagon extends Polygon {
                 -(side/2)*Math.sqrt(3),side/2,
                 -(side/2)*Math.sqrt(3),-side/2
         );
+        setOnMousePressed(event -> {
+            double cx=event.getX();
+            double cy=event.getY();
+            if(event.getButton()== MouseButton.PRIMARY){
+                String str="S "+cx+","+cy;
+
+
+            }
+        });
     }
 
 }

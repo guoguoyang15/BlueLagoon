@@ -1,5 +1,7 @@
 package comp1110.ass2;
+import comp1110.ass2.Board;
 
+import java.util.Arrays;
 
 public class Player {
     // Written by Tyler
@@ -117,6 +119,20 @@ public class Player {
             playerColor = "Purple";
         }
         return new Player(playerNumber, score, coconut, bamboo,water,stone,statuette, settlers, villages, playerColor);
+    }
+
+    public static int winner(String stateString) {
+        Board b = new Board(stateString);
+        int[] scores = new int[b.getPlayerNum()];
+        for (int i = 0; i < b.getPlayerNum(); i++) {
+            scores[i] = getStats(i, stateString).getScore();
+        }
+        int maxAt = 0;
+
+        for (int i = 0; i < scores.length; i++) {
+            maxAt = scores[i] > scores[maxAt] ? i : maxAt;
+        }
+        return maxAt;
     }
 }
 

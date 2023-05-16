@@ -17,7 +17,6 @@ import javafx.stage.Stage;
 import javafx.scene.transform.Translate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
 
 public class Game extends Application {
     // Written mostly by Tyler, with input from Linsheng and some changes by Zhining
@@ -25,6 +24,7 @@ public class Game extends Application {
     private final Group controls = new Group();
     private static final int WINDOW_WIDTH = 1200;
     private static final int WINDOW_HEIGHT = 700;
+    private int skips = 0;
     private ChoiceBox villageOrSettler;
     private ChoiceBox xPosition;
     private ChoiceBox yPosition;
@@ -270,6 +270,12 @@ public class Game extends Application {
         Translate tablePosition = new Translate(1000, 0);
         scores.getTransforms().add(tablePosition);
 
+        for (int i = 0; i < b.getPlayerNum(); i++) {
+            scores.getItems().add(
+                    Player.getStats(i, stateString));
+        }
+        root.getChildren().addAll(scores);
+
         // Phase and moving player information
         String info = "";
         if(b.isPhase()){
@@ -308,20 +314,7 @@ public class Game extends Application {
                 }
             }
         }
-        for (int i = 0; i < b.getPlayerNum(); i++) {
-            scores.getItems().add(
-                    Player.getStats(i, stateString));
-        }
-        root.getChildren().addAll(scores);
     }
-
-//    public void triggerAI(int playerCount, int AICount) {
-//        if (b.getTurn() >= playerCount - AICount) {
-//            boardString = BlueLagoon.applyMove(boardString, BlueLagoon.generateAIMove(boardString));
-//            root.getChildren().removeAll(scoreTable, phase);
-//            displayState(boardString);
-//        }
-//    }
 
     public void makeControls() {
         // Written by Tyler
@@ -369,9 +362,11 @@ public class Game extends Application {
         yPosition.setValue("0");
 
         Button play = new Button("Play");
-
+        // For testing
+        Button random = new Button("Random Move");
+        // For testing
         HBox moveBox = new HBox();
-        moveBox.getChildren().addAll(moveLabel, villageOrSettler, xPosition, yPosition, play);
+        moveBox.getChildren().addAll(moveLabel, villageOrSettler, xPosition, yPosition, play, random);
         moveBox.setSpacing(10);
         moveBox.setLayoutX(1000);
         moveBox.setLayoutY(670);
@@ -416,14 +411,25 @@ public class Game extends Application {
 
         play.setOnAction(e -> {
             Board b = new Board(boardString);
-            if (b.getTurn() >= Integer.parseInt((String) playerCount.getValue()) - Integer.parseInt((String) AICount.getValue())) {
-                boardString = BlueLagoon.applyMove(boardString, BlueLagoon.generateAIMove(boardString));
-                root.getChildren().removeAll(scoreTable, phase);
-                displayState(boardString);
-                play.fire();
-            }
-
-            else {
+//            if (BlueLagoon.generateAllValidMoves(boardString).size() == 0) {
+//                skips = skips + 1;
+//                if (skips == Integer.parseInt((String) playerCount.getValue())) {
+//                    if (b.isPhase()) {
+//                        boardString = BlueLagoon.endPhase(boardString);
+//                    }
+//                    else {
+//                        boardString = BlueLagoon.endPhase(boardString);
+//                        String winner = String.valueOf(Player.winner(boardString));
+//                        // Creates winner text
+//                        Text win = new Text("Player " + winner + " has won!");
+//                        win.setFill(Color.DARKGREEN);
+//                        win.setX(1000);
+//                        win.setY(720);
+//                        root.getChildren().add(win);
+//                    }
+//                }
+//            }
+//            else {
                 // Encodes the entered move as a moveString
                 String xPos = (String) xPosition.getValue();
                 String yPos = (String) yPosition.getValue();
@@ -446,7 +452,33 @@ public class Game extends Application {
                 }
                 root.getChildren().removeAll(scoreTable, phase);
                 displayState(boardString);
-            }
+                skips = 0;
+//            }
+
+        });
+        // For testing
+        random.setOnAction(e -> {
+//            if (BlueLagoon.generateAllValidMoves(boardString).size() == 0) {
+//                skips = skips + 1;
+//                if (skips == Integer.parseInt((String) playerCount.getValue())) {
+//                    if (b.isPhase()) {
+//                        boardString = BlueLagoon.endPhase(boardString);
+//                    }
+//                    else {
+//                        boardString = BlueLagoon.endPhase(boardString);
+//                        String winner = String.valueOf(Player.winner(boardString));
+//                        // Creates winner text
+//                        Text win = new Text("Player " + winner + " has won!");
+//                        win.setFill(Color.DARKGREEN);
+//                        win.setX(1000);
+//                        win.setY(720);
+//                        root.getChildren().add(win);
+//                    }
+//                }
+//            }
+            boardString = BlueLagoon.applyMove(boardString, BlueLagoon.generateAIMove(boardString));
+            root.getChildren().removeAll(scoreTable, phase);
+            displayState(boardString);
         });
     }
 

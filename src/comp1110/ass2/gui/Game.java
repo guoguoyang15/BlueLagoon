@@ -8,6 +8,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -19,39 +20,34 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
 import javafx.scene.transform.Translate;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-
-
-// FIXME Task 14
-// FIXME Task 15
 
 public class Game extends Application {
+    // Written mostly by Tyler, with input from Linsheng and some changes by Zhining
     private final Group root = new Group();
     private final Group controls = new Group();
     private static final int WINDOW_WIDTH = 1200;
     private static final int WINDOW_HEIGHT = 700;
-//    private TextField stateTextField;
-    private TextField xTextField;
-    private TextField yTextField;
-    private TextField typeTextField;
+    private ChoiceBox villageOrSettler;
+    private ChoiceBox xPosition;
+    private ChoiceBox yPosition;
+    private String pieceType;
     private Board b;
     final VBox scoreTable = new VBox();
-
     private String boardString;
 
-    public static void main(String[] args) {
-        launch(args);
-    }
-
     public String initializeGame(int n) {
+        // Written by Tyler
+        // Initializes the starting game state
         if (n == 2) {
+            // 2 Players
             boardString = "a 13 2; c 0 E; i 6 0,0 0,1 0,2 0,3 1,0 1,1 1,2 1,3 1,4 2,0 2,1; i 6 0,5 0,6 0,7 1,6 1,7 1,8 2,6 2,7 2,8 3,7 3,8; i 6 7,12 8,11 9,11 9,12 10,10 10,11 11,10 11,11 11,12 12,10 12,11; i 8 0,9 0,10 0,11 1,10 1,11 1,12 2,10 2,11 3,10 3,11 3,12 4,10 4,11 5,11 5,12; i 8 4,0 5,0 5,1 6,0 6,1 7,0 7,1 7,2 8,0 8,1 8,2 9,0 9,1 9,2; i 8 10,3 10,4 11,0 11,1 11,2 11,3 11,4 11,5 12,0 12,1 12,2 12,3 12,4 12,5; i 10 3,3 3,4 3,5 4,2 4,3 4,4 4,5 5,3 5,4 5,5 5,6 6,3 6,4 6,5 6,6 7,4 7,5 7,6 8,4 8,5; i 10 5,8 5,9 6,8 6,9 7,8 7,9 7,10 8,7 8,8 8,9 9,7 9,8 9,9 10,6 10,7 10,8 11,7 11,8 12,7 12,8; s 0,0 0,5 0,9 1,4 1,8 1,12 2,1 3,5 3,7 3,10 3,12 4,0 4,2 5,9 5,11 6,3 6,6 7,0 7,8 7,12 8,2 8,5 9,0 9,9 10,3 10,6 10,10 11,0 11,5 12,2 12,8 12,11; r C B W P S; p 0 0 0 0 0 0 0 S T; p 1 0 0 0 0 0 0 S T;";
         } else if (n == 3) {
+            // 3 Players
             boardString = "a 13 3; c 0 E; i 6 0,0 0,1 0,2 0,3 1,0 1,1 1,2 1,3 1,4 2,0 2,1; i 6 0,5 0,6 0,7 1,6 1,7 1,8 2,6 2,7 2,8 3,7 3,8; i 6 7,12 8,11 9,11 9,12 10,10 10,11 11,10 11,11 11,12 12,10 12,11; i 8 0,9 0,10 0,11 1,10 1,11 1,12 2,10 2,11 3,10 3,11 3,12 4,10 4,11 5,11 5,12; i 8 4,0 5,0 5,1 6,0 6,1 7,0 7,1 7,2 8,0 8,1 8,2 9,0 9,1 9,2; i 8 10,3 10,4 11,0 11,1 11,2 11,3 11,4 11,5 12,0 12,1 12,2 12,3 12,4 12,5; i 10 3,3 3,4 3,5 4,2 4,3 4,4 4,5 5,3 5,4 5,5 5,6 6,3 6,4 6,5 6,6 7,4 7,5 7,6 8,4 8,5; i 10 5,8 5,9 6,8 6,9 7,8 7,9 7,10 8,7 8,8 8,9 9,7 9,8 9,9 10,6 10,7 10,8 11,7 11,8 12,7 12,8; s 0,0 0,5 0,9 1,4 1,8 1,12 2,1 3,5 3,7 3,10 3,12 4,0 4,2 5,9 5,11 6,3 6,6 7,0 7,8 7,12 8,2 8,5 9,0 9,9 10,3 10,6 10,10 11,0 11,5 12,2 12,8 12,11; r C B W P S; p 0 0 0 0 0 0 0 S T; p 1 0 0 0 0 0 0 S T; p 2 0 0 0 0 0 0 S T;";
         } else if (n == 4) {
+            // 4 Players
             boardString = "a 13 4; c 0 E; i 6 0,0 0,1 0,2 0,3 1,0 1,1 1,2 1,3 1,4 2,0 2,1; i 6 0,5 0,6 0,7 1,6 1,7 1,8 2,6 2,7 2,8 3,7 3,8; i 6 7,12 8,11 9,11 9,12 10,10 10,11 11,10 11,11 11,12 12,10 12,11; i 8 0,9 0,10 0,11 1,10 1,11 1,12 2,10 2,11 3,10 3,11 3,12 4,10 4,11 5,11 5,12; i 8 4,0 5,0 5,1 6,0 6,1 7,0 7,1 7,2 8,0 8,1 8,2 9,0 9,1 9,2; i 8 10,3 10,4 11,0 11,1 11,2 11,3 11,4 11,5 12,0 12,1 12,2 12,3 12,4 12,5; i 10 3,3 3,4 3,5 4,2 4,3 4,4 4,5 5,3 5,4 5,5 5,6 6,3 6,4 6,5 6,6 7,4 7,5 7,6 8,4 8,5; i 10 5,8 5,9 6,8 6,9 7,8 7,9 7,10 8,7 8,8 8,9 9,7 9,8 9,9 10,6 10,7 10,8 11,7 11,8 12,7 12,8; s 0,0 0,5 0,9 1,4 1,8 1,12 2,1 3,5 3,7 3,10 3,12 4,0 4,2 5,9 5,11 6,3 6,6 7,0 7,8 7,12 8,2 8,5 9,0 9,9 10,3 10,6 10,10 11,0 11,5 12,2 12,8 12,11; r C B W P S; p 0 0 0 0 0 0 0 S T; p 1 0 0 0 0 0 0 S T; p 2 0 0 0 0 0 0 S T; p 3 0 0 0 0 0 0 S T;";
         }
         return boardString;
@@ -59,6 +55,8 @@ public class Game extends Application {
 
     void displayState(String stateString) {
         Board b = new Board(stateString);
+
+        // Adds images of the tiles
         List<ImageView> imageViews = new ArrayList<>();
         int rand = 0;
         Image[] land = new Image[18];
@@ -116,7 +114,7 @@ public class Game extends Application {
         precious_stones = new Image(getClass().getResourceAsStream("/image/Resources/precious_stones.png"), 69.28, 80, false, false);
         statuettes = new Image(getClass().getResourceAsStream("/image/Resources/statuettes.png"), 69.28, 80, false, false);
         water = new Image(getClass().getResourceAsStream("/image/Resources/water.png"), 69.28, 80, false, false);
-        //Set up spots
+        // Sets up all spots
         for (int i = 0; i <= b.getSize() - 1; i++) {
             for (int j = 0; j <= b.getSize() - 1; j++) {
                 if (b.getBoard()[i][j] != null) {
@@ -147,7 +145,7 @@ public class Game extends Application {
                 }
             }
         }
-        //Add stone circle
+        // Adds stone circles
         for (int i = 0; i <= b.getSize() - 1; i++) {
             for (int j = 0; j <= b.getSize() - 1; j++) {
                 if (b.getBoard()[i][j] != null) {
@@ -168,7 +166,7 @@ public class Game extends Application {
                 }
             }
         }
-        //Add resources
+        // Adds resources
         for (int i = 0; i <= b.getSize() - 1; i++) {
             for (int j = 0; j <= b.getSize() - 1; j++) {
                 if (b.getBoard()[i][j] != null) {
@@ -197,7 +195,7 @@ public class Game extends Application {
                 }
             }
         }
-        //Add players
+        // Adds player pieces
         for (int i = 0; i <= b.getSize() - 1; i++) {
             for (int j = 0; j <= b.getSize() - 1; j++) {
                 if (b.getBoard()[i][j] != null && b.getBoard()[i][j].occupiedByPlayer != 100) {
@@ -234,46 +232,41 @@ public class Game extends Application {
                 }
             }
         }
-//        root.getChildren().addAll(tilesList);
-//        root.getChildren().addAll(villageList);
         root.getChildren().addAll(imageViews);
+
+        // Generates a display including all game information in table form
         TableView scores = new TableView();
-        TableColumn<Player, Integer> column1 =
-                new TableColumn<>("Player #");
-        column1.setCellValueFactory(
-                new PropertyValueFactory<>("playerNumber"));
-        TableColumn<Player, Integer> column2 =
-                new TableColumn<>("Score");
-        column2.setCellValueFactory(
-                new PropertyValueFactory<>("score"));
-        TableColumn<Player, Integer> column3 =
-                new TableColumn<>("C");
-        column3.setCellValueFactory(
-                new PropertyValueFactory<>("coconut"));
-        TableColumn<Player, Integer> column4 =
-                new TableColumn<>("B");
-        column4.setCellValueFactory(
-                new PropertyValueFactory<>("bamboo"));
-        TableColumn<Player, Integer> column5 =
-                new TableColumn<>("W");
-        column5.setCellValueFactory(
-                new PropertyValueFactory<>("water"));
-        TableColumn<Player, Integer> column6 =
-                new TableColumn<>("P");
-        column6.setCellValueFactory(
-                new PropertyValueFactory<>("stone"));
-        TableColumn<Player, Integer> column7 =
-                new TableColumn<>("S");
-        column7.setCellValueFactory(
-                new PropertyValueFactory<>("statuette"));
-        TableColumn<Player, Integer> column8 =
-                new TableColumn<>("Settlers");
-        column8.setCellValueFactory(
-                new PropertyValueFactory<>("settlers"));
-        TableColumn<Player, Integer> column9 =
-                new TableColumn<>("Villages");
-        column9.setCellValueFactory(
-                new PropertyValueFactory<>("villages"));
+
+        TableColumn<Player, Integer> column1 = new TableColumn<>("Player #");
+        column1.setCellValueFactory(new PropertyValueFactory<>("playerNumber"));
+
+        TableColumn<Player, Integer> column2 = new TableColumn<>("Score");
+        column2.setCellValueFactory(new PropertyValueFactory<>("score"));
+
+        TableColumn<Player, Integer> column3 = new TableColumn<>("Coconut");
+        column3.setCellValueFactory(new PropertyValueFactory<>("coconut"));
+
+        TableColumn<Player, Integer> column4 = new TableColumn<>("Bamboo");
+        column4.setCellValueFactory(new PropertyValueFactory<>("bamboo"));
+
+        TableColumn<Player, Integer> column5 = new TableColumn<>("Water");
+        column5.setCellValueFactory(new PropertyValueFactory<>("water"));
+
+        TableColumn<Player, Integer> column6 = new TableColumn<>("P. Stone");
+        column6.setCellValueFactory(new PropertyValueFactory<>("stone"));
+
+        TableColumn<Player, Integer> column7 = new TableColumn<>("Statuettes");
+        column7.setCellValueFactory(new PropertyValueFactory<>("statuette"));
+
+        TableColumn<Player, Integer> column8 = new TableColumn<>("Settlers");
+        column8.setCellValueFactory(new PropertyValueFactory<>("settlers"));
+
+        TableColumn<Player, Integer> column9 = new TableColumn<>("Villages");
+        column9.setCellValueFactory(new PropertyValueFactory<>("villages"));
+
+        TableColumn<Player, String> column10 = new TableColumn<>("Color");
+        column10.setCellValueFactory(new PropertyValueFactory<>("color"));
+
         scores.getColumns().add(column1);
         scores.getColumns().add(column2);
         scores.getColumns().add(column3);
@@ -283,7 +276,8 @@ public class Game extends Application {
         scores.getColumns().add(column7);
         scores.getColumns().add(column8);
         scores.getColumns().add(column9);
-        Translate tablePosition = new Translate(1500, 0);
+        scores.getColumns().add(column10);
+        Translate tablePosition = new Translate(1000, 0);
         scores.getTransforms().add(tablePosition);
 
 
@@ -293,38 +287,59 @@ public class Game extends Application {
         }
         root.getChildren().addAll(scores);
     }
-
     private void makeControls() {
-        Label playerLabel = new Label("Select Number of Players");
+        // Written by Tyler
+        // Creates the player number selection screen
+        Label playerLabel = new Label("Select Number of Players:");
         Button twoPlayers = new Button("2");
         Button threePlayers = new Button("3");
         Button fourPlayers = new Button("4");
-        twoPlayers.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                boardString = initializeGame(2);
-                boardString = BlueLagoon.distributeResources(boardString);
-                b = new Board(boardString);
-                displayState(boardString);
-            }
+
+        // Creates menu for entering moves
+        Label moveLabel = new Label("Choose the piece and position:");
+        villageOrSettler = new ChoiceBox<>();
+        villageOrSettler.getItems().addAll("Settler", "Village");
+        villageOrSettler.setValue("Settler");
+
+        xPosition = new ChoiceBox<>();
+        xPosition.getItems().addAll("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12");
+        xPosition.setValue("0");
+
+        yPosition = new ChoiceBox<>();
+        yPosition.getItems().addAll("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13");
+        yPosition.setValue("0");
+
+        Button button2 = new Button("Play");
+
+        HBox hb2 = new HBox();
+        hb2.getChildren().addAll(moveLabel, villageOrSettler, xPosition, yPosition, button2);
+        hb2.setSpacing(10);
+        hb2.setLayoutX(1000);
+        hb2.setLayoutY(WINDOW_HEIGHT - 50);
+
+        twoPlayers.setOnAction(e -> {
+            // Initializes the game for 2 players
+            boardString = initializeGame(2);
+            boardString = BlueLagoon.distributeResources(boardString);
+            b = new Board(boardString);
+            displayState(boardString);
+            controls.getChildren().add(hb2);
         });
-        threePlayers.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                boardString = initializeGame(3);
-                boardString = BlueLagoon.distributeResources(boardString);
-                b = new Board(boardString);
-                displayState(boardString);
-            }
+        threePlayers.setOnAction(e -> {
+            // Initializes the game for 3 players
+            boardString = initializeGame(3);
+            boardString = BlueLagoon.distributeResources(boardString);
+            b = new Board(boardString);
+            displayState(boardString);
+            controls.getChildren().add(hb2);
         });
-        fourPlayers.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                boardString = initializeGame(4);
-                boardString = BlueLagoon.distributeResources(boardString);
-                b = new Board(boardString);
-                displayState(boardString);
-            }
+        fourPlayers.setOnAction(e -> {
+            // Initializes the game for 4 players
+            boardString = initializeGame(4);
+            boardString = BlueLagoon.distributeResources(boardString);
+            b = new Board(boardString);
+            displayState(boardString);
+            controls.getChildren().add(hb2);
         });
         HBox hb = new HBox();
         hb.getChildren().addAll(playerLabel, twoPlayers, threePlayers, fourPlayers);
@@ -333,34 +348,22 @@ public class Game extends Application {
         hb.setLayoutY(WINDOW_HEIGHT - 50);
         controls.getChildren().add(hb);
 
-        Label xLabel = new Label("X:");
-        xTextField = new TextField();
-        xTextField.setPrefWidth(50);
-        Label yLabel = new Label("Y:");
-        yTextField = new TextField();
-        yTextField.setPrefWidth(50);
-        Label typeLabel = new Label("S/T:");
-        typeTextField = new TextField();
-        typeTextField.setPrefWidth(50);
-        Button button2 = new Button("Apply");
-        HBox hb2 = new HBox();
-        hb2.getChildren().addAll(xLabel, yLabel, typeLabel, xTextField, yTextField, typeTextField, button2);
-        hb2.setSpacing(10);
-        hb2.setLayoutX(1000);
-        hb2.setLayoutY(WINDOW_HEIGHT - 50);
-        button2.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                String moveX = xTextField.getText();
-                String moveY = yTextField.getText();
-                String piece = typeTextField.getText();
-                String move = piece + " " + moveX + "," + moveY;
-                boardString = BlueLagoon.applyMove(boardString, move);
-                root.getChildren().remove(scoreTable);
-                displayState(boardString);
+        button2.setOnAction(e -> {
+            String xPos = (String) xPosition.getValue();
+            String yPos = (String) yPosition.getValue();
+            String piece = (String) villageOrSettler.getValue();
+
+            if (piece == "Village") {
+                pieceType = "T";
+            } else if (piece == "Settler") {
+                pieceType = "S";
             }
+
+            String move = pieceType + " " + xPos + "," + yPos;
+            boardString = BlueLagoon.applyMove(boardString, move);
+            root.getChildren().remove(scoreTable);
+            displayState(boardString);
         });
-        controls.getChildren().add(hb2);
     }
 
     @Override

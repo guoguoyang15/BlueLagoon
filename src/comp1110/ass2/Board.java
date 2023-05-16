@@ -1,4 +1,5 @@
 package comp1110.ass2;
+import comp1110.ass2.Player;
 
 public class Board {
     private Spot[][] board;
@@ -90,7 +91,7 @@ public class Board {
     }
 
     public Board(String statestring) {
-        //Split the statestring first
+        //Split the stateString first
         String[] statement=statestring.split(";");
 
         //Extract size of the board
@@ -205,15 +206,16 @@ public class Board {
 
             if (statement[i].startsWith(" p")) {
                 String flag = "";
-                int settlerNum=0;
-                int villageNum=0;
+                int settlerNum = 0;
+                int villageNum = 0;
                 String[] playerPositions = statement[i].split(" ");
                 int whichplayer = Integer.parseInt(playerPositions[2]);//which player occupies these following spots
+                String color = null;
                 for (int j = 0; j <= playerPositions.length - 1; j++) {
-                    if(playerPositions[j].equals("S")){
+                    if (playerPositions[j].equals("S")) {
                         flag = "S";
                     }
-                    if(playerPositions[j].equals("T")){
+                    if (playerPositions[j].equals("T")) {
                         flag = "T";
                     }
                     if (playerPositions[j].contains(",")) {
@@ -221,20 +223,22 @@ public class Board {
                         int setx = Integer.parseInt(setPos[0]);
                         int sety = Integer.parseInt(setPos[1]);
                         spots[setx][sety].occupiedByPlayer = whichplayer;
-                        if(flag.equals("S")){
-                            spots[setx][sety].settlerOrVillage= Spot.SettlerOrVillage.SETTLER;
+                        if (flag.equals("S")) {
+                            spots[setx][sety].settlerOrVillage = Spot.SettlerOrVillage.SETTLER;
                             settlerNum++;
                         }
-                        if(flag.equals("T")){
-                            spots[setx][sety].settlerOrVillage= Spot.SettlerOrVillage.VILLAGE;
+                        if (flag.equals("T")) {
+                            spots[setx][sety].settlerOrVillage = Spot.SettlerOrVillage.VILLAGE;
                             villageNum++;
                         }
                     }
+                    color = Player.getStats(whichplayer, statestring).getColor();
+
                 }
-                p[whichplayer] = new Player(Integer.parseInt(playerPositions[2]),Integer.parseInt(playerPositions[3]),
-                        Integer.parseInt(playerPositions[4]),Integer.parseInt(playerPositions[5]),
-                        Integer.parseInt(playerPositions[6]),Integer.parseInt(playerPositions[7]),
-                        Integer.parseInt(playerPositions[8]),settlerNum,villageNum);
+                p[whichplayer] = new Player(Integer.parseInt(playerPositions[2]), Integer.parseInt(playerPositions[3]),
+                        Integer.parseInt(playerPositions[4]), Integer.parseInt(playerPositions[5]),
+                        Integer.parseInt(playerPositions[6]), Integer.parseInt(playerPositions[7]),
+                        Integer.parseInt(playerPositions[8]), settlerNum, villageNum, color);
             }
         }
 

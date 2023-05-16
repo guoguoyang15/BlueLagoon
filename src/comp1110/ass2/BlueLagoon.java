@@ -277,11 +277,10 @@ public class BlueLagoon {
      * @param stateString a string representing a game state
      * @return an integer array containing the calculated scores for each player
      */
-    //Zhou Linsheng(u7630421) completes the following function
+    // Zhou Linsheng (u7630421) completes the following function
     public static int[] calculateScores(String stateString) {
         Board b=new Board(stateString);
         return Logic.calculateScores1(b);
-        // FIXME Task 11
     }
 
     /**

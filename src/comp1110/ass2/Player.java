@@ -1,6 +1,8 @@
 package comp1110.ass2;
+import comp1110.ass2.Board;
 
 public class Player {
+    // Written by Tyler
     private Integer playerNumber;
     public Integer getPlayerNumber() {
         return playerNumber;
@@ -74,6 +76,11 @@ public class Player {
         this.villages = villages;
     }
 
+    public String getColor() {
+        return color;
+    }
+
+    private Integer PlayerNumber;
     private Integer score;
     private Integer coconut;
     private Integer bamboo;
@@ -82,12 +89,11 @@ public class Player {
     private Integer statuette;
     private Integer settlers;
     private Integer villages;
-    private Integer PlayerNumber;
+    private String color;
     private Board b;
 
-    // Written by Tyler
     // Creates a Player object which is later used to make the Board class and the scoreboard in the Game class 
-    public Player(Integer playerNumber, Integer score, Integer coconut, Integer bamboo, Integer water, Integer stone, Integer statuette, Integer settlers, Integer villages) {
+    public Player(Integer playerNumber, Integer score, Integer coconut, Integer bamboo, Integer water, Integer stone, Integer statuette, Integer settlers, Integer villages, String color) {
         this.playerNumber = playerNumber;
         this.score = score;
         this.coconut = coconut;
@@ -97,19 +103,20 @@ public class Player {
         this.statuette = statuette;
         this.settlers = settlers;
         this.villages = villages;
+        this.color = color;
     }
 
-    // Given a player's number and the current gamestate, returns a Player object representing the Player's stats
+    // Given a player's number and the current game state, returns a Player object representing the Player's stats
     public static Player getStats(int playerNumber, String stateString) {
         String[] playerStatements = stateString.split(";");
-        int thisindex=0;
+        int index=0;
         for(int i = 0; i <= playerStatements.length-1; i++){
             if(playerStatements[i].charAt(3) == playerNumber + 48) {
-                thisindex = i;
+                index = i;
             }
         }
 
-        String[] stats = playerStatements[thisindex].split(" ");
+        String[] stats = playerStatements[index].split(" ");
         int score = Integer.parseInt(stats[3]);
         int coconut = Integer.parseInt(stats[4]);
         int bamboo = Integer.parseInt(stats[5]);
@@ -129,7 +136,20 @@ public class Player {
             villages++;
             j++;
         }
-        return new Player(playerNumber, score, coconut,bamboo,water,stone,statuette,settlers, villages);
+        String playerColor = "";
+        if (playerNumber == 0) {
+            playerColor = "Orange";
+        }
+        else if (playerNumber == 1) {
+            playerColor = "Blue";
+        }
+        else if (playerNumber == 2) {
+            playerColor = "Green";
+        }
+        else if (playerNumber == 3) {
+            playerColor = "Purple";
+        }
+        return new Player(playerNumber, score, coconut, bamboo,water,stone,statuette, settlers, villages, playerColor);
     }
 }
 

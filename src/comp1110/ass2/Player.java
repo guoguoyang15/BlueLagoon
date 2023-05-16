@@ -90,7 +90,7 @@ public class Player {
     private Integer settlers;
     private Integer villages;
     private String color;
-    private Board b;
+
 
     // Creates a Player object which is later used to make the Board class and the scoreboard in the Game class 
     public Player(Integer playerNumber, Integer score, Integer coconut, Integer bamboo, Integer water, Integer stone, Integer statuette, Integer settlers, Integer villages, String color) {
@@ -124,18 +124,20 @@ public class Player {
         int stone = Integer.parseInt(stats[7]);
         int statuette = Integer.parseInt(stats[8]);
 
-        int settlers = 0;
-        int villages = 0;
-        int i = 0;
-        while (!stats[10 + i].matches("T(;)?")) {
-            settlers++;
-            i++;
+        int settlers ;
+        int villages ;
+        int indexS = 0;
+        int indexT=0;
+        for(int i=0;i<=stats.length-1;i++){
+            if(stats[i].equals("S")){
+                indexS=i;
+            }
+            if(stats[i].equals("T")){
+                indexT=i;
+            }
         }
-        int j = 0;
-        while (stats[10 + settlers + j].contains(",")) {
-            villages++;
-            j++;
-        }
+        settlers=indexT-indexS-1;
+        villages=stats.length-1-indexT;
         String playerColor = "";
         if (playerNumber == 0) {
             playerColor = "Orange";

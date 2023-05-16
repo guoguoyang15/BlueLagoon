@@ -3,6 +3,8 @@ package comp1110.ass2;
 import javafx.scene.shape.Polygon;
 
 public class Hexagon extends Polygon {
+    // Written by Linsheng
+    // Creates a hexagon shape, later used in the Viewer and Game classes to create the board image
     double x;
     double y;
     double side;

@@ -1,10 +1,7 @@
 package comp1110.ass2.gui;
 
 import comp1110.ass2.*;
-import comp1110.ass2.gui.Viewer;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -15,53 +12,26 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Polygon;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.transform.Translate;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.scene.input.MouseButton;
 
 public class Game extends Application {
-    public class Hexagon extends Polygon {
-        // Written by Linsheng
-        // Creates a hexagon shape, later used in the Viewer and Game classes to create the board image
-        public double x;
-        public double y;
-        public double side;
-
-
-        public Hexagon(double x,double y, double side){
-            this.x=x;
-            this.y=y;
-            this.side=side;
-            setLayoutX(x);
-            setLayoutY(y);
-            getPoints().addAll((double)0,-side,
-                    (side/2)*Math.sqrt(3),-side/2,
-                    (side/2)*Math.sqrt(3),side/2,
-                    (double)0,side,
-                    -(side/2)*Math.sqrt(3),side/2,
-                    -(side/2)*Math.sqrt(3),-side/2
-            );
-
-        }
-
-    }
     // Written mostly by Tyler, with input from Linsheng and some changes by Zhining
     private final Group root = new Group();
     private final Group controls = new Group();
     private static final int WINDOW_WIDTH = 1200;
     private static final int WINDOW_HEIGHT = 700;
+    private int skips = 0;
     private ChoiceBox villageOrSettler;
     private ChoiceBox xPosition;
     private ChoiceBox yPosition;
+    private ChoiceBox playerCount;
+    private ChoiceBox AICount;
     private Text phase;
-    private Text[] rows;
-    private Text[][] columns;
     private String pieceType;
     private Board b;
     final VBox scoreTable = new VBox();
@@ -84,7 +54,8 @@ public class Game extends Application {
     }
 
     void displayState(String stateString) {
-        b = new Board(stateString);
+        Board b = new Board(stateString);
+
         // Adds images of the tiles
         List<ImageView> imageViews = new ArrayList<>();
         int rand = 0;
@@ -143,7 +114,6 @@ public class Game extends Application {
         precious_stones = new Image(getClass().getResourceAsStream("/image/Resources/precious_stones.png"), 69.28, 80, false, false);
         statuettes = new Image(getClass().getResourceAsStream("/image/Resources/statuettes.png"), 69.28, 80, false, false);
         water = new Image(getClass().getResourceAsStream("/image/Resources/water.png"), 69.28, 80, false, false);
-
         // Sets up all spots
         for (int i = 0; i <= b.getSize() - 1; i++) {
             for (int j = 0; j <= b.getSize() - 1; j++) {
@@ -151,25 +121,17 @@ public class Game extends Application {
                     ImageView imageView = new ImageView();
                     if (i % 2 == 0) {
                         imageView.setX(34.64 + 69.28 * j);
-                        imageView.setY(60 * i);
-                        if (b.getBoard()[i][j].spotType == 1)
-                        {
-                            rand += 7;
-                            imageView.setImage(land[rand % 18]);
-                        } else {
-                            rand += 11;
-                            imageView.setImage(ocean[rand % 12]);
-                        }
                     } else {
                         imageView.setX(69.28 * j);
-                        imageView.setY(60 * i);
-                        if (b.getBoard()[i][j].spotType == 1) {
-                            rand += 7;
-                            imageView.setImage(land[rand % 18]);
-                        } else {
-                            rand += 11;
-                            imageView.setImage(ocean[rand % 12]);
-                        }
+                    }
+                    imageView.setY(60 * i);
+                    if (b.getBoard()[i][j].spotType == 1)
+                    {
+                        rand += 7;
+                        imageView.setImage(land[rand % 18]);
+                    } else {
+                        rand += 11;
+                        imageView.setImage(ocean[rand % 12]);
                     }
                     imageViews.add(imageView);
                 }
@@ -182,15 +144,13 @@ public class Game extends Application {
                     rand += 7;
                     if (b.getBoard()[i][j].circle) {
                         ImageView imageView = new ImageView();
+                        imageView.setImage(circle[rand % 6]);
                         if (i % 2 == 0) {
-                            imageView.setImage(circle[rand % 6]);
                             imageView.setX(34.64 + 69.28 * j);
-                            imageView.setY(60 * i);
                         } else {
-                            imageView.setImage(circle[rand % 6]);
                             imageView.setX(69.28 * j);
-                            imageView.setY(60 * i);
                         }
+                        imageView.setY(60 * i);
                         imageViews.add(imageView);
                     }
                 }
@@ -311,6 +271,12 @@ public class Game extends Application {
         Translate tablePosition = new Translate(1000, 0);
         scores.getTransforms().add(tablePosition);
 
+        for (int i = 0; i < b.getPlayerNum(); i++) {
+            scores.getItems().add(
+                    Player.getStats(i, stateString));
+        }
+        root.getChildren().addAll(scores);
+
         // Phase and moving player information
         String info = "";
         if(b.isPhase()){
@@ -324,17 +290,17 @@ public class Game extends Application {
         phase.setY(640);
         root.getChildren().add(phase);
         // Row coordinates
-        rows = new Text[b.getSize()];
-        for(int i=0;i<= rows.length-1;i++){
+        Text[] rows = new Text[b.getSize()];
+        for(int i = 0; i<= rows.length-1; i++){
             rows[i]=new Text(""+i);
             rows[i].setX(920);
             rows[i].setY(61*i+40);
         }
         root.getChildren().addAll(rows);
         // Column coordinates
-        columns = new Text[b.getSize()][b.getSize()];
-        for(int i=0;i<= rows.length-1;i++){
-            for(int j=0;j<= rows.length-1;j++){
+        Text[][] columns = new Text[b.getSize()][b.getSize()];
+        for(int i = 0; i<= rows.length-1; i++){
+            for(int j = 0; j<= rows.length-1; j++){
                 if(i%2==0&&j==b.getSize()-1){
                     columns[i][j]=null;
                 }else {
@@ -349,88 +315,52 @@ public class Game extends Application {
                 }
             }
         }
-        for (int i = 0; i < b.getPlayerNum(); i++) {
-            scores.getItems().add(
-                    Player.getStats(i, stateString));
-        }
-        root.getChildren().addAll(scores);
-        Hexagon[][] hexagons=new Hexagon[b.getSize()][b.getSize()];
-        //Set up a 2D array for hexagons
-        for (int i = 0; i <= b.getSize() - 1; i++) {
-            for (int j = 0; j <= b.getSize() - 1; j++) {
-                if(i%2==0&&j==b.getSize()-1){
-                    hexagons[i][j]=null;
-                }else {
-                    if(i%2==0){
-                        hexagons[i][j]=new Hexagon(69.28+ 69.28 * j,40+60*i,40);
-                        int finalJ1 = j;
-                        int finalI1 = i;
-                        hexagons[i][j].setOnMousePressed(event -> {
-                            if(event.getButton()== MouseButton.PRIMARY){
-                                String str="S "+ finalI1 +","+ finalJ1;
-                                if (BlueLagoon.isMoveValid(boardString, str)) {
-                                    boardString = BlueLagoon.applyMove(boardString, str);
-                                }
-                                root.getChildren().remove(phase);
-                                b=new Board(boardString);
-                                displayState(boardString);
-                            }else if(event.getButton()== MouseButton.SECONDARY){
-                                String str="T "+ finalI1 +","+ finalJ1;
-                                if (BlueLagoon.isMoveValid(boardString, str)) {
-                                    boardString = BlueLagoon.applyMove(boardString, str);
-                                }
-                                root.getChildren().remove(phase);
-                                b=new Board(boardString);
-                                displayState(boardString);
-                            }
-                        });
-                        hexagons[i][j].toBack();
-                        hexagons[i][j].setFill(Color.TRANSPARENT);
-                        root.getChildren().add(hexagons[i][j]);
-                    }else {
-                        hexagons[i][j]=new Hexagon(34.64+ 69.28 * j,40+60*i,40);
-                        int finalJ2 = j;
-                        int finalI2 = i;
-                        int finalI = i;
-                        hexagons[i][j].setOnMousePressed(event -> {
-                            if(event.getButton()== MouseButton.PRIMARY){
-                                String str="S "+ finalI2 +","+ finalJ2;
-                                if (BlueLagoon.isMoveValid(boardString, str)) {
-                                    boardString = BlueLagoon.applyMove(boardString, str);
-                                }
-                                root.getChildren().remove(phase);
-                                b=new Board(boardString);
-                                displayState(boardString);
-                            }else if(event.getButton()== MouseButton.SECONDARY){
-                                String str="T "+ finalI +","+finalJ2;
-                                if (BlueLagoon.isMoveValid(boardString, str)) {
-                                    boardString = BlueLagoon.applyMove(boardString, str);
-
-                                }
-                                root.getChildren().remove(phase);
-                                b=new Board(boardString);
-                                displayState(boardString);
-                            }
-                        });
-                        hexagons[i][j].toBack();
-                        hexagons[i][j].setFill(Color.TRANSPARENT);
-                        root.getChildren().add(hexagons[i][j]);
-                    }
-                }
-            }
-        }
-
     }
-    private void makeControls() {
+
+    public void makeControls() {
         // Written by Tyler
-        // Creates the player number selection screen
+        // Creates the various buttons and menus that the players can interact with
+        // Creates the title screen
+        Text title = new Text("BLUE LAGOON");
+        title.setFill(Color.TEAL);
+        title.setFont(Font.font("Serif", 100));
+
+        HBox titleBox = new HBox();
+        titleBox.getChildren().add(title);
+        titleBox.setLayoutX(590);
+        titleBox.setLayoutY(400);
+
+        // Number of players selection
         Label playerLabel = new Label("Select Number of Players:");
-        Button twoPlayers = new Button("2");
-        Button threePlayers = new Button("3");
-        Button fourPlayers = new Button("4");
+        playerCount = new ChoiceBox<>();
+        playerCount.getItems().addAll("2", "3", "4");
+        playerCount.setValue("2");
+        Button selectPlayerCount = new Button("Select");
+
+        HBox playerBox = new HBox();
+        playerBox.getChildren().addAll(playerLabel, playerCount, selectPlayerCount);
+        playerBox.setSpacing(10);
+        playerBox.setLayoutX(855);
+        playerBox.setLayoutY(520);
+        controls.getChildren().addAll(playerBox, titleBox);
+        
+        // Creates the number of AI opponents selection
+        Label AILabel = new Label("Select Number of AI Opponents:");
+        AICount = new ChoiceBox<>();
+        AICount.getItems().addAll("0", "1", "2", "3");
+        AICount.setValue("0");
+        Button start = new Button("Start Game");
+
+        HBox AIBox = new HBox();
+        AIBox.getChildren().addAll(AILabel, AICount, start);
+        AIBox.setSpacing(10);
+        AIBox.setLayoutX(820);
+        AIBox.setLayoutY(550);
 
         // Creates menu for entering moves
         Label moveLabel = new Label("Choose the piece and position:");
+        Label rowLabel = new Label("Row:");
+        Label colLabel = new Label("Column:");
         villageOrSettler = new ChoiceBox<>();
         villageOrSettler.getItems().addAll("Settler", "Village");
         villageOrSettler.setValue("Settler");
@@ -443,75 +373,124 @@ public class Game extends Application {
         yPosition.getItems().addAll("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12");
         yPosition.setValue("0");
 
-        Button button2 = new Button("Play");
+        Button play = new Button("Play");
+        // For testing
+        Button random = new Button("Random Move");
+        // For testing
+        HBox moveBox = new HBox();
+        moveBox.getChildren().addAll(moveLabel, villageOrSettler, xPosition, yPosition, play, random);
+        moveBox.setSpacing(10);
+        moveBox.setLayoutX(1000);
+        moveBox.setLayoutY(670);
 
-        HBox hb2 = new HBox();
-        hb2.getChildren().addAll(moveLabel, villageOrSettler, xPosition, yPosition, button2);
-        hb2.setSpacing(10);
-        hb2.setLayoutX(1000);
-        hb2.setLayoutY(WINDOW_HEIGHT - 50);
+        HBox labelBox = new HBox();
+        labelBox.getChildren().addAll(rowLabel, colLabel);
+        labelBox.setSpacing(27);
+        labelBox.setLayoutX(1305);
+        labelBox.setLayoutY(650);
 
-        twoPlayers.setOnAction(e -> {
-            // Initializes the game for 2 players
-            boardString = initializeGame(2);
-            boardString = BlueLagoon.distributeResources(boardString);
-            b = new Board(boardString);
-            displayState(boardString);
-            controls.getChildren().add(hb2);
-        });
-        threePlayers.setOnAction(e -> {
-            // Initializes the game for 3 players
-            boardString = initializeGame(3);
-            boardString = BlueLagoon.distributeResources(boardString);
-            b = new Board(boardString);
-            displayState(boardString);
-            controls.getChildren().add(hb2);
-        });
-        fourPlayers.setOnAction(e -> {
-            // Initializes the game for 4 players
-            boardString = initializeGame(4);
-            boardString = BlueLagoon.distributeResources(boardString);
-            b = new Board(boardString);
-            displayState(boardString);
-            controls.getChildren().add(hb2);
+        // Creates error text
+        Text badSetup = new Text("Error: Number of AI opponents cannot be equal to or greater than total number of players");
+        badSetup.setFill(Color.RED);
+        badSetup.setX(100);
+        badSetup.setY(740);
+
+        // Action taken when the Player count buttons are pressed
+        selectPlayerCount.setOnAction(e -> {
+            controls.getChildren().remove(AIBox);
+            controls.getChildren().add(AIBox);
         });
 
+        // Action taken when the "Start Game" button is pressed
+        start.setOnAction(e -> {
+            if (Integer.parseInt((String) playerCount.getValue()) <= Integer.parseInt((String) AICount.getValue())) {
+                root.getChildren().remove(badSetup);
+                root.getChildren().add(badSetup);
+            }
+            else {
+                root.getChildren().remove(badSetup);
+                controls.getChildren().removeAll(titleBox, AIBox, playerBox);
+                boardString = initializeGame(Integer.parseInt((String) playerCount.getValue()));
+                boardString = BlueLagoon.distributeResources(boardString);
+                displayState(boardString);
+                controls.getChildren().addAll(moveBox, labelBox);
+            }
+        });
 
-        HBox hb = new HBox();
-        hb.getChildren().addAll(playerLabel, twoPlayers, threePlayers, fourPlayers);
-        hb.setSpacing(10);
-        hb.setLayoutX(100);
-        hb.setLayoutY(WINDOW_HEIGHT - 50);
-        controls.getChildren().add(hb);
-
-        Text badMove = new Text("Invalid Move");
+        // Creates "invalid move" text
+        Text badMove = new Text("Error: invalid move");
         badMove.setFill(Color.RED);
         badMove.setX(1000);
-        badMove.setY(700);
+        badMove.setY(720);
 
-        button2.setOnAction(e -> {
-            // Encodes the entered move as a moveString
-            String xPos = (String) xPosition.getValue();
-            String yPos = (String) yPosition.getValue();
-            String piece = (String) villageOrSettler.getValue();
+        play.setOnAction(e -> {
+            Board b = new Board(boardString);
+//            if (BlueLagoon.generateAllValidMoves(boardString).size() == 0) {
+//                skips = skips + 1;
+//                if (skips == Integer.parseInt((String) playerCount.getValue())) {
+//                    if (b.isPhase()) {
+//                        boardString = BlueLagoon.endPhase(boardString);
+//                    }
+//                    else {
+//                        boardString = BlueLagoon.endPhase(boardString);
+//                        String winner = String.valueOf(Player.winner(boardString));
+//                        // Creates winner text
+//                        Text win = new Text("Player " + winner + " has won!");
+//                        win.setFill(Color.DARKGREEN);
+//                        win.setX(1000);
+//                        win.setY(720);
+//                        root.getChildren().add(win);
+//                    }
+//                }
+//            }
+//            else {
+                // Encodes the entered move as a moveString
+                String xPos = (String) xPosition.getValue();
+                String yPos = (String) yPosition.getValue();
+                String piece = (String) villageOrSettler.getValue();
 
-            if (piece == "Village") {
-                pieceType = "T";
-            } else if (piece == "Settler") {
-                pieceType = "S";
-            }
+                if (piece.equals("Village")) {
+                    pieceType = "T";
+                } else if (piece.equals("Settler")) {
+                    pieceType = "S";
+                }
+                String move = pieceType + " " + xPos + "," + yPos;
 
-            String move = pieceType + " " + xPos + "," + yPos;
+                // Makes "invalid move" text if player enters an invalid move
+                if (BlueLagoon.isMoveValid(boardString, move)) {
+                    boardString = BlueLagoon.applyMove(boardString, move);
+                    root.getChildren().remove(badMove);
+                } else {
+                    root.getChildren().remove(badMove);
+                    root.getChildren().add(badMove);
+                }
+                root.getChildren().removeAll(scoreTable, phase);
+                displayState(boardString);
+                skips = 0;
+//            }
 
-            // Makes "invalid move" text if player enters an invalid move
-            if (BlueLagoon.isMoveValid(boardString, move)) {
-                boardString = BlueLagoon.applyMove(boardString, move);
-                root.getChildren().remove(badMove);
-            } else {
-                root.getChildren().remove(badMove);
-                root.getChildren().add(badMove);
-            }
-
+        });
+        // For testing
+        random.setOnAction(e -> {
+//            if (BlueLagoon.generateAllValidMoves(boardString).size() == 0) {
+//                skips = skips + 1;
+//                if (skips == Integer.parseInt((String) playerCount.getValue())) {
+//                    if (b.isPhase()) {
+//                        boardString = BlueLagoon.endPhase(boardString);
+//                    }
+//                    else {
+//                        boardString = BlueLagoon.endPhase(boardString);
+//                        String winner = String.valueOf(Player.winner(boardString));
+//                        // Creates winner text
+//                        Text win = new Text("Player " + winner + " has won!");
+//                        win.setFill(Color.DARKGREEN);
+//                        win.setX(1000);
+//                        win.setY(720);
+//                        root.getChildren().add(win);
+//                    }
+//                }
+//            }
+            boardString = BlueLagoon.applyMove(boardString, BlueLagoon.generateAIMove(boardString));
             root.getChildren().removeAll(scoreTable, phase);
             displayState(boardString);
         });

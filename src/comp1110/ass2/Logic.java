@@ -747,7 +747,7 @@ public class Logic {
     //Task 16
     public static String generateAIMove1 (Board b){
         Set<String> potentialMoves=generateAllValidMoves1(b);
-        List<Coordinate> movesList=null;
+        List<Coordinate> movesList=new ArrayList<>();
         for(String s:potentialMoves){
             String[] sp=s.split(" ");
             String[] xy=sp[1].split(",");
@@ -756,20 +756,21 @@ public class Logic {
             Coordinate c=new Coordinate(x,y);
             movesList.add(c);
         }
-        //If there is a resource spot next to this spot, then AI should move
+
         for(Coordinate c:movesList){
             for(int i=0;i<=b.getSize()-1;i++){
                 for(int j=0;j<=b.getSize()-1;j++){
                     if(i%2!=0||j!=b.getSize()-1){
-                        if(b.getBoard()[i][j].resources!=Resource.NULL&&ifAdjacent(i,j,c.x,c.y)){
+                        //If there is a resource spot on this spot, then AI should move a settler there
+                        if(b.getBoard()[c.x][c.y].resources!=Resource.NULL&&b.getPlayers()[b.getTurn()].getSettlers()<b.getSettlerLimit()){
                             //Don't move a village on a stone circle
-                            return "S "+i+","+j;
+                            return "S "+c.x+","+c.y;
                         }
                     }
                 }
             }
         }
-
+        //if all possible moves don't occupy a resource spot, then randomly allocate one
         Random r = new Random();
         int n = r.nextInt(potentialMoves.size());
         List<String> stringList = new ArrayList<>();

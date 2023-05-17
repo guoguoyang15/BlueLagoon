@@ -1,5 +1,8 @@
 package comp1110.ass2;
 
+/**
+ * @author Zhou Linsheng
+ */
 public class Coordinate {
     public int x;
     public int y;

@@ -2,8 +2,9 @@ package comp1110.ass2;
 
 import java.util.*;
 
-import static comp1110.ass2.BlueLagoon.placePiece;
-
+/**
+ * @author Zhou Linsheng
+ */
 public class Logic {
     //Task 3
     public static boolean isStateStringWellFormed1(String stateString) {

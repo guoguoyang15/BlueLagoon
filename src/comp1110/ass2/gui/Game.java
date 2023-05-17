@@ -237,6 +237,14 @@ public class Game extends Application {
             }
         }
 
+        for (int i = 0; i < b.getSize(); i++) {
+            for (int j = 0; j < b.getSize(); j++) {
+                if (Display.weightDisplay(b.getSize(), b.getSize(), b)[i][j] != null) {
+                    root.getChildren().addAll(Display.weightDisplay(b.getSize(), b.getSize(), b)[i][j]);
+                }
+            }
+        }
+
         // Calls scoreTable from Display class to make a table for the scores
         TableView scoreBoard = Display.scoreTable(stateString);
         Translate tablePosition = new Translate(1000, 0);

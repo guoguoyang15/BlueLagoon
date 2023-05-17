@@ -1,5 +1,8 @@
 package comp1110.ass2;
 
+/**
+ * @author Zhou Linsheng
+ */
 public class Spot {
 
     public enum SettlerOrVillage{

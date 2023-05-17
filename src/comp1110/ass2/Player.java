@@ -1,6 +1,8 @@
 package comp1110.ass2;
 
-// @author Tyler Le
+/**
+ * @author Tyler Le
+ */
 public class Player {
     public Integer getPlayerNumber() {
         return playerNumber;

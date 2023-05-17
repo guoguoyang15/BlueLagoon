@@ -4,10 +4,6 @@ import java.util.*;
 
 import static comp1110.ass2.Logic.*;
 
-// Author comments:
-// Tyler finished Task 3 and 4 and dynamic GUI
-// Zhang Zhining finished Task 6, 13 and 16, as well as examining Task 17
-// Zhou Linsheng finished Task 7, 8, 9, 10, 11, 12 as well as displaying static board given a statestring on GUI
 public class BlueLagoon {
     // The Game Strings for five maps have been created for you.
     // They have only been encoded for two players. However, they are
@@ -26,7 +22,7 @@ public class BlueLagoon {
      * <p>
      * A description of the state string will be included in README.md
      * in an update of the project after D2B is complete.
-     *
+     * @author Tyler
      * @param stateString a string representing a game state
      * @return true if stateString is well-formed and false otherwise
      */
@@ -40,7 +36,7 @@ public class BlueLagoon {
      * <p>
      * A description of the move string will be included in README.md
      * in an update of the project after D2B is complete.
-     *
+     * @author Tyler
      * @param moveString a string representing a player's move
      * @return true if moveString is well-formed and false otherwise
      */
@@ -65,11 +61,11 @@ public class BlueLagoon {
      * - 8 statuettes
      * <p>
      * The distribution must be random.
-     *
+     * @author Zhou Linsheng, Zhang Zhining
      * @param stateString a string representing a game state without resources distributed
      * @return a string of the game state with resources randomly distributed
      */
-    //Zhang Zhining completes Task 6
+    //Zhou Linsheng finished first and Zhang Zhining completed Task 6 very late
     public static String distributeResources(String stateString) {
         return Logic.distributeResources1(stateString);
     }
@@ -92,7 +88,7 @@ public class BlueLagoon {
      * one of the player's pieces.
      * Importantly, players can now only play on the sea if it is
      * adjacent to a piece they already own.
-     *
+     * @author Zhou Linsheng
      * @param stateString a string representing a game state
      * @param moveString  a string representing the current player's move
      * @return true if the current player can make the move and false otherwise
@@ -114,7 +110,7 @@ public class BlueLagoon {
      * by the current player.
      * <p>
      * A move is playable if it is valid.
-     *
+     * @author Zhou Linsheng
      * @param stateString a string representing a game state
      * @return a set of strings representing all moves the current player can play
      */
@@ -130,7 +126,7 @@ public class BlueLagoon {
      * A phase is over when either of the following conditions hold:
      * - All resources (not including statuettes) have been collected.
      * - No player has any remaining valid moves.
-     *
+     * @author Zhou Linsheng
      * @param stateString a string representing a game state
      * @return true if the state is at the end of either phase and false otherwise
      */
@@ -146,7 +142,7 @@ public class BlueLagoon {
      * statuettes.
      * <p>
      * Do not handle switching to the next player here.
-     *
+     * @author Zhou Linsheng
      * @param stateString a string representing a game state
      * @param moveString  a string representing the current player's move
      * @return a new state string achieved by placing the move on the board
@@ -173,7 +169,7 @@ public class BlueLagoon {
      * - If the player has pieces on 8 or more islands, they score 20 points.
      * - If the player has pieces on 7 islands, they score 10 points.
      * - No points are scored otherwise.
-     *
+     * @author Zhou Linsheng
      * @param stateString a string representing a game state
      * @return an integer array containing the calculated "Islands" portion of
      * the score for each player
@@ -197,7 +193,7 @@ public class BlueLagoon {
      * Note the chain needn't be a single path. For instance, if the chain
      * splits into three or more sections, all of those sections are counted
      * towards the total.
-     *
+     * @author Zhou Linsheng
      * @param stateString a string representing a game state
      * @return an integer array containing the calculated "Links" portion of
      * the score for each player
@@ -223,7 +219,7 @@ public class BlueLagoon {
      * if two players tied for an island worth 7 points, they would
      * receive 3 points each.
      * - No points are awarded for islands without any pieces.
-     *
+     * @author Zhou Linsheng
      * @param stateString a string representing a game state
      * @return an integer array containing the calculated "Majorities" portion
      * of the score for each player
@@ -254,7 +250,7 @@ public class BlueLagoon {
      * <p>
      * The "Statuettes" portion is calculated for each player as follows:
      * - A player is awarded 4 points per statuette in their possession.
-     *
+     * @author Zhou Linsheng
      * @param stateString a string representing a game state
      * @return an integer array containing the calculated "Resources" and "Statuettes"
      * portions of the score for each player
@@ -273,7 +269,7 @@ public class BlueLagoon {
      * <p>
      * It is recommended to use the other scoring functions to assist with this
      * task.
-     *
+     * @author Zhou Linsheng
      * @param stateString a string representing a game state
      * @return an integer array containing the calculated scores for each player
      */
@@ -296,7 +292,7 @@ public class BlueLagoon {
      * <p>
      * In the Settlement Phase, this means:
      * - Only the score is tallied and added on for each player.
-     *
+     * @author Zhou Linsheng
      * @param stateString a string representing a game state at the end of a phase
      * @return a string representing the new state achieved by following the end of phase rules
      */
@@ -313,11 +309,13 @@ public class BlueLagoon {
      * <p>
      * Advance current player to the next player in turn order that has a valid
      * move they can make.
-     *
+     * @author Zhang Zhining
      * @param stateString a string representing a game state
      * @param moveString  a string representing the current player's move
      * @return a string representing the new state after the move is applied to the board
      */
+    //Zhang Zhining's code is too redundant and less efficient
+    //Zhou Linsheng modified it so it's very simple and board class is introduced
     public static String applyMove(String stateString, String moveString) {
         if (isMoveValid(stateString, moveString)) {
             Board b=new Board(stateString);
@@ -343,10 +341,13 @@ public class BlueLagoon {
          * <p>
          * Your AI should perform better than randomly generating moves,
          * see how good you can make it!
-         *
+         * @author Zhou Linsheng
          * @param stateString a string representing a game state
          * @return a move string generated by an AI
          */
+        //Zhang Zhining wrote it but only random move was achieved
+        //Zhou Linsheng added some limitation to move mode,
+        //for example, resources have priority and villages cannot be placed on stone circles
         public static String generateAIMove (String stateString){
 
 //            Random r = new Random();

@@ -3,6 +3,9 @@ package comp1110.ass2;
 import javafx.scene.input.MouseButton;
 import javafx.scene.shape.Polygon;
 
+/**
+ * @author Zhou Linsheng
+ */
 public class Hexagon extends Polygon {
     // Written by Linsheng
     // Creates a hexagon shape, later used in the Viewer class to create primitive board image

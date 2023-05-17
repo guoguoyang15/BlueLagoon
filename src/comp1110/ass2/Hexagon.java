@@ -1,6 +1,5 @@
 package comp1110.ass2;
 
-import javafx.scene.control.Button;
 import javafx.scene.input.MouseButton;
 import javafx.scene.shape.Polygon;
 

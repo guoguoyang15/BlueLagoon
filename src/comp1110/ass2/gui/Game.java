@@ -16,9 +16,10 @@ import javafx.stage.Stage;
 import javafx.scene.transform.Translate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Game extends Application {
-    // Written mostly by Tyler, with input from Linsheng and some changes by Zhining
     private final Group root = new Group();
     private final Group controls = new Group();
     private static final int WINDOW_WIDTH = 1200;
@@ -219,13 +220,15 @@ public class Game extends Application {
         }
         root.getChildren().addAll(imageViews);
 
-        // Calls phaseDisplay, rowDisplay and columnDisplay from Display class to show coordinates
+        // Calls phaseDisplay from Display class to show the phase and player to move
         phase = Display.phaseDisplay(stateString);
         root.getChildren().add(phase);
 
+        // Calls rowDisplay from Display class to show the row numbers
         Text[] rows = Display.rowDisplay(stateString);
         root.getChildren().addAll(rows);
 
+        // Calls columnDisplay from Display class to show column coordinates on each tile
         for (int i = 0; i < b.getSize(); i++) {
             for (int j = 0; j < b.getSize(); j++) {
                 if (Display.columnDisplay(b.getSize(), b.getSize(), stateString)[i][j] != null) {
@@ -241,9 +244,18 @@ public class Game extends Application {
         root.getChildren().add(scoreBoard);
     }
 
+    public void triggerAI(int n) {
+        Board b = new Board(boardString);
+        if ((b.getPlayerNum() - n) % 4 <= b.getTurn()) {
+            boardString = BlueLagoon.applyMove(boardString, BlueLagoon.generateAIMove(boardString));
+            root.getChildren().remove(phase);
+            displayState(boardString);
+        }
+    }
+
     // @author Tyler Le
     // Creates the various buttons and menus that the players can interact with
-    public void makeControls() {
+    public void gameControls() {
         // Creates the title screen
         Text title = new Text("BLUE LAGOON");
         title.setFill(Color.TEAL);
@@ -346,6 +358,13 @@ public class Game extends Application {
                 boardString = BlueLagoon.distributeResources(initializeGame(Integer.parseInt(playerCount.getValue())));
                 displayState(boardString);
                 controls.getChildren().addAll(moveBox, labelBox);
+                Timer t = new Timer();
+                t.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        triggerAI(Integer.parseInt(AICount.getValue()));
+                    }
+                }, 0, 5000);
             }
         });
 
@@ -354,7 +373,6 @@ public class Game extends Application {
             String xPos = xPosition.getValue();
             String yPos = yPosition.getValue();
             String piece = villageOrSettler.getValue();
-
             if (piece.equals("Village")) {
                 pieceType = "T";
             } else if (piece.equals("Settler")) {
@@ -370,6 +388,7 @@ public class Game extends Application {
                 root.getChildren().remove(badMove);
                 root.getChildren().add(badMove);
             }
+
             root.getChildren().remove(phase);
             displayState(boardString);
         });
@@ -389,7 +408,7 @@ public class Game extends Application {
         stage.setTitle("BlueLagoon Game");
         stage.setScene(scene1);
         root.getChildren().addAll(controls);
-        makeControls();
+        gameControls();
         stage.setScene(scene1);
         stage.show();
     }

@@ -28,9 +28,9 @@ public class Game extends Application {
     private ChoiceBox<String> yPosition;
     private ChoiceBox<String> playerCount;
     private ChoiceBox<String> AICount;
-    private Text phase;
     private String pieceType;
     private String boardString;
+    private Text phase;
 
     // @author Tyler Le
     public String initializeGame(int n) {
@@ -49,9 +49,9 @@ public class Game extends Application {
     }
 
     void displayState(String stateString) {
+        // Adds images of the tiles
         Board b = new Board(stateString);
 
-        // Adds images of the tiles
         List<ImageView> imageViews = new ArrayList<>();
         int rand = 0;
         Image[] land = new Image[18];
@@ -219,46 +219,23 @@ public class Game extends Application {
         }
         root.getChildren().addAll(imageViews);
 
-        // Phase and moving player information
-        String info = "";
-        if (b.isPhase()) {
-            info += "Exploration Phase     ";
-        } else {
-            info += "Settlement Phase      ";
-        }
-        info += "Player "+b.getTurn()+" to move.";
-        phase = new Text(info);
-        phase.setX(1000);
-        phase.setY(640);
+        // Calls phaseDisplay, rowDisplay and columnDisplay from Display class to show coordinates
+        phase = Display.phaseDisplay(stateString);
         root.getChildren().add(phase);
-        // Row coordinates
-        Text[] rows = new Text[b.getSize()];
-        for(int i = 0; i<= rows.length-1; i++){
-            rows[i]=new Text(""+i);
-            rows[i].setX(920);
-            rows[i].setY(61*i+40);
-        }
+
+        Text[] rows = Display.rowDisplay(stateString);
         root.getChildren().addAll(rows);
-        // Column coordinates
-        Text[][] columns = new Text[b.getSize()][b.getSize()];
-        for(int i = 0; i <= rows.length-1; i++){
-            for(int j = 0; j<= rows.length-1; j++){
-                if (i % 2 == 0 && j == b.getSize() - 1){
-                    columns[i][j]=null;
-                } else {
-                    columns[i][j]=new Text(""+j);
-                    if (i % 2 == 0){
-                        columns[i][j].setX(65+69.28*j);
-                    } else {
-                        columns[i][j].setX(30+69.28*j);
-                    }
-                    columns[i][j].setY(75+60*i);
-                    root.getChildren().addAll(columns[i][j]);
+
+        for (int i = 0; i < b.getSize(); i++) {
+            for (int j = 0; j < b.getSize(); j++) {
+                if (Display.columnDisplay(b.getSize(), b.getSize(), stateString)[i][j] != null) {
+                    root.getChildren().addAll(Display.columnDisplay(b.getSize(), b.getSize(), stateString)[i][j]);
                 }
             }
         }
-        // Calls scoreTable from Viewer class to make a table for the scores
-        TableView scoreBoard = Viewer.scoreTable(stateString);
+
+        // Calls scoreTable from Display class to make a table for the scores
+        TableView scoreBoard = Display.scoreTable(stateString);
         Translate tablePosition = new Translate(1000, 0);
         scoreBoard.getTransforms().add(tablePosition);
         root.getChildren().add(scoreBoard);
@@ -357,7 +334,7 @@ public class Game extends Application {
 
         // Action taken when the "Start Game" button is pressed
         start.setOnAction(e -> {
-            if (Integer.parseInt((String) playerCount.getValue()) <= Integer.parseInt((String) AICount.getValue())) {
+            if (Integer.parseInt(playerCount.getValue()) <= Integer.parseInt(AICount.getValue())) {
                 // If AIs >= Players then show error
                 root.getChildren().remove(badSetup);
                 root.getChildren().add(badSetup);
@@ -366,7 +343,7 @@ public class Game extends Application {
                 // If AIs < Players then begin the game
                 root.getChildren().remove(badSetup);
                 controls.getChildren().removeAll(titleBox, AIBox, playerBox);
-                boardString = BlueLagoon.distributeResources(initializeGame(Integer.parseInt((String) playerCount.getValue())));
+                boardString = BlueLagoon.distributeResources(initializeGame(Integer.parseInt(playerCount.getValue())));
                 displayState(boardString);
                 controls.getChildren().addAll(moveBox, labelBox);
             }
@@ -374,9 +351,9 @@ public class Game extends Application {
 
         play.setOnAction(e -> {
             // Encodes the entered move as a moveString
-            String xPos = (String) xPosition.getValue();
-            String yPos = (String) yPosition.getValue();
-            String piece = (String) villageOrSettler.getValue();
+            String xPos = xPosition.getValue();
+            String yPos = yPosition.getValue();
+            String piece = villageOrSettler.getValue();
 
             if (piece.equals("Village")) {
                 pieceType = "T";
@@ -396,12 +373,14 @@ public class Game extends Application {
             root.getChildren().remove(phase);
             displayState(boardString);
         });
+
         // For testing
         random.setOnAction(e -> {
             boardString = BlueLagoon.applyMove(boardString, BlueLagoon.generateAIMove(boardString));
             root.getChildren().removeAll(phase);
             displayState(boardString);
         });
+        // For testing
     }
 
     @Override

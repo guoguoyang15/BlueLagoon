@@ -115,4 +115,30 @@ public class Display {
         }
         return coordinates;
     }
+    // @author Linsheng Zhou
+    //Display the point weight of each island
+    public static Text[][] weightDisplay (int lines, int columns, Board b){
+        Text[][] weights = new Text[lines][columns];
+        for (int i = 0; i < lines; i++) {
+            for (int j = 0; j < lines; j++){
+                if (i % 2 == 0 && j == columns - 1){
+                    weights[i][j] = null;
+                } else {
+                    if(b.getBoard()[i][j].spotType==1){
+                        weights[i][j] = new Text("("+b.getWeight()[b.getBoard()[i][j].island]+")");
+                        if (i % 2 == 0){
+                            weights[i][j].setX(65+69.28*j);
+                        } else {
+                            weights[i][j].setX(30+69.28*j);
+                        }
+                        weights[i][j].setY(35+60*i);
+                    }else {
+                        weights[i][j] =null;
+                    }
+                }
+            }
+        }
+        return weights;
+    }
+
 }

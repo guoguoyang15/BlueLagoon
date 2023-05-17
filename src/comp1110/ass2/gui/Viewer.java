@@ -185,14 +185,6 @@ public class Viewer extends Application {
         }
         root.getChildren().addAll(tilesList);
         root.getChildren().addAll(villageList);
-        String phase = "Current phase: ";
-        if(b.isPhase()){
-            phase += "Exploration Phase.";
-
-        } else {
-            phase += "Settlement Phase.";
-        }
-        Text phaseText = new Text(phase);
     }
 
     /**

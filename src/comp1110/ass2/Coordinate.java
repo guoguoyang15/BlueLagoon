@@ -1,8 +1,8 @@
 package comp1110.ass2;
 
-import java.util.ArrayList;
-import java.util.List;
-
+/**
+ * @author Zhou Linsheng
+ */
 public class Coordinate {
     public int x;
     public int y;

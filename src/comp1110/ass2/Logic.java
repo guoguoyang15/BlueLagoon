@@ -162,6 +162,18 @@ public class Logic {
      */
     //Task 7
     public static boolean isMoveValid1(Board b, char type, Coordinate coordinate ) {
+        List<Coordinate> playerPieces=new ArrayList<>();
+        for(int i=0;i<=b.getSize()-1;i++){
+            for(int j=0;j<=b.getSize()-1;j++){
+                if(i%2!=0||j!=b.getSize()-1){
+                    Coordinate c=new Coordinate(i,j);
+                    if(b.getBoard()[i][j].occupiedByPlayer==b.getTurn()){
+                        playerPieces.add(c);
+                    }
+                }
+            }
+        }
+
         int x= coordinate.x;
         int y= coordinate.y;
         if (b.isPhase()) {//In exploration phase
@@ -195,47 +207,12 @@ public class Logic {
         if (b.board[x][y].occupiedByPlayer != 100) {
             return false;
         } else {
-            if (x % 2 == 0) {
-                if ((x - 1) >= 0 && (y + 1) <= b.getSize() - 1 && b.board[x - 1][y + 1].occupiedByPlayer == b.getTurn()) {
+            for(Coordinate cc:playerPieces){
+                if(ifAdjacent(x,y,cc.x,cc.y)){
                     return true;
                 }
-                if ((x + 1) <= b.getSize() - 1 && (y + 1) <= b.getSize() - 1 && b.board[x + 1][y + 1].occupiedByPlayer == b.getTurn()) {
-                    return true;
-                }
-                if ((y - 1) >= 0 && b.board[x][y - 1].occupiedByPlayer == b.getTurn()) {
-                    return true;
-                }
-                if ((x - 1) >= 0 && b.board[x - 1][y].occupiedByPlayer == b.getTurn()) {
-                    return true;
-                }
-                if ((x + 1) <= b.getSize() - 1 && b.board[x + 1][y].occupiedByPlayer == b.getTurn()) {
-                    return true;
-                }
-                if ((y + 1) <= b.getSize() - 2 && b.board[x][y + 1].occupiedByPlayer == b.getTurn()) {
-                    return true;
-                }
-                return false;
-            } else {
-                if ((x - 1) >= 0 && (y - 1) >= 0 && b.board[x - 1][y - 1].occupiedByPlayer == b.getTurn()) {
-                    return true;
-                }
-                if ((x + 1) <= b.getSize() - 1 && (y - 1) >= 0 && b.board[x + 1][y - 1].occupiedByPlayer == b.getTurn()) {
-                    return true;
-                }
-                if ((y - 1) >= 0 && b.board[x][y - 1].occupiedByPlayer == b.getTurn()) {
-                    return true;
-                }
-                if ((x - 1) >= 0 && y != b.getSize() - 1 && b.getBoard()[x - 1][y].occupiedByPlayer == b.getTurn()) {
-                    return true;
-                }
-                if ((x + 1) <= b.getSize() - 1 && y != b.getSize() - 1 && b.getBoard()[x + 1][y].occupiedByPlayer == b.getTurn()) {
-                    return true;
-                }
-                if ((y + 1) <= b.getSize() - 1 && b.getBoard()[x][y + 1].occupiedByPlayer == b.getTurn()) {
-                    return true;
-                }
-                return false;
             }
+            return false;
         }
     }
 

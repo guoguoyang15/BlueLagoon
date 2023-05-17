@@ -71,11 +71,11 @@ public class IsMoveValidTest implements TestMapNamePlayerCount {
     public void testDefaultTwoPlayerGames(){
         testMapNamePlayerCount("default", 2);
     }
-//
-//    @Test
-//    public void testWheelsTwoPlayerGames(){
-//        testMapNamePlayerCount("wheels", 2);
-//    }
+
+    @Test
+    public void testWheelsTwoPlayerGames(){
+        testMapNamePlayerCount("wheels", 2);
+    }
 
     @Test
     public void testFaceTwoPlayerGames(){

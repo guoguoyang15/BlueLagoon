@@ -745,9 +745,4 @@ public class Logic {
         return b.toString();
     }
 
-    public static double distance(double x,double y,double x1,double y1){
-        double x2=(x1-x)*(x1-x);
-        double y2=(y1-x)*(y1-x);
-        return Math.sqrt(x2+y2);
-    }
 }

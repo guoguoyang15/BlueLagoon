@@ -756,12 +756,12 @@ public class Logic {
             Coordinate c=new Coordinate(x,y);
             movesList.add(c);
         }
-
+        //we need an iterator to check all possible move spot in generalAllPossibleMoves Set
         for(Coordinate c:movesList){
             for(int i=0;i<=b.getSize()-1;i++){
                 for(int j=0;j<=b.getSize()-1;j++){
                     if(i%2!=0||j!=b.getSize()-1){
-                        //If there is a resource spot on this spot, then AI should move a settler there
+                        //If there is a resource spot on this spot , then AI should move a settler there
                         if(b.getBoard()[c.x][c.y].resources!=Resource.NULL&&b.getPlayers()[b.getTurn()].getSettlers()<b.getSettlerLimit()){
                             //Don't move a village on a stone circle
                             return "S "+c.x+","+c.y;

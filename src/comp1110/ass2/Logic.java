@@ -6,6 +6,11 @@ import java.util.*;
  * @author Zhou Linsheng
  */
 public class Logic {
+    /**
+     * @author Tyler Le
+     * @param stateString
+     * @return
+     */
     //Task 3
     public static boolean isStateStringWellFormed1(String stateString) {
         // Written by Tyler and edited by Zhining
@@ -56,6 +61,11 @@ public class Logic {
         }
     }
 
+    /**
+     * @author Tyler Le
+     * @param moveString
+     * @return
+     */
     //Task 4
     public static boolean isMoveStringWellFormed1(String moveString) {
         // Written by Tyler
@@ -63,6 +73,11 @@ public class Logic {
         return moveString.matches("[S|T]\s\\d{1,2},\\d{1,2}");
     }
 
+    /**
+     * @author Zhang Zhining
+     * @param stateString
+     * @return
+     */
     //Task 6
     public static String distributeResources1(String stateString) {
         //add a space at front to make sure that for every statement, the second char of the substring is the type of statement
@@ -116,6 +131,13 @@ public class Logic {
         return stateString;
     }
 
+    /**
+     * @author Zhou Linsheng
+     * @param size
+     * @param x
+     * @param y
+     * @return whether this spot is on this board
+     */
     public static boolean isPosInIndex(int size, int x, int y) {
         if (x < 0 || x >= size) {
             return false;
@@ -131,8 +153,17 @@ public class Logic {
         return true;
     }
 
+    /**
+     * @author Zhou Linsheng
+     * @param b
+     * @param type
+     * @param
+     * @return Task7
+     */
     //Task 7
-    public static boolean isMoveValid1(Board b, char type, Coordinate coordinate) {
+    public static boolean isMoveValid1(Board b, char type, Coordinate coordinate ) {
+        int x= coordinate.x;
+        int y= coordinate.y;
         if (b.isPhase()) {//In exploration phase
             if (type == 'S') {
                 if (b.getSettlerLimit() <= b.getPlayers()[b.getTurn()].getSettlers()) {
@@ -153,54 +184,54 @@ public class Logic {
             }
         }
         //whether the coordinate is out of the board
-        if (!isPosInIndex(b.getSize(), coordinate.x, coordinate.y)) {
+        if (!isPosInIndex(b.getSize(), x, y)) {
             return false;
         }
 
         if (b.isPhase()) {
-            if (b.getBoard()[coordinate.x][coordinate.y].spotType == 0)
-                return type == 'S' && b.getBoard()[coordinate.x][coordinate.y].occupiedByPlayer == 100;
+            if (b.board[x][y].spotType == 0)
+                return type == 'S' && b.board[x][y].occupiedByPlayer == 100;
         }
-        if (b.getBoard()[coordinate.x][coordinate.y].occupiedByPlayer != 100) {
+        if (b.board[x][y].occupiedByPlayer != 100) {
             return false;
         } else {
-            if (coordinate.x % 2 == 0) {
-                if ((coordinate.x - 1) >= 0 && (coordinate.y + 1) <= b.getSize() - 1 && b.getBoard()[coordinate.x - 1][coordinate.y + 1].occupiedByPlayer == b.getTurn()) {
+            if (x % 2 == 0) {
+                if ((x - 1) >= 0 && (y + 1) <= b.getSize() - 1 && b.board[x - 1][y + 1].occupiedByPlayer == b.getTurn()) {
                     return true;
                 }
-                if ((coordinate.x + 1) <= b.getSize() - 1 && (coordinate.y + 1) <= b.getSize() - 1 && b.getBoard()[coordinate.x + 1][coordinate.y + 1].occupiedByPlayer == b.getTurn()) {
+                if ((x + 1) <= b.getSize() - 1 && (y + 1) <= b.getSize() - 1 && b.board[x + 1][y + 1].occupiedByPlayer == b.getTurn()) {
                     return true;
                 }
-                if ((coordinate.y - 1) >= 0 && b.getBoard()[coordinate.x][coordinate.y - 1].occupiedByPlayer == b.getTurn()) {
+                if ((y - 1) >= 0 && b.board[x][y - 1].occupiedByPlayer == b.getTurn()) {
                     return true;
                 }
-                if ((coordinate.x - 1) >= 0 && b.getBoard()[coordinate.x - 1][coordinate.y].occupiedByPlayer == b.getTurn()) {
+                if ((x - 1) >= 0 && b.board[x - 1][y].occupiedByPlayer == b.getTurn()) {
                     return true;
                 }
-                if ((coordinate.x + 1) <= b.getSize() - 1 && b.getBoard()[coordinate.x + 1][coordinate.y].occupiedByPlayer == b.getTurn()) {
+                if ((x + 1) <= b.getSize() - 1 && b.board[x + 1][y].occupiedByPlayer == b.getTurn()) {
                     return true;
                 }
-                if ((coordinate.y + 1) <= b.getSize() - 2 && b.getBoard()[coordinate.x][coordinate.y + 1].occupiedByPlayer == b.getTurn()) {
+                if ((y + 1) <= b.getSize() - 2 && b.board[x][y + 1].occupiedByPlayer == b.getTurn()) {
                     return true;
                 }
                 return false;
             } else {
-                if ((coordinate.x - 1) >= 0 && (coordinate.y - 1) >= 0 && b.getBoard()[coordinate.x - 1][coordinate.y - 1].occupiedByPlayer == b.getTurn()) {
+                if ((x - 1) >= 0 && (y - 1) >= 0 && b.board[x - 1][y - 1].occupiedByPlayer == b.getTurn()) {
                     return true;
                 }
-                if ((coordinate.x + 1) <= b.getSize() - 1 && (coordinate.y - 1) >= 0 && b.getBoard()[coordinate.x + 1][coordinate.y - 1].occupiedByPlayer == b.getTurn()) {
+                if ((x + 1) <= b.getSize() - 1 && (y - 1) >= 0 && b.board[x + 1][y - 1].occupiedByPlayer == b.getTurn()) {
                     return true;
                 }
-                if ((coordinate.y - 1) >= 0 && b.getBoard()[coordinate.x][coordinate.y - 1].occupiedByPlayer == b.getTurn()) {
+                if ((y - 1) >= 0 && b.board[x][y - 1].occupiedByPlayer == b.getTurn()) {
                     return true;
                 }
-                if ((coordinate.x - 1) >= 0 && coordinate.y != b.getSize() - 1 && b.getBoard()[coordinate.x - 1][coordinate.y].occupiedByPlayer == b.getTurn()) {
+                if ((x - 1) >= 0 && y != b.getSize() - 1 && b.getBoard()[x - 1][y].occupiedByPlayer == b.getTurn()) {
                     return true;
                 }
-                if ((coordinate.x + 1) <= b.getSize() - 1 && coordinate.y != b.getSize() - 1 && b.getBoard()[coordinate.x + 1][coordinate.y].occupiedByPlayer == b.getTurn()) {
+                if ((x + 1) <= b.getSize() - 1 && y != b.getSize() - 1 && b.getBoard()[x + 1][y].occupiedByPlayer == b.getTurn()) {
                     return true;
                 }
-                if ((coordinate.y + 1) <= b.getSize() - 1 && b.getBoard()[coordinate.x][coordinate.y + 1].occupiedByPlayer == b.getTurn()) {
+                if ((y + 1) <= b.getSize() - 1 && b.getBoard()[x][y + 1].occupiedByPlayer == b.getTurn()) {
                     return true;
                 }
                 return false;
@@ -208,6 +239,11 @@ public class Logic {
         }
     }
 
+    /**
+     * @author Zhou Linsheng
+     * @param b
+     * @return Task8
+     */
     //Task 8
     public static Set<String> generateAllValidMoves1(Board b) {
         Set<String> stringSet = new HashSet<String>();//Create a new empty HashSet of movestrings
@@ -374,6 +410,12 @@ public class Logic {
         }
     }
 
+
+    /**
+     * @author Zhou Linsheng
+     * @param b
+     * @return Task9
+     */
     //Task 9
     public static boolean isPhaseOver1(Board b) {
         //Count the number of resources collected by all players
@@ -392,23 +434,11 @@ public class Logic {
         return collectedAll || noMoves == b.getPlayerNum();
     }
 
-    //Zhou Linsheng(u7630421) completes the following function to sort positions in state string
-    public static boolean comparePos(String pos1, String pos2) {
-        String[] posString1 = pos1.split(",");
-        String[] posString2 = pos2.split(",");
-        int x1 = Integer.parseInt(posString1[0]);
-        int y1 = Integer.parseInt(posString1[1]);
-        int x2 = Integer.parseInt(posString2[0]);
-        int y2 = Integer.parseInt(posString2[1]);
-        if (x1 > x2) {
-            return true;
-        } else if (x1 < x2) {
-            return false;
-        } else {
-            return y1 > y2;
-        }
-    }
-
+    /**
+     * @author Zhou Linsheng
+     * @param b
+     * @return TotalIslandScore
+     */
     //Task 11 A
     public static int[] calculateTotalIslandsScore1(Board b) {
         //Array of points in this part
@@ -441,8 +471,14 @@ public class Logic {
         return points;
     }
 
-    //Zhou Linsheng(u7630421) adds ifAdjacent to examine if two spots next to each other
-    //ifAdjacent is to judge if the two coordinates are next to each other
+    /**
+     * @author Zhou Linsheng
+     * @param x1
+     * @param y1
+     * @param x2
+     * @param y2
+     * @return if two spots are next to each other
+     */
     public static boolean ifAdjacent(int x1, int y1, int x2, int y2) {
         //four positions are true for all rows
         if (x1 == x2 && Math.abs(y1 - y2) == 1) {
@@ -459,6 +495,11 @@ public class Logic {
         }
     }
 
+    /**
+     * @author Zhou Linsheng
+     * @param b
+     * @return Island Link Scores
+     */
     //Task 11 B
     public static int[] calculateIslandLinksScore1(Board b) {
         int[] points = new int[b.getPlayerNum()];
@@ -523,7 +564,12 @@ public class Logic {
         return points;
     }
 
-    //Zhou Linsheng added this function to return a list of all adjacent position of a player given a certain spot
+    /**
+     * @author Zhou Linsheng
+     * @param cord
+     * @param listSet
+     * @returna list of all adjacent position of a player given a certain spot
+     */
     public static List<Coordinate> getAdjacentSpots(Coordinate cord, List<Coordinate> listSet) {
         List<Coordinate> adj = new ArrayList<>();
         for (Coordinate cc : listSet) {
@@ -534,6 +580,11 @@ public class Logic {
         return adj;
     }
 
+    /**
+     * @author Zhou Linsheng
+     * @param b
+     * @return Island Majority Scores
+     */
     //Task 11 C
     public static int[] calculateIslandMajoritiesScore1(Board b) {
         //Point array of this sub calculation
@@ -585,6 +636,11 @@ public class Logic {
         return playerPoints;
     }
 
+    /**
+     * @author Zhou Linsheng
+     * @param b
+     * @return Items Scores
+     */
     //Task 11 D
     public static int[] calculateResourcesAndStatuettesScore1(Board b) {
         int[] points = new int[b.getPlayerNum()];
@@ -636,6 +692,11 @@ public class Logic {
         return points;
     }
 
+    /**
+     * @author Zhou Linsheng
+     * @param b
+     * @return All scores are added up
+     */
     //Task 11 E
     public static int[] calculateScores1(Board b) {
         //Points array of scores
@@ -652,6 +713,11 @@ public class Logic {
         return scores;
     }
 
+    /**
+     * @author Zhou Linsheng
+     * @param b
+     * @return new phase string
+     */
     //Task 12
     public static String endPhase1(Board b) {
         if (b.isPhase()) {
@@ -695,6 +761,14 @@ public class Logic {
         return b.toString();
     }
 
+    /**
+     * Linsheng needs to overwrite redundant codes
+     * @author Zhou Linsheng
+     * @param b
+     * @param type
+     * @param coordinate
+     * @return
+     */
     //Task 13
     public static String applyMove(Board b, char type, Coordinate coordinate) {
         int turn = b.getTurn();
@@ -713,6 +787,13 @@ public class Logic {
         return b.toString();
     }
 
+    /**
+     * @author Zhou Linsheng
+     * @param b
+     * @param type
+     * @param coordinate
+     * @return place String
+     */
     //Task 10
     public static String placePiece1(Board b, char type, Coordinate coordinate) {
         //Change occupier
@@ -745,10 +826,17 @@ public class Logic {
         }
         return b.toString();
     }
+
+    /**
+     * @author Zhou Linsheng
+     * @param b
+     * @return An improved and meaningful AI mode, not a random move
+     */
     //Task 16
     public static String generateAIMove1 (Board b){
         Set<String> potentialMoves=generateAllValidMoves1(b);
         List<Coordinate> movesList=new ArrayList<>();
+        //Add these positions to a list
         for(String s:potentialMoves){
             String[] sp=s.split(" ");
             String[] xy=sp[1].split(",");

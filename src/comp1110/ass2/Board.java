@@ -3,7 +3,7 @@ package comp1110.ass2;
 * @author Zhou Linsheng
  * */
 public class Board {
-    private Spot[][] board;
+    public Spot[][] board;
     public Spot[][] getBoard() {
         return board;
     }

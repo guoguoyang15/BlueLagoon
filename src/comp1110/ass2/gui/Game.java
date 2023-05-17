@@ -343,12 +343,13 @@ public class Game extends Application {
         playerBox.setLayoutX(855);
         playerBox.setLayoutY(520);
         controls.getChildren().addAll(playerBox, titleBox);
-        
+
         // Creates the number of AI opponents selection
         Label AILabel = new Label("Select Number of AI Opponents:");
         AICount = new ChoiceBox<>();
         AICount.getItems().addAll("0", "1", "2", "3");
         AICount.setValue("0");
+        //AICount.setValue("0");
         Button start = new Button("Start Game");
 
         HBox AIBox = new HBox();
@@ -444,29 +445,29 @@ public class Game extends Application {
 //                }
 //            }
 //            else {
-                // Encodes the entered move as a moveString
-                String xPos = (String) xPosition.getValue();
-                String yPos = (String) yPosition.getValue();
-                String piece = (String) villageOrSettler.getValue();
+            // Encodes the entered move as a moveString
+            String xPos = (String) xPosition.getValue();
+            String yPos = (String) yPosition.getValue();
+            String piece = (String) villageOrSettler.getValue();
 
-                if (piece.equals("Village")) {
-                    pieceType = "T";
-                } else if (piece.equals("Settler")) {
-                    pieceType = "S";
-                }
-                String move = pieceType + " " + xPos + "," + yPos;
+            if (piece.equals("Village")) {
+                pieceType = "T";
+            } else if (piece.equals("Settler")) {
+                pieceType = "S";
+            }
+            String move = pieceType + " " + xPos + "," + yPos;
 
-                // Makes "invalid move" text if player enters an invalid move
-                if (BlueLagoon.isMoveValid(boardString, move)) {
-                    boardString = BlueLagoon.applyMove(boardString, move);
-                    root.getChildren().remove(badMove);
-                } else {
-                    root.getChildren().remove(badMove);
-                    root.getChildren().add(badMove);
-                }
-                root.getChildren().removeAll(scoreTable, phase);
-                displayState(boardString);
-                skips = 0;
+            // Makes "invalid move" text if player enters an invalid move
+            if (BlueLagoon.isMoveValid(boardString, move)) {
+                boardString = BlueLagoon.applyMove(boardString, move);
+                root.getChildren().remove(badMove);
+            } else {
+                root.getChildren().remove(badMove);
+                root.getChildren().add(badMove);
+            }
+            root.getChildren().removeAll(scoreTable, phase);
+            displayState(boardString);
+            skips = 0;
 //            }
 
         });
@@ -500,6 +501,7 @@ public class Game extends Application {
     public void start(Stage stage) throws Exception {
 
         Scene scene1 = new Scene(this.root, WINDOW_WIDTH, WINDOW_HEIGHT);
+        stage.setTitle("BlueLagoon Game");
         stage.setScene(scene1);
         root.getChildren().addAll(controls, scoreTable);
         makeControls();

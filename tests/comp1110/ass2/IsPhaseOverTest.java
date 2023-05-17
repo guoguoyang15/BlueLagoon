@@ -21,6 +21,7 @@ public class IsPhaseOverTest implements TestMapNamePlayerCount {
             testFalse(input);
         }
     }
+
     private static void testTrue(String input){
         boolean result = BlueLagoon.isPhaseOver(input);
         Assertions.assertTrue(result, "Phase should be over for state: " + input);

@@ -6,5 +6,5 @@ public enum Resource {
     BAMBOO,
     WATER,
     PRECIOUSSTONE,
-    STATUETTE;
+    STATUETTE
 }

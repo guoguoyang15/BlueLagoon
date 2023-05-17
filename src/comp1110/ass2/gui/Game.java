@@ -6,11 +6,9 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -25,20 +23,17 @@ public class Game extends Application {
     private final Group controls = new Group();
     private static final int WINDOW_WIDTH = 1200;
     private static final int WINDOW_HEIGHT = 700;
-    private int skips = 0;
-    private ChoiceBox villageOrSettler;
-    private ChoiceBox xPosition;
-    private ChoiceBox yPosition;
-    private ChoiceBox playerCount;
-    private ChoiceBox AICount;
+    private ChoiceBox<String> villageOrSettler;
+    private ChoiceBox<String> xPosition;
+    private ChoiceBox<String> yPosition;
+    private ChoiceBox<String> playerCount;
+    private ChoiceBox<String> AICount;
     private Text phase;
     private String pieceType;
-    private Board b;
-    final VBox scoreTable = new VBox();
     private String boardString;
 
+    // @author Tyler Le
     public String initializeGame(int n) {
-        // Written by Tyler
         // Initializes the starting game state
         if (n == 2) {
             // 2 Players
@@ -224,67 +219,14 @@ public class Game extends Application {
         }
         root.getChildren().addAll(imageViews);
 
-        // Generates a display including all game information in table form
-        TableView scores = new TableView();
-
-        TableColumn<Player, Integer> column1 = new TableColumn<>("Player #");
-        column1.setCellValueFactory(new PropertyValueFactory<>("playerNumber"));
-
-        TableColumn<Player, Integer> column2 = new TableColumn<>("Score");
-        column2.setCellValueFactory(new PropertyValueFactory<>("score"));
-
-        TableColumn<Player, Integer> column3 = new TableColumn<>("Coconut");
-        column3.setCellValueFactory(new PropertyValueFactory<>("coconut"));
-
-        TableColumn<Player, Integer> column4 = new TableColumn<>("Bamboo");
-        column4.setCellValueFactory(new PropertyValueFactory<>("bamboo"));
-
-        TableColumn<Player, Integer> column5 = new TableColumn<>("Water");
-        column5.setCellValueFactory(new PropertyValueFactory<>("water"));
-
-        TableColumn<Player, Integer> column6 = new TableColumn<>("P. Stone");
-        column6.setCellValueFactory(new PropertyValueFactory<>("stone"));
-
-        TableColumn<Player, Integer> column7 = new TableColumn<>("Statuettes");
-        column7.setCellValueFactory(new PropertyValueFactory<>("statuette"));
-
-        TableColumn<Player, Integer> column8 = new TableColumn<>("Settlers");
-        column8.setCellValueFactory(new PropertyValueFactory<>("settlers"));
-
-        TableColumn<Player, Integer> column9 = new TableColumn<>("Villages");
-        column9.setCellValueFactory(new PropertyValueFactory<>("villages"));
-
-        TableColumn<Player, String> column10 = new TableColumn<>("Color");
-        column10.setCellValueFactory(new PropertyValueFactory<>("color"));
-
-        scores.getColumns().add(column1);
-        scores.getColumns().add(column2);
-        scores.getColumns().add(column3);
-        scores.getColumns().add(column4);
-        scores.getColumns().add(column5);
-        scores.getColumns().add(column6);
-        scores.getColumns().add(column7);
-        scores.getColumns().add(column8);
-        scores.getColumns().add(column9);
-        scores.getColumns().add(column10);
-
-        Translate tablePosition = new Translate(1000, 0);
-        scores.getTransforms().add(tablePosition);
-
-        for (int i = 0; i < b.getPlayerNum(); i++) {
-            scores.getItems().add(
-                    Player.getStats(i, stateString));
-        }
-        root.getChildren().addAll(scores);
-
         // Phase and moving player information
         String info = "";
-        if(b.isPhase()){
-            info+="Exploration Phase     ";
-        }else {
-            info+="Settlement Phase      ";
+        if (b.isPhase()) {
+            info += "Exploration Phase     ";
+        } else {
+            info += "Settlement Phase      ";
         }
-        info+="Player "+b.getTurn()+" to move.";
+        info += "Player "+b.getTurn()+" to move.";
         phase = new Text(info);
         phase.setX(1000);
         phase.setY(640);
@@ -299,15 +241,15 @@ public class Game extends Application {
         root.getChildren().addAll(rows);
         // Column coordinates
         Text[][] columns = new Text[b.getSize()][b.getSize()];
-        for(int i = 0; i<= rows.length-1; i++){
+        for(int i = 0; i <= rows.length-1; i++){
             for(int j = 0; j<= rows.length-1; j++){
-                if(i%2==0&&j==b.getSize()-1){
+                if (i % 2 == 0 && j == b.getSize() - 1){
                     columns[i][j]=null;
-                }else {
+                } else {
                     columns[i][j]=new Text(""+j);
-                    if(i%2==0){
+                    if (i % 2 == 0){
                         columns[i][j].setX(65+69.28*j);
-                    }else {
+                    } else {
                         columns[i][j].setX(30+69.28*j);
                     }
                     columns[i][j].setY(75+60*i);
@@ -315,11 +257,16 @@ public class Game extends Application {
                 }
             }
         }
+        // Calls scoreTable from Viewer class to make a table for the scores
+        TableView scoreBoard = Viewer.scoreTable(stateString);
+        Translate tablePosition = new Translate(1000, 0);
+        scoreBoard.getTransforms().add(tablePosition);
+        root.getChildren().add(scoreBoard);
     }
 
+    // @author Tyler Le
+    // Creates the various buttons and menus that the players can interact with
     public void makeControls() {
-        // Written by Tyler
-        // Creates the various buttons and menus that the players can interact with
         // Creates the title screen
         Text title = new Text("BLUE LAGOON");
         title.setFill(Color.TEAL);
@@ -349,7 +296,6 @@ public class Game extends Application {
         AICount = new ChoiceBox<>();
         AICount.getItems().addAll("0", "1", "2", "3");
         AICount.setValue("0");
-        //AICount.setValue("0");
         Button start = new Button("Start Game");
 
         HBox AIBox = new HBox();
@@ -396,7 +342,14 @@ public class Game extends Application {
         badSetup.setX(100);
         badSetup.setY(740);
 
-        // Action taken when the Player count buttons are pressed
+        // Creates "invalid move" text
+        Text badMove = new Text("Error: invalid move");
+        badMove.setFill(Color.RED);
+        badMove.setX(1000);
+        badMove.setY(720);
+
+
+        // After # of Players is chosen, make choice for # of AIs appear
         selectPlayerCount.setOnAction(e -> {
             controls.getChildren().remove(AIBox);
             controls.getChildren().add(AIBox);
@@ -405,46 +358,21 @@ public class Game extends Application {
         // Action taken when the "Start Game" button is pressed
         start.setOnAction(e -> {
             if (Integer.parseInt((String) playerCount.getValue()) <= Integer.parseInt((String) AICount.getValue())) {
+                // If AIs >= Players then show error
                 root.getChildren().remove(badSetup);
                 root.getChildren().add(badSetup);
             }
             else {
+                // If AIs < Players then begin the game
                 root.getChildren().remove(badSetup);
                 controls.getChildren().removeAll(titleBox, AIBox, playerBox);
-                boardString = initializeGame(Integer.parseInt((String) playerCount.getValue()));
-                boardString = BlueLagoon.distributeResources(boardString);
+                boardString = BlueLagoon.distributeResources(initializeGame(Integer.parseInt((String) playerCount.getValue())));
                 displayState(boardString);
                 controls.getChildren().addAll(moveBox, labelBox);
             }
         });
 
-        // Creates "invalid move" text
-        Text badMove = new Text("Error: invalid move");
-        badMove.setFill(Color.RED);
-        badMove.setX(1000);
-        badMove.setY(720);
-
         play.setOnAction(e -> {
-            Board b = new Board(boardString);
-//            if (BlueLagoon.generateAllValidMoves(boardString).size() == 0) {
-//                skips = skips + 1;
-//                if (skips == Integer.parseInt((String) playerCount.getValue())) {
-//                    if (b.isPhase()) {
-//                        boardString = BlueLagoon.endPhase(boardString);
-//                    }
-//                    else {
-//                        boardString = BlueLagoon.endPhase(boardString);
-//                        String winner = String.valueOf(Player.winner(boardString));
-//                        // Creates winner text
-//                        Text win = new Text("Player " + winner + " has won!");
-//                        win.setFill(Color.DARKGREEN);
-//                        win.setX(1000);
-//                        win.setY(720);
-//                        root.getChildren().add(win);
-//                    }
-//                }
-//            }
-//            else {
             // Encodes the entered move as a moveString
             String xPos = (String) xPosition.getValue();
             String yPos = (String) yPosition.getValue();
@@ -465,45 +393,23 @@ public class Game extends Application {
                 root.getChildren().remove(badMove);
                 root.getChildren().add(badMove);
             }
-            root.getChildren().removeAll(scoreTable, phase);
+            root.getChildren().remove(phase);
             displayState(boardString);
-            skips = 0;
-//            }
-
         });
         // For testing
         random.setOnAction(e -> {
-//            if (BlueLagoon.generateAllValidMoves(boardString).size() == 0) {
-//                skips = skips + 1;
-//                if (skips == Integer.parseInt((String) playerCount.getValue())) {
-//                    if (b.isPhase()) {
-//                        boardString = BlueLagoon.endPhase(boardString);
-//                    }
-//                    else {
-//                        boardString = BlueLagoon.endPhase(boardString);
-//                        String winner = String.valueOf(Player.winner(boardString));
-//                        // Creates winner text
-//                        Text win = new Text("Player " + winner + " has won!");
-//                        win.setFill(Color.DARKGREEN);
-//                        win.setX(1000);
-//                        win.setY(720);
-//                        root.getChildren().add(win);
-//                    }
-//                }
-//            }
             boardString = BlueLagoon.applyMove(boardString, BlueLagoon.generateAIMove(boardString));
-            root.getChildren().removeAll(scoreTable, phase);
+            root.getChildren().removeAll(phase);
             displayState(boardString);
         });
     }
 
     @Override
     public void start(Stage stage) throws Exception {
-
         Scene scene1 = new Scene(this.root, WINDOW_WIDTH, WINDOW_HEIGHT);
         stage.setTitle("BlueLagoon Game");
         stage.setScene(scene1);
-        root.getChildren().addAll(controls, scoreTable);
+        root.getChildren().addAll(controls);
         makeControls();
         stage.setScene(scene1);
         stage.show();

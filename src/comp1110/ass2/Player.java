@@ -1,10 +1,7 @@
 package comp1110.ass2;
-import comp1110.ass2.Board;
 
-import java.util.Arrays;
-
+// @author Tyler Le
 public class Player {
-    // Written by Tyler
     public Integer getPlayerNumber() {
         return playerNumber;
     }
@@ -56,7 +53,6 @@ public class Player {
     public String getColor() {
         return color;
     }
-
     private Integer playerNumber;
     private Integer score;
     private Integer coconut;
@@ -64,8 +60,8 @@ public class Player {
     private Integer water;
     private Integer stone;
     private Integer statuette;
-    private Integer settlers;
-    private Integer villages;
+    private final Integer settlers;
+    private final Integer villages;
     private final String color;
 
     // Creates a Player object which is later used to make the Board class and the scoreboard in the Game class 
@@ -121,6 +117,7 @@ public class Player {
         return new Player(playerNumber, score, coconut, bamboo,water,stone,statuette, settlers, villages, playerColor);
     }
 
+    // Returns the number of the winner
     public static int winner(String stateString) {
         Board b = new Board(stateString);
         int[] scores = new int[b.getPlayerNum()];

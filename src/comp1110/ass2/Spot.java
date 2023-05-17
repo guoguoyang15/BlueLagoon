@@ -5,7 +5,7 @@ public class Spot {
     public enum SettlerOrVillage{
         NULL,
         SETTLER,
-        VILLAGE;
+        VILLAGE
     }
     public int occupiedByPlayer;
     public int spotType;

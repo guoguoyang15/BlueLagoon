@@ -15,12 +15,8 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
-
-import javax.swing.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 
 public class Viewer extends Application {
@@ -200,54 +196,6 @@ public class Viewer extends Application {
 
         root.getChildren().addAll(tilesList);
         root.getChildren().addAll(villageList);
-
-        TableView scores = new TableView();
-
-        TableColumn<Player, Integer> column1 =
-                new TableColumn<>("Player #");
-        column1.setCellValueFactory(
-                new PropertyValueFactory<>("playerNumber"));
-        TableColumn<Player, Integer> column2 =
-                new TableColumn<>("Score");
-        column2.setCellValueFactory(
-                new PropertyValueFactory<>("score"));
-        TableColumn<Player, Integer> column3 =
-                new TableColumn<>("C");
-        column3.setCellValueFactory(
-                new PropertyValueFactory<>("coconut"));
-        TableColumn<Player, Integer> column4 =
-                new TableColumn<>("B");
-        column4.setCellValueFactory(
-                new PropertyValueFactory<>("bamboo"));
-        TableColumn<Player, Integer> column5 =
-                new TableColumn<>("W");
-        column5.setCellValueFactory(
-                new PropertyValueFactory<>("water"));
-        TableColumn<Player, Integer> column6 =
-                new TableColumn<>("P");
-        column6.setCellValueFactory(
-                new PropertyValueFactory<>("stone"));
-        TableColumn<Player, Integer> column7 =
-                new TableColumn<>("S");
-        column7.setCellValueFactory(
-                new PropertyValueFactory<>("statuette"));
-
-        scores.getColumns().add(column1);
-        scores.getColumns().add(column2);
-        scores.getColumns().add(column3);
-        scores.getColumns().add(column4);
-        scores.getColumns().add(column5);
-        scores.getColumns().add(column6);
-        scores.getColumns().add(column7);
-
-        Translate tablePosition = new Translate(1500, 0);
-        scores.getTransforms().add(tablePosition);
-
-        for (int i = 0; i < b.getPlayerNum(); i++) {
-            scores.getItems().add(
-                    Player.getStats(i, stateString));
-        }
-        root.getChildren().addAll(scores);
         String phase="Current phase: ";
         if(b.isPhase()){
             phase+="Exploration Phase.";
@@ -256,6 +204,61 @@ public class Viewer extends Application {
             phase+="Settlement Phase.";
         }
         Text phaseText=new Text(phase);
+    }
+
+    // @author Tyler Le
+    public static TableView scoreTable (String stateString) {
+        // Generates a display including all Player information in table form
+        Board b = new Board(stateString);
+        TableView scores = new TableView();
+
+        TableColumn<Player, Integer> column1 = new TableColumn<>("Player #");
+        column1.setCellValueFactory(new PropertyValueFactory<>("playerNumber"));
+
+        TableColumn<Player, Integer> column2 = new TableColumn<>("Score");
+        column2.setCellValueFactory(new PropertyValueFactory<>("score"));
+
+        TableColumn<Player, Integer> column3 = new TableColumn<>("Coconut");
+        column3.setCellValueFactory(new PropertyValueFactory<>("coconut"));
+
+        TableColumn<Player, Integer> column4 = new TableColumn<>("Bamboo");
+        column4.setCellValueFactory(new PropertyValueFactory<>("bamboo"));
+
+        TableColumn<Player, Integer> column5 = new TableColumn<>("Water");
+        column5.setCellValueFactory(new PropertyValueFactory<>("water"));
+
+        TableColumn<Player, Integer> column6 = new TableColumn<>("P. Stone");
+        column6.setCellValueFactory(new PropertyValueFactory<>("stone"));
+
+        TableColumn<Player, Integer> column7 = new TableColumn<>("Statuettes");
+        column7.setCellValueFactory(new PropertyValueFactory<>("statuette"));
+
+        TableColumn<Player, Integer> column8 = new TableColumn<>("Settlers");
+        column8.setCellValueFactory(new PropertyValueFactory<>("settlers"));
+
+        TableColumn<Player, Integer> column9 = new TableColumn<>("Villages");
+        column9.setCellValueFactory(new PropertyValueFactory<>("villages"));
+
+        TableColumn<Player, String> column10 = new TableColumn<>("Color");
+        column10.setCellValueFactory(new PropertyValueFactory<>("color"));
+
+        scores.getColumns().add(column1);
+        scores.getColumns().add(column2);
+        scores.getColumns().add(column3);
+        scores.getColumns().add(column4);
+        scores.getColumns().add(column5);
+        scores.getColumns().add(column6);
+        scores.getColumns().add(column7);
+        scores.getColumns().add(column8);
+        scores.getColumns().add(column9);
+        scores.getColumns().add(column10);
+
+        for (int i = 0; i < b.getPlayerNum(); i++) {
+            scores.getItems().add(
+                    Player.getStats(i, stateString));
+        }
+
+        return scores;
     }
 
     /**

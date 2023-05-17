@@ -744,5 +744,40 @@ public class Logic {
         }
         return b.toString();
     }
+    //Task 16
+    public static String generateAIMove1 (Board b){
+        Set<String> potentialMoves=generateAllValidMoves1(b);
+        List<Coordinate> movesList=null;
+        for(String s:potentialMoves){
+            String[] sp=s.split(" ");
+            String[] xy=sp[1].split(",");
+            int x=Integer.parseInt(xy[0]);
+            int y=Integer.parseInt(xy[1]);
+            Coordinate c=new Coordinate(x,y);
+            movesList.add(c);
+        }
+        //If there is a resource spot next to this spot, then AI should move
+        for(Coordinate c:movesList){
+            for(int i=0;i<=b.getSize()-1;i++){
+                for(int j=0;j<=b.getSize()-1;j++){
+                    if(i%2!=0||j!=b.getSize()-1){
+                        if(b.getBoard()[i][j].resources!=Resource.NULL&&ifAdjacent(i,j,c.x,c.y)){
+                            //Don't move a village on a stone circle
+                            return "S "+i+","+j;
+                        }
+                    }
+                }
+            }
+        }
+
+        Random r = new Random();
+        int n = r.nextInt(potentialMoves.size());
+        List<String> stringList = new ArrayList<>();
+        for (String move : generateAllValidMoves1(b)) {
+            stringList.add(move);
+        }
+        return stringList.get(n);
+
+    }
 
 }

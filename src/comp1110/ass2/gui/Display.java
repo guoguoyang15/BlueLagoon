@@ -6,15 +6,15 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 
-// @author Tyler Le
 // This class generates all the JavaFX objects used in the game
 public class Display {
 
+    // Takes in a game state and presents all the player information in tabular form
     public static TableView scoreTable (String stateString) {
-        // Generates a display including all Player information in table form
         Board b = new Board(stateString);
         TableView scores = new TableView();
 
+        // Creates each individual column and the Value Factories to set the value of each cell in the column
         TableColumn<Player, Integer> column1 = new TableColumn<>("Player #");
         column1.setCellValueFactory(new PropertyValueFactory<>("playerNumber"));
 
@@ -45,6 +45,7 @@ public class Display {
         TableColumn<Player, String> column10 = new TableColumn<>("Color");
         column10.setCellValueFactory(new PropertyValueFactory<>("color"));
 
+        // Adds columns to the table
         scores.getColumns().add(column1);
         scores.getColumns().add(column2);
         scores.getColumns().add(column3);
@@ -56,13 +57,14 @@ public class Display {
         scores.getColumns().add(column9);
         scores.getColumns().add(column10);
 
+        // Adds player information
         for (int i = 0; i < b.getPlayerNum(); i++) {
             scores.getItems().add(
                     Player.getStats(i, stateString));
         }
-
         return scores;
     }
+
     // @author Linsheng Zhou
     // Generates the phase and player to move text
     public static Text phaseDisplay (String stateString) {
@@ -85,10 +87,10 @@ public class Display {
     public static Text[] rowDisplay (String stateString) {
         Board b = new Board(stateString);
         Text[] rows = new Text[b.getSize()];
-        for(int i = 0; i<= rows.length-1; i++){
-            rows[i]=new Text(""+i);
+        for(int i = 0; i <= rows.length - 1; i++){
+            rows[i]=new Text(""+ i);
             rows[i].setX(920);
-            rows[i].setY(61*i+40);
+            rows[i].setY(61*i + 40);
         }
         return rows;
     }
@@ -103,13 +105,13 @@ public class Display {
                 if (i % 2 == 0 && j == columns - 1){
                     coordinates[i][j] = null;
                 } else {
-                    coordinates[i][j] = new Text(""+j);
+                    coordinates[i][j] = new Text(""+ j);
                     if (i % 2 == 0){
-                        coordinates[i][j].setX(65+69.28*j);
+                        coordinates[i][j].setX(65 + 69.28*j);
                     } else {
-                        coordinates[i][j].setX(30+69.28*j);
+                        coordinates[i][j].setX(30 + 69.28*j);
                     }
-                    coordinates[i][j].setY(75+60*i);
+                    coordinates[i][j].setY(75 + 60*i);
                 }
             }
         }

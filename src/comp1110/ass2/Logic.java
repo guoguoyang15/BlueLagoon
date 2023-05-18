@@ -11,7 +11,7 @@ public class Logic {
      * @param stateString
      * @return
      */
-    //Task 3
+    // Task 3
     public static boolean isStateStringWellFormed1(String stateString) {
         // Written by Tyler and edited by Zhining
         String[] parts = stateString.split(";");
@@ -66,7 +66,7 @@ public class Logic {
      * @param moveString
      * @return
      */
-    //Task 4
+    // Task 4
     public static boolean isMoveStringWellFormed1(String moveString) {
         // Written by Tyler
         // Checks if Move string is properly formatted
@@ -130,7 +130,6 @@ public class Logic {
 
         return stateString;
     }
-
 
     /**
      * @author Zhou Linsheng
@@ -314,29 +313,6 @@ public class Logic {
         return points;
     }
 
-    /**
-     * @author Zhou Linsheng
-     * @param x1
-     * @param y1
-     * @param x2
-     * @param y2
-     * @return if two spots are next to each other
-     */
-    public static boolean ifAdjacent(int x1, int y1, int x2, int y2) {
-        //four positions are true for all rows
-        if (x1 == x2 && Math.abs(y1 - y2) == 1) {
-            return true;
-        }
-        if (y1 == y2 && Math.abs(x1 - x2) == 1) {
-            return true;
-        }
-        //sometimes we need to consider two cases: odd rows and even rows
-        if (x1 % 2 == 0) {
-            return Math.abs(x1 - x2) == 1 && (y2 - y1) == 1;
-        } else {
-            return Math.abs(x1 - x2) == 1 && (y1 - y2) == 1;
-        }
-    }
 
     /**
      * @author Zhou Linsheng
@@ -416,7 +392,7 @@ public class Logic {
     public static List<Coordinate> getAdjacentSpots(Coordinate cord, List<Coordinate> listSet) {
         List<Coordinate> adj = new ArrayList<>();
         for (Coordinate cc : listSet) {
-            if (ifAdjacent(cord.x, cord.y, cc.x, cc.y)) {
+            if (Spot.ifAdjacent(cord.x, cord.y, cc.x, cc.y)) {
                 adj.add(cc);
             }
         }

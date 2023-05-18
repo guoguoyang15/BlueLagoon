@@ -4,7 +4,6 @@ package comp1110.ass2;
  * @author Zhou Linsheng
  */
 public class Spot {
-
     public enum SettlerOrVillage{
         NULL,
         SETTLER,
@@ -43,8 +42,28 @@ public class Spot {
             }
         }
     }
-
-
-
+    /**
+     * @author Zhou Linsheng
+     * @param x1
+     * @param y1
+     * @param x2
+     * @param y2
+     * @return if two spots are next to each other
+     */
+    public static boolean ifAdjacent(int x1, int y1, int x2, int y2) {
+        //four positions are true for all rows
+        if (x1 == x2 && Math.abs(y1 - y2) == 1) {
+            return true;
+        }
+        if (y1 == y2 && Math.abs(x1 - x2) == 1) {
+            return true;
+        }
+        //sometimes we need to consider two cases: odd rows and even rows
+        if (x1 % 2 == 0) {
+            return Math.abs(x1 - x2) == 1 && (y2 - y1) == 1;
+        } else {
+            return Math.abs(x1 - x2) == 1 && (y1 - y2) == 1;
+        }
+    }
 
 }

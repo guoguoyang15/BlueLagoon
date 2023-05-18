@@ -2,6 +2,7 @@ package comp1110.ass2.gui;
 
 import comp1110.ass2.*;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -232,6 +233,13 @@ public class Game extends Application {
                 root.getChildren().remove(badMove);
                 root.getChildren().add(badMove);
             }
+
+            if (new Board(boardString).getTurn() >= Integer.parseInt(playerCount.getValue()) - Integer.parseInt(AICount.getValue())) {
+                for (int i = 0; i < Integer.parseInt(AICount.getValue()); i++) {
+                    triggerAI(Integer.parseInt(AICount.getValue()));
+                }
+            }
+
             root.getChildren().remove(phase);
             displayState(boardString);
         });

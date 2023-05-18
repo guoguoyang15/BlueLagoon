@@ -2,23 +2,15 @@ package comp1110.ass2.gui;
 
 import comp1110.ass2.*;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.transform.Translate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+
 
 public class Game extends Application {
     private final Group root = new Group();
@@ -91,6 +83,9 @@ public class Game extends Application {
         Translate tablePosition = new Translate(1000, 0);
         scoreBoard.getTransforms().add(tablePosition);
         root.getChildren().add(scoreBoard);
+
+        root.setLayoutX(15);
+        root.setLayoutY(25);
     }
 
     // @author Tyler Le
@@ -107,17 +102,7 @@ public class Game extends Application {
     // @author Tyler Le
     // Creates the various buttons and menus that the players can interact with
     public void gameControls() {
-        // Creates the title screen
-        Text title = new Text("BLUE LAGOON");
-        title.setFill(Color.TEAL);
-        title.setFont(Font.font("Serif", 100));
-
-        HBox titleBox = new HBox();
-        titleBox.getChildren().add(title);
-        titleBox.setLayoutX(590);
-        titleBox.setLayoutY(400);
-
-        // Number of players selection
+        // Creates the number of players selection menu
         Label playerLabel = new Label("Select Number of Players:");
         playerCount = new ChoiceBox<>();
         playerCount.getItems().addAll("2", "3", "4");
@@ -129,7 +114,6 @@ public class Game extends Application {
         playerBox.setSpacing(10);
         playerBox.setLayoutX(855);
         playerBox.setLayoutY(520);
-        controls.getChildren().addAll(playerBox, titleBox);
 
         // Creates the number of AI opponents selection
         Label AILabel = new Label("Select Number of AI Opponents:");
@@ -144,10 +128,11 @@ public class Game extends Application {
         AIBox.setLayoutX(820);
         AIBox.setLayoutY(550);
 
+        // Displays the player selection menu and title screen
+        controls.getChildren().addAll(playerBox, Display.titleScreen());
+
         // Creates menu for entering moves
         Label moveLabel = new Label("Choose the piece and position:");
-        Label rowLabel = new Label("Row:");
-        Label colLabel = new Label("Column:");
         villageOrSettler = new ChoiceBox<>();
         villageOrSettler.getItems().addAll("Settler", "Village");
         villageOrSettler.setValue("Settler");
@@ -160,34 +145,31 @@ public class Game extends Application {
         yPosition.getItems().addAll("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12");
         yPosition.setValue("0");
 
-        Button play = new Button("Play");
         // For testing
         Button random = new Button("Random Move");
         // For testing
+        Button play = new Button("Play");
         HBox moveBox = new HBox();
         moveBox.getChildren().addAll(moveLabel, villageOrSettler, xPosition, yPosition, play, random);
         moveBox.setSpacing(10);
         moveBox.setLayoutX(1000);
         moveBox.setLayoutY(670);
 
+        // Adds the row and column labels for the move menus
+        Label rowLabel = new Label("Row:");
+        Label colLabel = new Label("Column:");
         HBox labelBox = new HBox();
         labelBox.getChildren().addAll(rowLabel, colLabel);
         labelBox.setSpacing(27);
         labelBox.setLayoutX(1305);
         labelBox.setLayoutY(650);
 
-        // Creates error text
-        Text badSetup = new Text("Error: Number of AI opponents cannot be equal to or greater than total number of players");
-        badSetup.setFill(Color.RED);
-        badSetup.setX(100);
-        badSetup.setY(740);
-
-        // Creates "invalid move" text
-        Text badMove = new Text("Error: invalid move");
-        badMove.setFill(Color.RED);
-        badMove.setX(1000);
-        badMove.setY(720);
-
+        // Adds the restart button to restart the game
+        Button restart = new Button("Restart");
+        HBox restartBox = new HBox();
+        restartBox.getChildren().add(restart);
+        restartBox.setLayoutX(1820);
+        restartBox.setLayoutY(0);
 
         // After # of Players is chosen, make choice for # of AIs appear
         selectPlayerCount.setOnAction(e -> {
@@ -199,16 +181,17 @@ public class Game extends Application {
         start.setOnAction(e -> {
             if (Integer.parseInt(playerCount.getValue()) <= Integer.parseInt(AICount.getValue())) {
                 // If AIs >= Players then show error
-                root.getChildren().remove(badSetup);
-                root.getChildren().add(badSetup);
+                root.getChildren().remove(Display.badSetup());
+                root.getChildren().add(Display.badSetup());
             }
             else {
                 // If AIs < Players then begin the game
-                root.getChildren().remove(badSetup);
-                controls.getChildren().removeAll(titleBox, AIBox, playerBox);
+                root.getChildren().remove(Display.badSetup());
+                controls.getChildren().clear();
                 boardString = BlueLagoon.distributeResources(initializeGame(Integer.parseInt(playerCount.getValue())));
                 displayState(boardString);
                 controls.getChildren().addAll(moveBox, labelBox);
+                root.getChildren().add(restartBox);
             }
         });
 
@@ -228,12 +211,13 @@ public class Game extends Application {
             // Makes "invalid move" text if player enters an invalid move
             if (BlueLagoon.isMoveValid(boardString, move)) {
                 boardString = BlueLagoon.applyMove(boardString, move);
-                root.getChildren().remove(badMove);
+                root.getChildren().remove(Display.badMove());
             } else {
-                root.getChildren().remove(badMove);
-                root.getChildren().add(badMove);
+                root.getChildren().remove(Display.badMove());
+                root.getChildren().add(Display.badMove());
             }
 
+            // If it's the AI's turn next, then trigger AI moves until it's the next human player's turn
             if (new Board(boardString).getTurn() >= Integer.parseInt(playerCount.getValue()) - Integer.parseInt(AICount.getValue())) {
                 for (int i = 0; i < Integer.parseInt(AICount.getValue()); i++) {
                     triggerAI(Integer.parseInt(AICount.getValue()));
@@ -242,6 +226,14 @@ public class Game extends Application {
 
             root.getChildren().remove(phase);
             displayState(boardString);
+        });
+
+        // Restarts the game if "restart" is pressed
+        restart.setOnAction(e -> {
+        root.getChildren().clear();
+        controls.getChildren().clear();
+        controls.getChildren().addAll(playerBox, Display.titleScreen());
+        root.getChildren().add(controls);
         });
 
         // For testing

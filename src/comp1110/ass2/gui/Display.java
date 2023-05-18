@@ -5,6 +5,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -354,5 +355,38 @@ public class Display {
             return new Text("");
         }
     }
+    // @author Tyler Le
+    // Displays an error when AI count >= Player count
+    public static Text badSetup() {
+        Text badSetup = new Text("Error: Number of AI opponents cannot be equal to or greater than total number of players");
+        badSetup.setFill(Color.RED);
+        badSetup.setX(100);
+        badSetup.setY(740);
+        return badSetup;
+    }
 
+    // @author Tyler Le
+    // Displays an error if the player attempts to make an invalid move
+    public static Text badMove() {
+        // Creates "invalid move" text
+        Text badMove = new Text("Error: invalid move");
+        badMove.setFill(Color.RED);
+        badMove.setX(1000);
+        badMove.setY(720);
+        return badMove;
+    }
+    // @author Tyler Le
+    // Displays the title screen
+    public static HBox titleScreen() {
+        Text title = new Text("BLUE LAGOON");
+        title.setFill(Color.TEAL);
+        title.setFont(Font.font("Serif", 100));
+
+        HBox titleBox = new HBox();
+        titleBox.getChildren().add(title);
+        titleBox.setLayoutX(590);
+        titleBox.setLayoutY(400);
+
+        return titleBox;
+    }
 }

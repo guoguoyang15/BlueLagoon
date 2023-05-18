@@ -32,6 +32,8 @@ public class Display {
         Image[] villages = new Image[4];
         Image bamboo, coconuts, precious_stones, statuettes, water;
 
+        // Background images
+        Image background = new Image(getClass().getResourceAsStream("/image/background.png"), 1112, 800, false, false);
         // Land tile images
         land[0] = new Image(getClass().getResourceAsStream("/image/Land/Land (1).png"), 69.28, 80, false, false);
         land[1] = new Image(getClass().getResourceAsStream("/image/Land/Land (2).png"), 69.28, 80, false, false);
@@ -93,6 +95,10 @@ public class Display {
         statuettes = new Image(getClass().getResourceAsStream("/image/Resources/statuettes.png"), 69.28, 80, false, false);
         water = new Image(getClass().getResourceAsStream("/image/Resources/water.png"), 69.28, 80, false, false);
 
+
+        // Sets up background
+        ImageView back=new ImageView(background);
+        imageViews.add(back);
         // Sets up all land and sea spots
         for (int i = 0; i <= b.getSize() - 1; i++) {
             for (int j = 0; j <= b.getSize() - 1; j++) {

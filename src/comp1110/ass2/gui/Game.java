@@ -69,7 +69,6 @@ public class Game extends Application {
         // Calls rowDisplay from Display class to show the row numbers
         Text[] rows = Display.rowDisplay(stateString);
         root.getChildren().addAll(rows);
-
         // Calls columnDisplay from Display class to show column coordinates on each tile
         for (int i = 0; i < b.getSize(); i++) {
             for (int j = 0; j < b.getSize(); j++) {

@@ -9,13 +9,16 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 
-// This class generates all the JavaFX objects used in the game
+/**
+ * @author Zhou Linsheng, Zhang Zhining, Tyler Le (authorship of each method is indicated)
+ * This class generates all the JavaFX objects used in the game.
+ */
+
 public class Display {
-    // @author Zhou Linsheng and Zhang Zhining
+    // @author Zhang Zhining
     // Displays images of the tiles
     public List<ImageView> displayTiles(String stateString) {
         Board b = new Board(stateString);
@@ -29,6 +32,8 @@ public class Display {
         Image[] villages = new Image[4];
         Image bamboo, coconuts, precious_stones, statuettes, water;
 
+        // Background images
+        Image background = new Image(getClass().getResourceAsStream("/image/background.png"), 1112, 800, false, false);
         // Land tile images
         land[0] = new Image(getClass().getResourceAsStream("/image/Land/Land (1).png"), 69.28, 80, false, false);
         land[1] = new Image(getClass().getResourceAsStream("/image/Land/Land (2).png"), 69.28, 80, false, false);
@@ -90,6 +95,10 @@ public class Display {
         statuettes = new Image(getClass().getResourceAsStream("/image/Resources/statuettes.png"), 69.28, 80, false, false);
         water = new Image(getClass().getResourceAsStream("/image/Resources/water.png"), 69.28, 80, false, false);
 
+
+        // Sets up background
+        ImageView back=new ImageView(background);
+        imageViews.add(back);
         // Sets up all land and sea spots
         for (int i = 0; i <= b.getSize() - 1; i++) {
             for (int j = 0; j <= b.getSize() - 1; j++) {
@@ -346,7 +355,7 @@ public class Display {
         if (!b.isPhase() && BlueLagoon.generateAllValidMoves(stateString).size() == 0) {
             Text winner = new Text("Player " + Player.findWinner(stateString) + " has won!");
             winner.setX(1000);
-            winner.setY(760);
+            winner.setY(770);
             winner.setFill(Color.DARKGREEN);
             winner.setFont(Font.font("Serif", 60));
             return winner;
@@ -360,8 +369,8 @@ public class Display {
     public static Text badSetup() {
         Text badSetup = new Text("Error: Number of AI opponents cannot be equal to or greater than total number of players");
         badSetup.setFill(Color.RED);
-        badSetup.setX(100);
-        badSetup.setY(740);
+        badSetup.setX(695);
+        badSetup.setY(600);
         return badSetup;
     }
 
@@ -375,6 +384,7 @@ public class Display {
         badMove.setY(720);
         return badMove;
     }
+
     // @author Tyler Le
     // Displays the title screen
     public static HBox titleScreen() {

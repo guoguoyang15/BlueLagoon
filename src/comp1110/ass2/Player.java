@@ -1,10 +1,10 @@
 package comp1110.ass2;
 
 /**
- * @author Tyler Le
+ * @author Tyler Le (all methods)
  */
 
-// This class deals with all things related to the players, their stats and the winner
+// This class deals with all things related to the players, their stats and the winner of the game.
 public class Player {
     public Integer getPlayerNumber() {
         return playerNumber;
@@ -121,7 +121,7 @@ public class Player {
         return new Player(playerNumber, score, coconut, bamboo,water,stone,statuette, settlers, villages, playerColor);
     }
 
-    // Returns the number of the winner
+    // Returns the number of the winner as a string
     public static String findWinner(String stateString) {
         Board b = new Board(stateString);
         int[] scores = new int[b.getPlayerNum()];

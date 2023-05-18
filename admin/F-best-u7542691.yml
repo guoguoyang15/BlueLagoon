@@ -17,6 +17,7 @@ declaration: >-
 # you want to just submit methods):
 class:
    - Player.java
+   - Game.java
 
 # I wish to submit the following methods as entirely my own (remove this if
 # you want to just submit classes):

@@ -366,16 +366,10 @@ public class Game extends Application {
                 boardString = BlueLagoon.distributeResources(initializeGame(Integer.parseInt(playerCount.getValue())));
                 displayState(boardString);
                 controls.getChildren().addAll(moveBox, labelBox);
-                Timer t = new Timer();
-                t.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        triggerAI(Integer.parseInt(AICount.getValue()));
-                    }
-                }, 0, 5000);
             }
         });
 
+        // Action taken when a player attempts to make a move
         play.setOnAction(e -> {
             // Encodes the entered move as a moveString
             String xPos = xPosition.getValue();

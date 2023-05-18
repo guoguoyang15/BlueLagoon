@@ -1,4 +1,5 @@
 package comp1110.ass2.gui;
+import comp1110.ass2.BlueLagoon;
 import comp1110.ass2.Board;
 import comp1110.ass2.Player;
 import javafx.scene.control.TableColumn;
@@ -141,6 +142,14 @@ public class Display {
             }
         }
         return weights;
+    }
+
+    public static Text displayWinner (String stateString) {
+        Board b = new Board(stateString);
+        if (!b.isPhase() && BlueLagoon.generateAllValidMoves(stateString).size() == 0) {
+            String winner = "Player " + Player.winner(stateString) + " has won!";
+
+        }
     }
 
 }

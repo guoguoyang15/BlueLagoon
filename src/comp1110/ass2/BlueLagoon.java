@@ -350,14 +350,7 @@ public class BlueLagoon {
         //for example, resources have priority and villages cannot be placed on stone circles
         public static String generateAIMove (String stateString){
 
-//            Random r = new Random();
-//            int n = r.nextInt(generateAllValidMoves(stateString).size());
-//            ArrayList<String> list = new ArrayList<>();
-//            for (String move : generateAllValidMoves(stateString)) {
-//                list.add(move);
-//            }
-//            return list.get(n); // FIXME Task 16
-            Board b=new Board(stateString);
+            Board b = new Board(stateString);
             return Logic.generateAIMove1(b);
         }
     }

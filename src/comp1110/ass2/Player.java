@@ -120,7 +120,7 @@ public class Player {
     }
 
     // Returns the number of the winner
-    public static int winner(String stateString) {
+    public static String winner(String stateString) {
         Board b = new Board(stateString);
         int[] scores = new int[b.getPlayerNum()];
         for (int i = 0; i < b.getPlayerNum(); i++) {
@@ -131,7 +131,7 @@ public class Player {
         for (int i = 0; i < scores.length; i++) {
             maxAt = scores[i] > scores[maxAt] ? i : maxAt;
         }
-        return maxAt;
+        return Integer.toString(maxAt);
     }
 }
 

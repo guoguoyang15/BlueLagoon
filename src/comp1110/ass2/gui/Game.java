@@ -49,176 +49,12 @@ public class Game extends Application {
         return boardString;
     }
 
+    // Puts together all the individual elements of the game UI
     void displayState(String stateString) {
-        // Adds images of the tiles
+        // Calls displayBoard from Display class to show the board tiles
         Board b = new Board(stateString);
-
-        List<ImageView> imageViews = new ArrayList<>();
-        int rand = 0;
-        Image[] land = new Image[18];
-        Image[] circle = new Image[6];
-        Image[] ocean = new Image[12];
-        Image bamboo, coconuts, precious_stones, statuettes, water;
-        Image[] villagers = new Image[4];
-        Image[] villages = new Image[4];
-        land[0] = new Image(getClass().getResourceAsStream("/image/Land/Land (1).png"), 69.28, 80, false, false);
-        land[1] = new Image(getClass().getResourceAsStream("/image/Land/Land (2).png"), 69.28, 80, false, false);
-        land[2] = new Image(getClass().getResourceAsStream("/image/Land/Land (3).png"), 69.28, 80, false, false);
-        land[3] = new Image(getClass().getResourceAsStream("/image/Land/Land (4).png"), 69.28, 80, false, false);
-        land[4] = new Image(getClass().getResourceAsStream("/image/Land/Land (5).png"), 69.28, 80, false, false);
-        land[5] = new Image(getClass().getResourceAsStream("/image/Land/Land (6).png"), 69.28, 80, false, false);
-        land[6] = new Image(getClass().getResourceAsStream("/image/Land/Land (7).png"), 69.28, 80, false, false);
-        land[7] = new Image(getClass().getResourceAsStream("/image/Land/Land (8).png"), 69.28, 80, false, false);
-        land[8] = new Image(getClass().getResourceAsStream("/image/Land/Land (9).png"), 69.28, 80, false, false);
-        land[9] = new Image(getClass().getResourceAsStream("/image/Land/Land (10).png"), 69.28, 80, false, false);
-        land[10] = new Image(getClass().getResourceAsStream("/image/Land/Land (11).png"), 69.28, 80, false, false);
-        land[11] = new Image(getClass().getResourceAsStream("/image/Land/Land (12).png"), 69.28, 80, false, false);
-        land[12] = new Image(getClass().getResourceAsStream("/image/Land/Land (13).png"), 69.28, 80, false, false);
-        land[13] = new Image(getClass().getResourceAsStream("/image/Land/Land (14).png"), 69.28, 80, false, false);
-        land[14] = new Image(getClass().getResourceAsStream("/image/Land/Land (15).png"), 69.28, 80, false, false);
-        land[15] = new Image(getClass().getResourceAsStream("/image/Land/Land (16).png"), 69.28, 80, false, false);
-        land[16] = new Image(getClass().getResourceAsStream("/image/Land/Land (17).png"), 69.28, 80, false, false);
-        land[17] = new Image(getClass().getResourceAsStream("/image/Land/Land (18).png"), 69.28, 80, false, false);
-        circle[0] = new Image(getClass().getResourceAsStream("/image/Circle/Circle (1).png"), 69.28, 80, false, false);
-        circle[1] = new Image(getClass().getResourceAsStream("/image/Circle/Circle (2).png"), 69.28, 80, false, false);
-        circle[2] = new Image(getClass().getResourceAsStream("/image/Circle/Circle (3).png"), 69.28, 80, false, false);
-        circle[3] = new Image(getClass().getResourceAsStream("/image/Circle/Circle (4).png"), 69.28, 80, false, false);
-        circle[4] = new Image(getClass().getResourceAsStream("/image/Circle/Circle (5).png"), 69.28, 80, false, false);
-        circle[5] = new Image(getClass().getResourceAsStream("/image/Circle/Circle (6).png"), 69.28, 80, false, false);
-        ocean[0] = new Image(getClass().getResourceAsStream("/image/Ocean/Ocean (1).png"), 69.28, 80, false, false);
-        ocean[1] = new Image(getClass().getResourceAsStream("/image/Ocean/Ocean (2).png"), 69.28, 80, false, false);
-        ocean[2] = new Image(getClass().getResourceAsStream("/image/Ocean/Ocean (3).png"), 69.28, 80, false, false);
-        ocean[3] = new Image(getClass().getResourceAsStream("/image/Ocean/Ocean (4).png"), 69.28, 80, false, false);
-        ocean[4] = new Image(getClass().getResourceAsStream("/image/Ocean/Ocean (5).png"), 69.28, 80, false, false);
-        ocean[5] = new Image(getClass().getResourceAsStream("/image/Ocean/Ocean (6).png"), 69.28, 80, false, false);
-        ocean[6] = new Image(getClass().getResourceAsStream("/image/Ocean/Ocean (7).png"), 69.28, 80, false, false);
-        ocean[7] = new Image(getClass().getResourceAsStream("/image/Ocean/Ocean (8).png"), 69.28, 80, false, false);
-        ocean[8] = new Image(getClass().getResourceAsStream("/image/Ocean/Ocean (9).png"), 69.28, 80, false, false);
-        ocean[9] = new Image(getClass().getResourceAsStream("/image/Ocean/Ocean (10).png"), 69.28, 80, false, false);
-        ocean[10] = new Image(getClass().getResourceAsStream("/image/Ocean/Ocean (11).png"), 69.28, 80, false, false);
-        ocean[11] = new Image(getClass().getResourceAsStream("/image/Ocean/Ocean (12).png"), 69.28, 80, false, false);
-        villagers[0] = new Image(getClass().getResourceAsStream("/image/Villagers/1.png"), 69.28, 80, false, false);
-        villagers[1] = new Image(getClass().getResourceAsStream("/image/Villagers/2.png"), 69.28, 80, false, false);
-        villagers[2] = new Image(getClass().getResourceAsStream("/image/Villagers/3.png"), 69.28, 80, false, false);
-        villagers[3] = new Image(getClass().getResourceAsStream("/image/Villagers/4.png"), 69.28, 80, false, false);
-        villages[0] = new Image(getClass().getResourceAsStream("/image/Villages/1.png"), 69.28, 80, false, false);
-        villages[1] = new Image(getClass().getResourceAsStream("/image/Villages/2.png"), 69.28, 80, false, false);
-        villages[2] = new Image(getClass().getResourceAsStream("/image/Villages/3.png"), 69.28, 80, false, false);
-        villages[3] = new Image(getClass().getResourceAsStream("/image/Villages/4.png"), 69.28, 80, false, false);
-        bamboo = new Image(getClass().getResourceAsStream("/image/Resources/bamboo.png"), 69.28, 80, false, false);
-        coconuts = new Image(getClass().getResourceAsStream("/image/Resources/coconuts.png"), 69.28, 80, false, false);
-        precious_stones = new Image(getClass().getResourceAsStream("/image/Resources/precious_stones.png"), 69.28, 80, false, false);
-        statuettes = new Image(getClass().getResourceAsStream("/image/Resources/statuettes.png"), 69.28, 80, false, false);
-        water = new Image(getClass().getResourceAsStream("/image/Resources/water.png"), 69.28, 80, false, false);
-        // Sets up all spots
-        for (int i = 0; i <= b.getSize() - 1; i++) {
-            for (int j = 0; j <= b.getSize() - 1; j++) {
-                if (b.getBoard()[i][j] != null) {
-                    ImageView imageView = new ImageView();
-                    if (i % 2 == 0) {
-                        imageView.setX(34.64 + 69.28 * j);
-                    } else {
-                        imageView.setX(69.28 * j);
-                    }
-                    imageView.setY(60 * i);
-                    if (b.getBoard()[i][j].spotType == 1)
-                    {
-                        rand += 7;
-                        imageView.setImage(land[rand % 18]);
-                    } else {
-                        rand += 11;
-                        imageView.setImage(ocean[rand % 12]);
-                    }
-                    imageViews.add(imageView);
-                }
-            }
-        }
-        // Adds stone circles
-        for (int i = 0; i <= b.getSize() - 1; i++) {
-            for (int j = 0; j <= b.getSize() - 1; j++) {
-                if (b.getBoard()[i][j] != null) {
-                    rand += 7;
-                    if (b.getBoard()[i][j].circle) {
-                        ImageView imageView = new ImageView();
-                        imageView.setImage(circle[rand % 6]);
-                        if (i % 2 == 0) {
-                            imageView.setX(34.64 + 69.28 * j);
-                        } else {
-                            imageView.setX(69.28 * j);
-                        }
-                        imageView.setY(60 * i);
-                        imageViews.add(imageView);
-                    }
-                }
-            }
-        }
-        // Adds resources
-        for (int i = 0; i <= b.getSize() - 1; i++) {
-            for (int j = 0; j <= b.getSize() - 1; j++) {
-                if (b.getBoard()[i][j] != null) {
-                    if (b.getBoard()[i][j].resources != Resource.NULL) {
-                        ImageView imageView = new ImageView();
-                        if (i % 2 == 0) {
-                            imageView.setX(34.64 + 69.28 * j);
-                            imageView.setY(60 * i);
-                        } else {
-                            imageView.setX(69.28 * j);
-                            imageView.setY(60 * i);
-                        }
-                        if (b.getBoard()[i][j].resources == Resource.COCONUT) {
-                            imageView.setImage(coconuts);
-                        } else if (b.getBoard()[i][j].resources == Resource.BAMBOO) {
-                            imageView.setImage(bamboo);
-                        } else if (b.getBoard()[i][j].resources == Resource.WATER) {
-                            imageView.setImage(water);
-                        } else if (b.getBoard()[i][j].resources == Resource.PRECIOUSSTONE) {
-                            imageView.setImage(precious_stones);
-                        } else {
-                            imageView.setImage(statuettes);
-                        }
-                        imageViews.add(imageView);
-                    }
-                }
-            }
-        }
-        // Adds player pieces
-        for (int i = 0; i <= b.getSize() - 1; i++) {
-            for (int j = 0; j <= b.getSize() - 1; j++) {
-                if (b.getBoard()[i][j] != null && b.getBoard()[i][j].occupiedByPlayer != 100) {
-                    ImageView imageView = new ImageView();
-                    if (i % 2 == 0) {
-                        imageView.setX(34.64 + 69.28 * j);
-                        imageView.setY(60 * i);
-                    } else {
-                        imageView.setX(69.28 * j);
-                        imageView.setY(60 * i);
-                    }
-                    if (b.getBoard()[i][j].settlerOrVillage == Spot.SettlerOrVillage.SETTLER) {
-                        if (b.getBoard()[i][j].occupiedByPlayer == 0) {
-                            imageView.setImage(villagers[0]);
-                        } else if (b.getBoard()[i][j].occupiedByPlayer == 1) {
-                            imageView.setImage(villagers[1]);
-                        } else if (b.getBoard()[i][j].occupiedByPlayer == 2) {
-                            imageView.setImage(villagers[2]);
-                        } else {
-                            imageView.setImage(villagers[3]);
-                        }
-                    } else {
-                        if (b.getBoard()[i][j].occupiedByPlayer == 0) {
-                            imageView.setImage(villages[0]);
-                        } else if (b.getBoard()[i][j].occupiedByPlayer == 1) {
-                            imageView.setImage(villages[1]);
-                        } else if (b.getBoard()[i][j].occupiedByPlayer == 2) {
-                            imageView.setImage(villages[2]);
-                        } else {
-                            imageView.setImage(villages[3]);
-                        }
-                    }
-                    imageViews.add(imageView);
-                }
-            }
-        }
-        root.getChildren().addAll(imageViews);
+        Display boardImage = new Display();
+        root.getChildren().addAll(boardImage.displayTiles(stateString));
 
         // Calls phaseDisplay from Display class to show the phase and player to move
         phase = Display.phaseDisplay(stateString);
@@ -231,12 +67,13 @@ public class Game extends Application {
         // Calls columnDisplay from Display class to show column coordinates on each tile
         for (int i = 0; i < b.getSize(); i++) {
             for (int j = 0; j < b.getSize(); j++) {
-                if (Display.columnDisplay(b.getSize(), b.getSize(), stateString)[i][j] != null) {
-                    root.getChildren().addAll(Display.columnDisplay(b.getSize(), b.getSize(), stateString)[i][j]);
+                if (Display.columnDisplay(b.getSize(), b.getSize())[i][j] != null) {
+                    root.getChildren().addAll(Display.columnDisplay(b.getSize(), b.getSize())[i][j]);
                 }
             }
         }
 
+        // Calls weightDisplay from Display class to show the island values on each tile
         for (int i = 0; i < b.getSize(); i++) {
             for (int j = 0; j < b.getSize(); j++) {
                 if (Display.weightDisplay(b.getSize(), b.getSize(), b)[i][j] != null) {
@@ -244,6 +81,9 @@ public class Game extends Application {
                 }
             }
         }
+
+        // Calls displayWinner from Display class to show the winner if there is one
+        root.getChildren().add(Display.displayWinner(stateString));
 
         // Calls scoreTable from Display class to make a table for the scores
         TableView scoreBoard = Display.scoreTable(stateString);
@@ -390,7 +230,6 @@ public class Game extends Application {
                 root.getChildren().remove(badMove);
                 root.getChildren().add(badMove);
             }
-
             root.getChildren().remove(phase);
             displayState(boardString);
         });

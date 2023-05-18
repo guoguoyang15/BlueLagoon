@@ -1,14 +1,208 @@
 package comp1110.ass2.gui;
-import comp1110.ass2.BlueLagoon;
-import comp1110.ass2.Board;
-import comp1110.ass2.Player;
+import comp1110.ass2.*;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+
+import java.util.ArrayList;
+import java.util.List;
 
 // This class generates all the JavaFX objects used in the game
 public class Display {
+
+    // @author Linsheng Zhou and Zhining Zhang
+    // Displays images of the tiles
+    public List<ImageView> displayTiles(String stateString) {
+        Board b = new Board(stateString);
+        List<ImageView> imageViews = new ArrayList<>();
+
+        int rand = 0;
+        Image[] land = new Image[18];
+        Image[] circle = new Image[6];
+        Image[] ocean = new Image[12];
+        Image[] settlers = new Image[4];
+        Image[] villages = new Image[4];
+        Image bamboo, coconuts, precious_stones, statuettes, water;
+
+        // Land tile images
+        land[0] = new Image(getClass().getResourceAsStream("/image/Land/Land (1).png"), 69.28, 80, false, false);
+        land[1] = new Image(getClass().getResourceAsStream("/image/Land/Land (2).png"), 69.28, 80, false, false);
+        land[2] = new Image(getClass().getResourceAsStream("/image/Land/Land (3).png"), 69.28, 80, false, false);
+        land[3] = new Image(getClass().getResourceAsStream("/image/Land/Land (4).png"), 69.28, 80, false, false);
+        land[4] = new Image(getClass().getResourceAsStream("/image/Land/Land (5).png"), 69.28, 80, false, false);
+        land[5] = new Image(getClass().getResourceAsStream("/image/Land/Land (6).png"), 69.28, 80, false, false);
+        land[6] = new Image(getClass().getResourceAsStream("/image/Land/Land (7).png"), 69.28, 80, false, false);
+        land[7] = new Image(getClass().getResourceAsStream("/image/Land/Land (8).png"), 69.28, 80, false, false);
+        land[8] = new Image(getClass().getResourceAsStream("/image/Land/Land (9).png"), 69.28, 80, false, false);
+        land[9] = new Image(getClass().getResourceAsStream("/image/Land/Land (10).png"), 69.28, 80, false, false);
+        land[10] = new Image(getClass().getResourceAsStream("/image/Land/Land (11).png"), 69.28, 80, false, false);
+        land[11] = new Image(getClass().getResourceAsStream("/image/Land/Land (12).png"), 69.28, 80, false, false);
+        land[12] = new Image(getClass().getResourceAsStream("/image/Land/Land (13).png"), 69.28, 80, false, false);
+        land[13] = new Image(getClass().getResourceAsStream("/image/Land/Land (14).png"), 69.28, 80, false, false);
+        land[14] = new Image(getClass().getResourceAsStream("/image/Land/Land (15).png"), 69.28, 80, false, false);
+        land[15] = new Image(getClass().getResourceAsStream("/image/Land/Land (16).png"), 69.28, 80, false, false);
+        land[16] = new Image(getClass().getResourceAsStream("/image/Land/Land (17).png"), 69.28, 80, false, false);
+        land[17] = new Image(getClass().getResourceAsStream("/image/Land/Land (18).png"), 69.28, 80, false, false);
+
+        // Stone circle images
+        circle[0] = new Image(getClass().getResourceAsStream("/image/Circle/Circle (1).png"), 69.28, 80, false, false);
+        circle[1] = new Image(getClass().getResourceAsStream("/image/Circle/Circle (2).png"), 69.28, 80, false, false);
+        circle[2] = new Image(getClass().getResourceAsStream("/image/Circle/Circle (3).png"), 69.28, 80, false, false);
+        circle[3] = new Image(getClass().getResourceAsStream("/image/Circle/Circle (4).png"), 69.28, 80, false, false);
+        circle[4] = new Image(getClass().getResourceAsStream("/image/Circle/Circle (5).png"), 69.28, 80, false, false);
+        circle[5] = new Image(getClass().getResourceAsStream("/image/Circle/Circle (6).png"), 69.28, 80, false, false);
+
+        // Sea tile images
+        ocean[0] = new Image(getClass().getResourceAsStream("/image/Ocean/Ocean (1).png"), 69.28, 80, false, false);
+        ocean[1] = new Image(getClass().getResourceAsStream("/image/Ocean/Ocean (2).png"), 69.28, 80, false, false);
+        ocean[2] = new Image(getClass().getResourceAsStream("/image/Ocean/Ocean (3).png"), 69.28, 80, false, false);
+        ocean[3] = new Image(getClass().getResourceAsStream("/image/Ocean/Ocean (4).png"), 69.28, 80, false, false);
+        ocean[4] = new Image(getClass().getResourceAsStream("/image/Ocean/Ocean (5).png"), 69.28, 80, false, false);
+        ocean[5] = new Image(getClass().getResourceAsStream("/image/Ocean/Ocean (6).png"), 69.28, 80, false, false);
+        ocean[6] = new Image(getClass().getResourceAsStream("/image/Ocean/Ocean (7).png"), 69.28, 80, false, false);
+        ocean[7] = new Image(getClass().getResourceAsStream("/image/Ocean/Ocean (8).png"), 69.28, 80, false, false);
+        ocean[8] = new Image(getClass().getResourceAsStream("/image/Ocean/Ocean (9).png"), 69.28, 80, false, false);
+        ocean[9] = new Image(getClass().getResourceAsStream("/image/Ocean/Ocean (10).png"), 69.28, 80, false, false);
+        ocean[10] = new Image(getClass().getResourceAsStream("/image/Ocean/Ocean (11).png"), 69.28, 80, false, false);
+        ocean[11] = new Image(getClass().getResourceAsStream("/image/Ocean/Ocean (12).png"), 69.28, 80, false, false);
+
+        // Settler piece images
+        settlers[0] = new Image(getClass().getResourceAsStream("/image/Villagers/1.png"), 69.28, 80, false, false);
+        settlers[1] = new Image(getClass().getResourceAsStream("/image/Villagers/2.png"), 69.28, 80, false, false);
+        settlers[2] = new Image(getClass().getResourceAsStream("/image/Villagers/3.png"), 69.28, 80, false, false);
+        settlers[3] = new Image(getClass().getResourceAsStream("/image/Villagers/4.png"), 69.28, 80, false, false);
+
+        // Village piece images
+        villages[0] = new Image(getClass().getResourceAsStream("/image/Villages/1.png"), 69.28, 80, false, false);
+        villages[1] = new Image(getClass().getResourceAsStream("/image/Villages/2.png"), 69.28, 80, false, false);
+        villages[2] = new Image(getClass().getResourceAsStream("/image/Villages/3.png"), 69.28, 80, false, false);
+        villages[3] = new Image(getClass().getResourceAsStream("/image/Villages/4.png"), 69.28, 80, false, false);
+
+        // Resource images
+        bamboo = new Image(getClass().getResourceAsStream("/image/Resources/bamboo.png"), 69.28, 80, false, false);
+        coconuts = new Image(getClass().getResourceAsStream("/image/Resources/coconuts.png"), 69.28, 80, false, false);
+        precious_stones = new Image(getClass().getResourceAsStream("/image/Resources/precious_stones.png"), 69.28, 80, false, false);
+        statuettes = new Image(getClass().getResourceAsStream("/image/Resources/statuettes.png"), 69.28, 80, false, false);
+        water = new Image(getClass().getResourceAsStream("/image/Resources/water.png"), 69.28, 80, false, false);
+
+        // Sets up all land and sea spots
+        for (int i = 0; i <= b.getSize() - 1; i++) {
+            for (int j = 0; j <= b.getSize() - 1; j++) {
+                if (b.getBoard()[i][j] != null) {
+                    ImageView imageView = new ImageView();
+                    if (i % 2 == 0) {
+                        imageView.setX(34.64 + 69.28 * j);
+                    } else {
+                        imageView.setX(69.28 * j);
+                    }
+                    imageView.setY(60 * i);
+                    if (b.getBoard()[i][j].spotType == 1)
+                    {
+                        rand += 7;
+                        imageView.setImage(land[rand % 18]);
+                    } else {
+                        rand += 11;
+                        imageView.setImage(ocean[rand % 12]);
+                    }
+                    imageViews.add(imageView);
+                }
+            }
+        }
+
+        // Adds stone circles
+        for (int i = 0; i <= b.getSize() - 1; i++) {
+            for (int j = 0; j <= b.getSize() - 1; j++) {
+                if (b.getBoard()[i][j] != null) {
+                    rand += 7;
+                    if (b.getBoard()[i][j].circle) {
+                        ImageView imageView = new ImageView();
+                        imageView.setImage(circle[rand % 6]);
+                        if (i % 2 == 0) {
+                            imageView.setX(34.64 + 69.28 * j);
+                        } else {
+                            imageView.setX(69.28 * j);
+                        }
+                        imageView.setY(60 * i);
+                        imageViews.add(imageView);
+                    }
+                }
+            }
+        }
+
+        // Adds resources
+        for (int i = 0; i <= b.getSize() - 1; i++) {
+            for (int j = 0; j <= b.getSize() - 1; j++) {
+                if (b.getBoard()[i][j] != null) {
+                    if (b.getBoard()[i][j].resources != Resource.NULL) {
+                        ImageView imageView = new ImageView();
+                        if (i % 2 == 0) {
+                            imageView.setX(34.64 + 69.28 * j);
+                            imageView.setY(60 * i);
+                        } else {
+                            imageView.setX(69.28 * j);
+                            imageView.setY(60 * i);
+                        }
+                        if (b.getBoard()[i][j].resources == Resource.COCONUT) {
+                            imageView.setImage(coconuts);
+                        } else if (b.getBoard()[i][j].resources == Resource.BAMBOO) {
+                            imageView.setImage(bamboo);
+                        } else if (b.getBoard()[i][j].resources == Resource.WATER) {
+                            imageView.setImage(water);
+                        } else if (b.getBoard()[i][j].resources == Resource.PRECIOUSSTONE) {
+                            imageView.setImage(precious_stones);
+                        } else {
+                            imageView.setImage(statuettes);
+                        }
+                        imageViews.add(imageView);
+                    }
+                }
+            }
+        }
+
+        // Adds player pieces
+        for (int i = 0; i <= b.getSize() - 1; i++) {
+            for (int j = 0; j <= b.getSize() - 1; j++) {
+                if (b.getBoard()[i][j] != null && b.getBoard()[i][j].occupiedByPlayer != 100) {
+                    ImageView imageView = new ImageView();
+                    if (i % 2 == 0) {
+                        imageView.setX(34.64 + 69.28 * j);
+                        imageView.setY(60 * i);
+                    } else {
+                        imageView.setX(69.28 * j);
+                        imageView.setY(60 * i);
+                    }
+                    if (b.getBoard()[i][j].settlerOrVillage == Spot.SettlerOrVillage.SETTLER) {
+                        if (b.getBoard()[i][j].occupiedByPlayer == 0) {
+                            imageView.setImage(settlers[0]);
+                        } else if (b.getBoard()[i][j].occupiedByPlayer == 1) {
+                            imageView.setImage(settlers[1]);
+                        } else if (b.getBoard()[i][j].occupiedByPlayer == 2) {
+                            imageView.setImage(settlers[2]);
+                        } else {
+                            imageView.setImage(settlers[3]);
+                        }
+                    } else {
+                        if (b.getBoard()[i][j].occupiedByPlayer == 0) {
+                            imageView.setImage(villages[0]);
+                        } else if (b.getBoard()[i][j].occupiedByPlayer == 1) {
+                            imageView.setImage(villages[1]);
+                        } else if (b.getBoard()[i][j].occupiedByPlayer == 2) {
+                            imageView.setImage(villages[2]);
+                        } else {
+                            imageView.setImage(villages[3]);
+                        }
+                    }
+                    imageViews.add(imageView);
+                }
+            }
+        }
+        return imageViews;
+    }
 
     // Takes in a game state and presents all the player information in tabular form
     public static TableView scoreTable (String stateString) {
@@ -98,8 +292,7 @@ public class Display {
 
     // @author Linsheng Zhou
     // Generates the column coordinate text
-    public static Text[][] columnDisplay (int lines, int columns, String stateString) {
-
+    public static Text[][] columnDisplay (int lines, int columns) {
         Text[][] coordinates = new Text[lines][columns];
         for (int i = 0; i < lines; i++) {
             for (int j = 0; j < lines; j++){
@@ -118,8 +311,9 @@ public class Display {
         }
         return coordinates;
     }
+
     // @author Linsheng Zhou
-    //Display the point weight of each island
+    // Display the point weight of each island
     public static Text[][] weightDisplay (int lines, int columns, Board b){
         Text[][] weights = new Text[lines][columns];
         for (int i = 0; i < lines; i++) {
@@ -127,16 +321,16 @@ public class Display {
                 if (i % 2 == 0 && j == columns - 1){
                     weights[i][j] = null;
                 } else {
-                    if(b.getBoard()[i][j].spotType==1){
+                    if(b.getBoard()[i][j].spotType == 1){
                         weights[i][j] = new Text("("+b.getWeight()[b.getBoard()[i][j].island]+")");
                         if (i % 2 == 0){
-                            weights[i][j].setX(65+69.28*j);
+                            weights[i][j].setX(65 + 69.28*j);
                         } else {
-                            weights[i][j].setX(30+69.28*j);
+                            weights[i][j].setX(30 + 69.28*j);
                         }
-                        weights[i][j].setY(35+60*i);
-                    }else {
-                        weights[i][j] =null;
+                        weights[i][j].setY(35 + 60*i);
+                    } else {
+                        weights[i][j] = null;
                     }
                 }
             }
@@ -144,11 +338,19 @@ public class Display {
         return weights;
     }
 
+
     public static Text displayWinner (String stateString) {
         Board b = new Board(stateString);
         if (!b.isPhase() && BlueLagoon.generateAllValidMoves(stateString).size() == 0) {
-            String winner = "Player " + Player.winner(stateString) + " has won!";
-
+            Text winner = new Text("Player " + Player.findWinner(stateString) + " has won!");
+            winner.setX(1000);
+            winner.setY(760);
+            winner.setFill(Color.DARKGREEN);
+            winner.setFont(Font.font("Serif", 60));
+            return winner;
+        }
+        else {
+            return new Text("");
         }
     }
 

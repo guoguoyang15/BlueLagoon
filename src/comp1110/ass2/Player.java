@@ -120,7 +120,7 @@ public class Player {
     }
 
     // Returns the number of the winner
-    public static String winner(String stateString) {
+    public static String findWinner(String stateString) {
         Board b = new Board(stateString);
         int[] scores = new int[b.getPlayerNum()];
         for (int i = 0; i < b.getPlayerNum(); i++) {

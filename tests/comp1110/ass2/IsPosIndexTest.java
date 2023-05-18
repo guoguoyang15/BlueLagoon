@@ -11,16 +11,16 @@ public class IsPosIndexTest {
     void testOnBoard(){
         for(int i=0;i<=12;i++){
             if(i%2==0){
-                assertFalse(Logic.isPosIndex(13,i,12),"Pay Attention to even rows!");
+                assertFalse(Spot.isPosInIndex(13,i,12),"Pay Attention to even rows!");
             }else {
-                assertTrue(Logic.isPosIndex(13,i,12),"Pay Attention to odd rows!");
+                assertTrue(Spot.isPosInIndex(13,i,12),"Pay Attention to odd rows!");
             }
         }
         for(int i=0;i<=22;i++){
             if(i%2==0){
-                assertFalse(Logic.isPosIndex(23,i,22),"Pay Attention to even rows!");
+                assertFalse(Spot.isPosInIndex(23,i,22),"Pay Attention to even rows!");
             }else {
-                assertTrue(Logic.isPosIndex(23,i,22),"Pay Attention to odd rows!");
+                assertTrue(Spot.isPosInIndex(23,i,22),"Pay Attention to odd rows!");
             }
         }
 

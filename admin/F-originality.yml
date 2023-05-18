@@ -21,17 +21,17 @@ declaration: >-
 # Add as many "url+licence+comment" entries as necessary
 # (or remove it altogether if you haven't used any external assets)
 assets:
-  - comment:
-    url:
-    licence:
+  - comment: Blue Lagoon tile images
+    url: https://www.google.com/url?sa=i&url=https%3A%2F%2Fwhatsericplaying.com%2F2018%2F12%2F10%2Fblue-lagoon%2F&psig=AOvVaw38iTCzHMeuxuAys_PqlgB4&ust=1684498455808000&source=images&cd=vfe&ved=0CA8QjhxqFwoTCLjk9fLr_v4CFQAAAAAdAAAAABAE
+    licence: CC-BY-NC-SA
 
 
 # Sign *your* name and uids here. (Remove entries if you have fewer
 # than three members.)
 signatures:
+  - name: Zhou Linsheng
+    uid: u7630421
+  - name: Zhang Zhining
+    uid: u7580614
   - name: Quoc Thai Le (Tyler)
     uid: u7542691
-  - name:
-    uid:
-  - name:
-    uid:

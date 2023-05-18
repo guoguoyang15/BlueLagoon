@@ -2,10 +2,8 @@ package comp1110.ass2;
 
 import java.util.Random;
 
-/**
- * @author Zhou Linsheng
- */
 public enum Resource {
+    // @author Zhou Linsheng
     NULL, // initialization
     COCONUT,
     BAMBOO,
@@ -13,11 +11,7 @@ public enum Resource {
     PRECIOUSSTONE,
     STATUETTE;
 
-    /**
-     * @author Zhang Zhining
-     * @param stateString
-     * @return
-     */
+    // @author Zhang Zhining
     // Distributes the resources after the start of each phase
     public static String distributeResources(String stateString) {
         // add a space at front to make sure that for every statement, the second char of the substring is the type of statement

@@ -6,6 +6,9 @@ import static comp1110.ass2.Logic.calculateScores1;
 * @author Zhou Linsheng
  * */
 public class Board {
+    // This class deals with anything that changes the overall game status, such as the phase, the number of players,
+    // the island weightage, the current turn, and the settler/village limit.
+
     public Spot[][] board;
     public Spot[][] getBoard() {
         return board;
@@ -94,15 +97,15 @@ public class Board {
     }
 
     public Board(String statestring) {
-        //Split the stateString first
+        // Split the stateString first
         String[] statement=statestring.split(";");
 
-        //Extract size of the board
+        // Extract size of the board
         String[] org = statement[0].split(" ");
         this.size = Integer.parseInt(org[1]);
-        //Extract number of players on this board
+        // Extract number of players on this board
         this.playerNum = Integer.parseInt(org[2]);
-        if(playerNum == 2){
+        if (playerNum == 2){
             this.settlerLimit = 30;
         } else if(playerNum == 3){
             this.settlerLimit = 25;
@@ -111,13 +114,13 @@ public class Board {
         }
 
         String[] state=statement[1].split(" ");
-        //Extract phase of this game
+        // Extract phase of this game
         this.phase = state[3].equals("E");
-        //Extract turn of current state
+        // Extract turn of current state
         this.turn = Integer.parseInt(state[2]);
 
-        //Calculate number of islands
-        int numOfIslands=0;
+        // Calculate number of islands
+        int numOfIslands = 0;
         for(int i = 0; i <= statement.length - 1; i++){
             if(statement[i].startsWith(" i"))
                 numOfIslands++;
@@ -142,25 +145,25 @@ public class Board {
         }
 
         int indexOfIslands = 0;
-        //initialize land spots on the map
+        // Initialize land spots on the map
         for (int i = 0; i <= statement.length - 1; i++) {
-            //when this statement is island string
+            // When this statement is island string
             if (statement[i].charAt(1) == 'i') {
                 String[] land = statement[i].split(" ");
-                //Point of island which owns this spot
+                // Point of island which owns this spot
                 int weightOfThisIsland=Integer.parseInt(land[2]);
                 weightOfIslands[indexOfIslands]=weightOfThisIsland;
-                for (int j = 3; j <= land.length - 1; j++) {//land[0]="",land[1]="i",land[2]="6/8/10"
+                for (int j = 3; j <= land.length - 1; j++) { // land[0] = "", land[1] = "i", land[2] = "6/8/10"
                     String[] landXY = land[j].split(",");
                     int landx = Integer.parseInt(landXY[0]);
                     int landy = Integer.parseInt(landXY[1]);
-                    spots[landx][landy].spotType = 1;//1 means land, 0 means sea
-                    spots[landx][landy].island=indexOfIslands;//index range from 0 to 7
+                    spots[landx][landy].spotType = 1; // 1 means land, 0 means sea
+                    spots[landx][landy].island=indexOfIslands; // index range from 0 to 7
                 }
                 indexOfIslands++;
             }
 
-            if(statement[i].startsWith(" s")){
+            if (statement[i].startsWith(" s")){
                 String[] stoneString=statement[i].split(" ");
                 for(int f = 0; f <= stoneString.length - 1; f++){
                     if(stoneString[f].contains(",")){
@@ -171,7 +174,7 @@ public class Board {
                     }
                 }
             }
-            if(statement[i].startsWith(" r")){
+            if (statement[i].startsWith(" r")){
                 String flag = "";
                 String[] resourcesString = statement[i].split(" ");
                 for(int f = 0; f <= resourcesString.length - 1; f++){
@@ -354,7 +357,7 @@ public class Board {
         return stateString;
     }
 
-    // Ends the current phase if no more moves can be player or if all resources are captured
+    // Ends the current phase if no more moves can be player or if all resources are captured and then calculates scores
     public static String endPhase(Board b) {
         if (b.isPhase()) {
             b.setPhase(false);

@@ -11,6 +11,9 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.transform.Translate;
 
+/**
+ * @author Tyler Le
+ */
 
 public class Game extends Application {
     private final Group root = new Group();
@@ -26,7 +29,6 @@ public class Game extends Application {
     private String boardString;
     private Text phase;
 
-    // @author Tyler Le
     public String initializeGame(int n) {
         // Initializes the starting game state
         if (n == 2) {
@@ -88,7 +90,6 @@ public class Game extends Application {
         root.setLayoutY(25);
     }
 
-    // @author Tyler Le
     // Triggers the AI to make moves automatically when it has a turn
     public void triggerAI(int n) {
         Board b = new Board(boardString);
@@ -99,7 +100,6 @@ public class Game extends Application {
         }
     }
 
-    // @author Tyler Le
     // Creates the various buttons and menus that the players can interact with
     public void gameControls() {
         // Creates the number of players selection menu

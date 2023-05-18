@@ -294,19 +294,19 @@ public class Logic {
                     linkSet.add(component);
                 }
 
-                //Now we know all possible links of the player in linkSet
+                // Now we know all possible links of the player in linkSet
                 int maxIsland = 0;
                 for (List<Coordinate> link : linkSet) {
-                    //A boolean array marking which islands occupied by this link
+                    //A  boolean array marking which islands occupied by this link
                     int[] islandOccupied = new int[b.getIslandNum()];
-                    //if a node occupies No.i island
+                    // if a node occupies No.i island
                     for (Coordinate cord : link) {
-                        //if a node occupies No.i island
+                        // if a node occupies No.i island
                         if (b.getBoard()[cord.x][cord.y].island != 100) {
                             islandOccupied[b.getBoard()[cord.x][cord.y].island]++;
                         }
                     }
-                    //Number of islands this link occupies
+                    // Number of islands this link occupies
                     int thisLinkIsland = 0;
                     for (int i = 0; i <= b.getIslandNum() - 1; i++) {
                         if (islandOccupied[i] != 0) {

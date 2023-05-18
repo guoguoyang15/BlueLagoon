@@ -200,10 +200,10 @@ public class Logic {
                 if ((y - 1) >= 0 && b.board[x][y - 1].occupiedByPlayer == b.getTurn()) {
                     return true;
                 }
-                if ((x - 1) >= 0 && y != b.getSize() - 1 && b.getBoard()[x - 1][y].occupiedByPlayer == b.getTurn()) {
+                if (isPosIndex(b.getSize(),x-1,y)&& b.getBoard()[x - 1][y].occupiedByPlayer == b.getTurn()) {
                     return true;
                 }
-                if ((x + 1) <= b.getSize() - 1 && y != b.getSize() - 1 && b.getBoard()[x + 1][y].occupiedByPlayer == b.getTurn()) {
+                if (isPosIndex(b.getSize(),x+1,y) && b.getBoard()[x + 1][y].occupiedByPlayer == b.getTurn()) {
                     return true;
                 }
                 return (y + 1) <= b.getSize() - 1 && b.getBoard()[x][y + 1].occupiedByPlayer == b.getTurn();
@@ -211,7 +211,21 @@ public class Logic {
         }
 
     }
-
+    public static boolean isPosIndex(int size,int x,int y){
+        if(x<0||x>size){
+            return false;
+        }
+        if(x%2==0){
+            if(y<0||y>size-2){
+                return false;
+            }
+        }else {
+            if(y<0||y>size-1){
+                return false;
+            }
+        }
+        return true;
+    }
     /**
      * @author Zhou Linsheng
      * @param b

@@ -14,8 +14,7 @@ import java.util.List;
 
 // This class generates all the JavaFX objects used in the game
 public class Display {
-
-    // @author Linsheng Zhou and Zhining Zhang
+    // @author Zhou Linsheng and Zhang Zhining
     // Displays images of the tiles
     public List<ImageView> displayTiles(String stateString) {
         Board b = new Board(stateString);
@@ -204,6 +203,7 @@ public class Display {
         return imageViews;
     }
 
+    // @author Tyler Le
     // Takes in a game state and presents all the player information in tabular form
     public static TableView scoreTable (String stateString) {
         Board b = new Board(stateString);
@@ -260,7 +260,7 @@ public class Display {
         return scores;
     }
 
-    // @author Linsheng Zhou
+    // @author Zhou Linsheng
     // Generates the phase and player to move text
     public static Text phaseDisplay (String stateString) {
         Board b = new Board(stateString);
@@ -277,7 +277,7 @@ public class Display {
         return phase;
     }
 
-    // @author Linsheng Zhou
+    // @author Zhou Linsheng
     // Generates the row coordinate text
     public static Text[] rowDisplay (String stateString) {
         Board b = new Board(stateString);
@@ -290,7 +290,7 @@ public class Display {
         return rows;
     }
 
-    // @author Linsheng Zhou
+    // @author Zhou Linsheng
     // Generates the column coordinate text
     public static Text[][] columnDisplay (int lines, int columns) {
         Text[][] coordinates = new Text[lines][columns];
@@ -312,7 +312,7 @@ public class Display {
         return coordinates;
     }
 
-    // @author Linsheng Zhou
+    // @author Zhou Linsheng
     // Display the point weight of each island
     public static Text[][] weightDisplay (int lines, int columns, Board b){
         Text[][] weights = new Text[lines][columns];
@@ -338,7 +338,8 @@ public class Display {
         return weights;
     }
 
-
+    // @author Tyler Le
+    // Displays the winner if there is one
     public static Text displayWinner (String stateString) {
         Board b = new Board(stateString);
         if (!b.isPhase() && BlueLagoon.generateAllValidMoves(stateString).size() == 0) {

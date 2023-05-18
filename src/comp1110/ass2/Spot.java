@@ -25,6 +25,25 @@ public class Spot {
         this.settlerOrVillage=SettlerOrVillage.NULL;//At first nothing this spot
         this.circle=false;//When meeting a stone circle, change the value to true
     }
+    /**
+     * @author Zhou Linsheng
+     * @param size
+     * @param x
+     * @param y
+     * @return whether this spot is on this board
+     */
+    public static boolean isPosInIndex(int size, int x, int y) {
+        if (x < 0 || x >= size) {
+            return false;
+        } else {
+            if (x % 2 == 0) {
+                return y >= 0 && y <= size - 2;
+            } else {
+                return y >= 0 && y <= size - 1;
+            }
+        }
+    }
+
 
 
 

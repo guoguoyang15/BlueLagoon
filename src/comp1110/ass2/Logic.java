@@ -1,6 +1,6 @@
 package comp1110.ass2;
-
 import java.util.*;
+
 
 /**
  * @author Zhou Linsheng
@@ -131,27 +131,6 @@ public class Logic {
         return stateString;
     }
 
-    /**
-     * @author Zhou Linsheng
-     * @param size
-     * @param x
-     * @param y
-     * @return whether this spot is on this board
-     */
-    public static boolean isPosInIndex(int size, int x, int y) {
-        if (x < 0 || x >= size) {
-            return false;
-        } else {
-            if (x % 2 == 0) {
-                if (y < 0 || y > size - 2)
-                    return false;
-            } else {
-                if (y < 0 || y > size - 1)
-                    return false;
-            }
-        }
-        return true;
-    }
 
     /**
      * @author Zhou Linsheng
@@ -184,7 +163,7 @@ public class Logic {
             }
         }
         //whether the coordinate is out of the board
-        if (!isPosInIndex(b.getSize(), x, y)) {
+        if (!Spot.isPosInIndex(b.getSize(), x, y)) {
             return false;
         }
 
@@ -211,10 +190,7 @@ public class Logic {
                 if ((x + 1) <= b.getSize() - 1 && b.board[x + 1][y].occupiedByPlayer == b.getTurn()) {
                     return true;
                 }
-                if ((y + 1) <= b.getSize() - 2 && b.board[x][y + 1].occupiedByPlayer == b.getTurn()) {
-                    return true;
-                }
-                return false;
+                return (y + 1) <= b.getSize() - 2 && b.board[x][y + 1].occupiedByPlayer == b.getTurn();
             } else {
                 if ((x - 1) >= 0 && (y - 1) >= 0 && b.board[x - 1][y - 1].occupiedByPlayer == b.getTurn()) {
                     return true;
@@ -231,10 +207,7 @@ public class Logic {
                 if ((x + 1) <= b.getSize() - 1 && y != b.getSize() - 1 && b.getBoard()[x + 1][y].occupiedByPlayer == b.getTurn()) {
                     return true;
                 }
-                if ((y + 1) <= b.getSize() - 1 && b.getBoard()[x][y + 1].occupiedByPlayer == b.getTurn()) {
-                    return true;
-                }
-                return false;
+                return (y + 1) <= b.getSize() - 1 && b.getBoard()[x][y + 1].occupiedByPlayer == b.getTurn();
             }
         }
 

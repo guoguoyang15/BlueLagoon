@@ -92,6 +92,8 @@ public class Game extends Application {
         root.getChildren().add(scoreBoard);
     }
 
+    // @author Tyler Le
+    // Triggers the AI to make moves automatically when it has a turn
     public void triggerAI(int n) {
         Board b = new Board(boardString);
         if ((b.getPlayerNum() - n) % 4 <= b.getTurn()) {

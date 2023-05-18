@@ -200,10 +200,10 @@ public class Logic {
                 if ((y - 1) >= 0 && b.board[x][y - 1].occupiedByPlayer == b.getTurn()) {
                     return true;
                 }
-                if (isPosIndex(b.getSize(),x-1,y)&& b.getBoard()[x - 1][y].occupiedByPlayer == b.getTurn()) {
+                if (x-1>=0&& b.getBoard()[x - 1][y].occupiedByPlayer == b.getTurn()) {
                     return true;
                 }
-                if (isPosIndex(b.getSize(),x+1,y) && b.getBoard()[x + 1][y].occupiedByPlayer == b.getTurn()) {
+                if (x+1<=b.getSize()-1 && b.getBoard()[x + 1][y].occupiedByPlayer == b.getTurn()) {
                     return true;
                 }
                 return (y + 1) <= b.getSize() - 1 && b.getBoard()[x][y + 1].occupiedByPlayer == b.getTurn();

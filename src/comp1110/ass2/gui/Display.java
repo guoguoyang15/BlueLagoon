@@ -33,7 +33,7 @@ public class Display {
         Image bamboo, coconuts, precious_stones, statuettes, water;
 
         // Background images
-        Image background = new Image(getClass().getResourceAsStream("/image/background.png"), 1112, 800, false, false);
+        Image background = new Image(getClass().getResourceAsStream("/image/background.png"), 1000, 800, false, false);
         // Land tile images
         land[0] = new Image(getClass().getResourceAsStream("/image/Land/Land (1).png"), 69.28, 80, false, false);
         land[1] = new Image(getClass().getResourceAsStream("/image/Land/Land (2).png"), 69.28, 80, false, false);

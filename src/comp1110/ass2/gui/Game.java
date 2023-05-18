@@ -146,12 +146,9 @@ public class Game extends Application {
         yPosition.getItems().addAll("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12");
         yPosition.setValue("0");
 
-        // For testing
-        Button random = new Button("Random Move");
-        // For testing
         Button play = new Button("Play");
         HBox moveBox = new HBox();
-        moveBox.getChildren().addAll(moveLabel, villageOrSettler, xPosition, yPosition, play, random);
+        moveBox.getChildren().addAll(moveLabel, villageOrSettler, xPosition, yPosition, play);
         moveBox.setSpacing(10);
         moveBox.setLayoutX(1000);
         moveBox.setLayoutY(670);
@@ -236,14 +233,6 @@ public class Game extends Application {
         controls.getChildren().addAll(playerBox, Display.titleScreen());
         root.getChildren().add(controls);
         });
-
-        // For testing
-        random.setOnAction(e -> {
-            boardString = BlueLagoon.applyMove(boardString, BlueLagoon.generateAIMove(boardString));
-            root.getChildren().removeAll(phase);
-            displayState(boardString);
-        });
-        // For testing
     }
 
     @Override

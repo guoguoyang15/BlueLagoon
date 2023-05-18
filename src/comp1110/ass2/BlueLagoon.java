@@ -198,7 +198,6 @@ public class BlueLagoon {
     public static int[] calculateIslandLinksScore(String stateString) {
         Board b=new Board(stateString);
         return Score.calculateIslandLinksScore(b);
-        // FIXME Task 11
     }
 
     /**
@@ -225,7 +224,6 @@ public class BlueLagoon {
     public static int[] calculateIslandMajoritiesScore(String stateString) {
         Board b=new Board(stateString);
         return Score.calculateIslandMajoritiesScore(b);
-        // FIXME Task 11
     }
 
     /**
@@ -255,7 +253,6 @@ public class BlueLagoon {
     public static int[] calculateResourcesAndStatuettesScore(String stateString) {
         Board b=new Board(stateString);
         return Score.calculateResourcesAndStatuettesScore(b);
-         // FIXME Task 11
     }
 
     /**
@@ -271,7 +268,7 @@ public class BlueLagoon {
      */
     // Zhou Linsheng (u7630421) completes the following function
     public static int[] calculateScores(String stateString) {
-        Board b=new Board(stateString);
+        Board b = new Board(stateString);
         return Score.calculateScores(b);
     }
 

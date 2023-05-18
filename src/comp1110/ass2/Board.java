@@ -214,7 +214,7 @@ public class Board {
                 int settlerNum = 0;
                 int villageNum = 0;
                 String[] playerPositions = statement[i].split(" ");
-                int whichplayer = Integer.parseInt(playerPositions[2]);//which player occupies these following spots
+                int whichPlayer = Integer.parseInt(playerPositions[2]);//which player occupies these following spots
                 String color = null;
                 for (int j = 0; j <= playerPositions.length - 1; j++) {
                     if (playerPositions[j].equals("S")) {
@@ -227,7 +227,7 @@ public class Board {
                         String[] setPos = playerPositions[j].split(",");
                         int setx = Integer.parseInt(setPos[0]);
                         int sety = Integer.parseInt(setPos[1]);
-                        spots[setx][sety].occupiedByPlayer = whichplayer;
+                        spots[setx][sety].occupiedByPlayer = whichPlayer;
                         if (flag.equals("S")) {
                             spots[setx][sety].settlerOrVillage = Spot.SettlerOrVillage.SETTLER;
                             settlerNum++;
@@ -237,10 +237,10 @@ public class Board {
                             villageNum++;
                         }
                     }
-                    color = Player.getStats(whichplayer, statestring).getColor();
+                    color = Player.getStats(whichPlayer, statestring).getColor();
 
                 }
-                p[whichplayer] = new Player(Integer.parseInt(playerPositions[2]), Integer.parseInt(playerPositions[3]),
+                p[whichPlayer] = new Player(Integer.parseInt(playerPositions[2]), Integer.parseInt(playerPositions[3]),
                         Integer.parseInt(playerPositions[4]), Integer.parseInt(playerPositions[5]),
                         Integer.parseInt(playerPositions[6]), Integer.parseInt(playerPositions[7]),
                         Integer.parseInt(playerPositions[8]), settlerNum, villageNum, color);
@@ -369,29 +369,25 @@ public class Board {
                 for (int i = 2; i < parts.length; i++) {
                     // Iterate through the array to check if it is correct
                     if (parts[i].startsWith(" i")) {
-                        if (parts[i].matches("\\si\\s[0-9]*[1-9][0-9]*\\s(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})")) {
-                        } else {
+                        if (!parts[i].matches("\\si\\s[0-9]*[1-9][0-9]*\\s(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})")) {
                             return false;
                         }
                     }
                     // Checks if Stones Statement is formatted correctly.
                     else if (parts[i].startsWith(" s")) {
-                        if (parts[i].matches("\\ss\\s(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})")) {
-                        } else {
+                        if (!parts[i].matches("\\ss\\s(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})")) {
                             return false;
                         }
                     }
                     // Checks if Unclaimed Resources and Statuettes Statement is formatted correctly.
                     else if (parts[i].startsWith(" r")) {
-                        if (parts[i].matches("\\sr\\sC\\s(\\d{1,2},\\d{1,2}\\s)*B\\s(\\d{1,2},\\d{1,2}\\s)*W\\s(\\d{1,2},\\d{1,2}\\s)*P\\s(\\d{1,2},\\d{1,2}\\s)*S(\\s)??(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})*")) {
-                        } else {
+                        if (!parts[i].matches("\\sr\\sC\\s(\\d{1,2},\\d{1,2}\\s)*B\\s(\\d{1,2},\\d{1,2}\\s)*W\\s(\\d{1,2},\\d{1,2}\\s)*P\\s(\\d{1,2},\\d{1,2}\\s)*S(\\s)??(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})*")) {
                             return false;
                         }
                     }
                     // Checks if Player Statement is formatted correctly.
                     else if (parts[i].startsWith(" p")) {
-                        if (parts[i].matches("\\sp\\s\\d\\s\\d{1,3}\\s(\\d\\s){5}S\\s(\\d{1,2},\\d{1,2}\\s)*T(\\s)??(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})*")) {
-                        } else {
+                        if (!parts[i].matches("\\sp\\s\\d\\s\\d{1,3}\\s(\\d\\s){5}S\\s(\\d{1,2},\\d{1,2}\\s)*T(\\s)??(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})*")) {
                             return false;
                         }
                     } else {
@@ -408,6 +404,7 @@ public class Board {
         }
     }
 
+    // @author Zhou Linsheng
     // Checks if a phase is over, either by no more resources on the board OR no more moves
     public static boolean isPhaseOver(Board b) {
         //Count the number of resources collected by all players
@@ -427,6 +424,7 @@ public class Board {
         return collectedAll || noMoves == b.getPlayerNum();
     }
 
+    // @author Zhou Linsheng
     // Ends the current phase if no more moves can be player or if all resources are captured and then calculates scores
     public static String endPhase(Board b) {
         if (b.isPhase()) {

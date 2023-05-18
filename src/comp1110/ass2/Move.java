@@ -121,6 +121,7 @@ public class Move {
         }
         return stringSet;
     }
+
     // @author Zhou Linsheng
     // Places a piece given coordinates, and returns the new board with the piece placed
     public static String placePiece(Board b, char type, Coordinate coordinate) {

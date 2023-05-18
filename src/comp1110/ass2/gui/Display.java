@@ -364,26 +364,6 @@ public class Display {
             return new Text("");
         }
     }
-    // @author Tyler Le
-    // Displays an error when AI count >= Player count
-    public static Text badSetup() {
-        Text badSetup = new Text("Error: Number of AI opponents cannot be equal to or greater than total number of players");
-        badSetup.setFill(Color.RED);
-        badSetup.setX(695);
-        badSetup.setY(600);
-        return badSetup;
-    }
-
-    // @author Tyler Le
-    // Displays an error if the player attempts to make an invalid move
-    public static Text badMove() {
-        // Creates "invalid move" text
-        Text badMove = new Text("Error: invalid move");
-        badMove.setFill(Color.RED);
-        badMove.setX(1000);
-        badMove.setY(720);
-        return badMove;
-    }
 
     // @author Tyler Le
     // Displays the title screen
@@ -399,4 +379,32 @@ public class Display {
 
         return titleBox;
     }
+    // @author Tyler Le
+    // Displays the title screen
+    public static HBox badMoveScreen() {
+        // Creates "invalid move" text
+        Text badMove = new Text("Error: invalid move");
+        badMove.setFill(Color.RED);
+
+        HBox badMoveBox = new HBox();
+        badMoveBox.getChildren().add(badMove);
+        badMoveBox.setLayoutX(1000);
+        badMoveBox.setLayoutY(720);
+
+        return badMoveBox;
+    }
+    // @author Tyler Le
+    // Displays the title screen
+    public static HBox badSetupScreen() {
+        Text badSetup = new Text("Error: Number of AI opponents cannot be equal to or greater than total number of players");
+        badSetup.setFill(Color.RED);
+
+        HBox badSetupBox = new HBox();
+        badSetupBox.getChildren().add(badSetup);
+        badSetupBox.setLayoutX(695);
+        badSetupBox.setLayoutY(600);
+
+        return badSetupBox;
+    }
+
 }

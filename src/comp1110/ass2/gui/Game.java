@@ -96,7 +96,6 @@ public class Game extends Application {
         Translate tablePosition = new Translate(1000, 0);
         scoreBoard.getTransforms().add(tablePosition);
         root.getChildren().add(scoreBoard);
-
         root.setLayoutX(15);
         root.setLayoutY(25);
     }
@@ -179,12 +178,12 @@ public class Game extends Application {
         start.setOnAction(e -> {
             if (Integer.parseInt(playerCount.getValue()) <= Integer.parseInt(AICount.getValue())) {
                 // If AIs >= Players then show error
-                root.getChildren().remove(Display.badSetup());
-                root.getChildren().add(Display.badSetup());
+                controls.getChildren().clear();
+                controls.getChildren().addAll(playerBox, AIBox, Display.titleScreen());
+                controls.getChildren().add(Display.badSetupScreen());
             }
             else {
                 // If AIs < Players then begin the game
-                root.getChildren().remove(Display.badSetup());
                 controls.getChildren().clear();
                 boardString = BlueLagoon.distributeResources(initializeGame(Integer.parseInt(playerCount.getValue())));
                 displayState(boardString);
@@ -209,10 +208,12 @@ public class Game extends Application {
             // Makes "invalid move" text if player enters an invalid move
             if (BlueLagoon.isMoveValid(boardString, move)) {
                 boardString = BlueLagoon.applyMove(boardString, move);
-                root.getChildren().remove(Display.badMove());
+                root.getChildren().clear();
+                root.getChildren().add(controls);
             } else {
-                root.getChildren().remove(Display.badMove());
-                root.getChildren().add(Display.badMove());
+                root.getChildren().clear();
+                root.getChildren().addAll(Display.badMoveScreen());
+                root.getChildren().add(controls);
             }
 
             // If it's the AI's turn next, then trigger AI moves until it's the next human player's turn
@@ -223,6 +224,8 @@ public class Game extends Application {
             }
 
             root.getChildren().remove(phase);
+            root.getChildren().remove(restartBox);
+            root.getChildren().add(restartBox);
             displayState(boardString);
         });
 

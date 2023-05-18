@@ -9,13 +9,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 
-// This class generates all the JavaFX objects used in the game
+// This class generates all the JavaFX objects used in the game.
 public class Display {
-    // @author Zhou Linsheng and Zhang Zhining
+    // @author Zhang Zhining
     // Displays images of the tiles
     public List<ImageView> displayTiles(String stateString) {
         Board b = new Board(stateString);
@@ -375,6 +374,7 @@ public class Display {
         badMove.setY(720);
         return badMove;
     }
+
     // @author Tyler Le
     // Displays the title screen
     public static HBox titleScreen() {

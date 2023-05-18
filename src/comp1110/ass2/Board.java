@@ -7,7 +7,8 @@ import static comp1110.ass2.Score.calculateScores;
  * */
 public class Board {
     // This class deals with anything that changes the overall game status, such as the phase, the number of players,
-    // the island weightage, the current turn, and the settler/village limit.
+    // the island weightage, the current turn, and the settler/village limit. It also synthesizes a lot of information
+    // from other classes.
 
     public Spot[][] board;
     public Spot[][] getBoard() {

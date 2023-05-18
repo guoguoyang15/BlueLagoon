@@ -1,19 +1,17 @@
 package comp1110.ass2.gui;
 
 import comp1110.ass2.*;
+import comp1110.ass2.shapes.Hexagon;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
-import javafx.scene.text.Text;
-import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.List;

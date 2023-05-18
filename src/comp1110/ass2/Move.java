@@ -2,8 +2,11 @@ package comp1110.ass2;
 
 import java.util.*;
 
-// This class deals with all things related to moves, including checking, generating and applying valid moves.
-// This class also includes the AI move maker.
+/**
+ * @author Zhou Linsheng (most methods), Zhining Zhang (part of applyMove and generateAIMove), Tyler Le (one method)
+ * This class deals with all things related to moves, including checking, generating and applying valid moves.
+ * This class also includes the AI move maker.
+ */
 
 public class Move {
     // @author Tyler Le
@@ -174,7 +177,7 @@ public class Move {
         return b.toString();
     }
 
-    // @author Zhou Linsheng
+    // @author Original random move by Zhining Zhang and later given a heuristic by Zhou Linsheng
     // An improved and meaningful AI mode, not a random move
     public static String generateAIMove (Board b){
         Set<String> potentialMoves = Move.generateAllValidMoves (b);

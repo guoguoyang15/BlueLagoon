@@ -3,7 +3,7 @@ package comp1110.ass2;
 import static comp1110.ass2.Score.calculateScores;
 
 /**
-* @author Zhou Linsheng
+* @author Zhou Linsheng (most methods), Tyler Le (one method)
  * */
 public class Board {
     // This class deals with anything that changes the overall game status, such as the phase, the number of players,

@@ -1,18 +1,13 @@
 package comp1110.ass2;
 import java.util.*;
 
-
 /**
- * @author Zhou Linsheng
+ * @author Zhou Linsheng (all methods)
+ * This class deals with all matters related to score calculation.
  */
-// This class deals with all matters related to score calculation.
 public class Score {
-    /**
-     * @author Zhou Linsheng
-     * @param b
-     * @return TotalIslandScore
-     */
-    //Task 11 A
+
+    // Task 11 A, calculates points based on how many islands a player occupies
     public static int[] calculateTotalIslandsScore(Board b) {
         // Array of points in this part
         int[] points = new int[b.getPlayerNum()];
@@ -44,13 +39,7 @@ public class Score {
         return points;
     }
 
-
-    /**
-     * @author Zhou Linsheng
-     * @param b
-     * @return Island Link Scores
-     */
-    //Task 11 B
+    // Task 11 B, calculates the points earned by crossing many islands with one chain
     public static int[] calculateIslandLinksScore(Board b) {
         int[] points = new int[b.getPlayerNum()];
         for (int p = 0; p <= b.getPlayerNum() - 1; p++) {
@@ -114,13 +103,7 @@ public class Score {
         return points;
     }
 
-
-    /**
-     * @author Zhou Linsheng
-     * @param b
-     * @return Island Majority Scores
-     */
-    // Task 11 C
+    // Task 11 C, calculates points based on if a player's pieces forms a majority of pieces on an island
     public static int[] calculateIslandMajoritiesScore(Board b) {
         //Point array of this sub calculation
         int[] playerPoints = new int[b.getPlayerNum()];
@@ -167,16 +150,11 @@ public class Score {
                 }
             }
         }
-        //Return point array of majority criteria
+        // Return point array of majority criteria
         return playerPoints;
     }
 
-    /**
-     * @author Zhou Linsheng
-     * @param b
-     * @return Items Scores
-     */
-    //Task 11 D
+    // Task 11 D, calculates points based on how many and what type of resources are captured
     public static int[] calculateResourcesAndStatuettesScore(Board b) {
         int[] points = new int[b.getPlayerNum()];
         for (int i = 0; i <= b.getPlayerNum() - 1; i++) {
@@ -227,12 +205,7 @@ public class Score {
         return points;
     }
 
-    /**
-     * @author Zhou Linsheng
-     * @param b
-     * @return All scores are added up
-     */
-    //Task 11 E
+    // Task 11 E, adds all scores together into an array that has the score of each player
     public static int[] calculateScores(Board b) {
         //Points array of scores
         int[] scores = new int[b.getPlayerNum()];

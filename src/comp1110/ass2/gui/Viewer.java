@@ -16,7 +16,10 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * @author Tyler Le (incomplete skeleton), Zhou Linsheng (later completed)
+ * This class generates a primitive board image when a stateString is entered into the textbox.
+ */
 public class Viewer extends Application {
 
     private static final int VIEWER_WIDTH = 1300;

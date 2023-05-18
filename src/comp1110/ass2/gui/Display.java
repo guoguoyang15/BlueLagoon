@@ -12,7 +12,11 @@ import javafx.scene.text.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-// This class generates all the JavaFX objects used in the game.
+/**
+ * @author Zhou Linsheng, Zhang Zhining, Tyler Le (authorship of each method is indicated)
+ * This class generates all the JavaFX objects used in the game.
+ */
+
 public class Display {
     // @author Zhang Zhining
     // Displays images of the tiles

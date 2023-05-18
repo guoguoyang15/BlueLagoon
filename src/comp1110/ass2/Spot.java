@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Zhou Linsheng
+ * @author Zhou Linsheng (all methods)
+ * This class deals with anything that has to do with the different positions of the board, such as if a position is
+ * next to another, or whether it is even valid. It also deals with what they contain, such as a piece or a resource.
  */
-// This class deals with anything that has to do with the different positions of the board, such as if a position is
-// next to another, or whether it is even valid. It also deals with what they contain, such as a piece or a resource.
 public class Spot {
     public enum SettlerOrVillage{
         NULL,
@@ -30,7 +30,6 @@ public class Spot {
         this.circle = false; // When meeting a stone circle, change the value to true
     }
 
-    // @author Zhou Linsheng
     // Checks if this spot is on the board
     public static boolean isPosInIndex(int size, int x, int y) {
         if (x < 0 || x >= size) {
@@ -44,7 +43,6 @@ public class Spot {
         }
     }
 
-    // @author Zhou Linsheng
     // Checks if two spots are next to each other
     public static boolean ifAdjacent(int x1, int y1, int x2, int y2) {
         //four positions are true for all rows
@@ -62,7 +60,6 @@ public class Spot {
         }
     }
 
-    // @author Zhou Linsheng
     // Returns a list of all adjacent position of a player given a certain spot
     public static List<Coordinate> getAdjacentSpots(Coordinate cord, List<Coordinate> listSet) {
         List<Coordinate> adj = new ArrayList<>();

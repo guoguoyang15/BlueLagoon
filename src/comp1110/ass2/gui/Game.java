@@ -12,10 +12,10 @@ import javafx.stage.Stage;
 import javafx.scene.transform.Translate;
 
 /**
- * @author Tyler Le
+ * @author Tyler Le (all methods)
+ * This class synthesizes all other classes to generate the underlying game logic and creates the GUI for the game.
  */
 
-// This class synthesizes all other classes to generate the underlying game logic and creates the GUI for the game.
 public class Game extends Application {
     private final Group root = new Group();
     private final Group controls = new Group();

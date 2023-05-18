@@ -2,7 +2,10 @@ package comp1110.ass2;
 
 import java.util.Random;
 
-// This class deals with all things related to resources, such as their distribution and placement.
+/**
+ * @author Zhou Linsheng (resource enum type), Zhang Zhining (method)
+ * This class deals with all things related to resources, such as their distribution and placement.
+ */
 public enum Resource {
     // @author Zhou Linsheng
     NULL, // initialization

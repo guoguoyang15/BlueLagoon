@@ -1,7 +1,7 @@
 package comp1110.ass2;
 
 /**
- * @author Tyler Le
+ * @author Tyler Le (all methods)
  */
 
 // This class deals with all things related to the players, their stats and the winner of the game.

@@ -18,7 +18,7 @@ import java.util.List;
  */
 
 public class Display {
-    // @author Zhang Zhining
+    // @author Zhang Zhining and Zhou Linsheng
     // Displays images of the tiles
     public List<ImageView> displayTiles(String stateString) {
         Board b = new Board(stateString);

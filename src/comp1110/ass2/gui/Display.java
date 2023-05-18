@@ -360,8 +360,8 @@ public class Display {
     public static Text badSetup() {
         Text badSetup = new Text("Error: Number of AI opponents cannot be equal to or greater than total number of players");
         badSetup.setFill(Color.RED);
-        badSetup.setX(100);
-        badSetup.setY(740);
+        badSetup.setX(695);
+        badSetup.setY(600);
         return badSetup;
     }
 

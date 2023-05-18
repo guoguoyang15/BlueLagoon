@@ -112,7 +112,7 @@ public class Game extends Application {
         HBox playerBox = new HBox();
         playerBox.getChildren().addAll(playerLabel, playerCount, selectPlayerCount);
         playerBox.setSpacing(10);
-        playerBox.setLayoutX(855);
+        playerBox.setLayoutX(830);
         playerBox.setLayoutY(520);
 
         // Creates the number of AI opponents selection
@@ -125,7 +125,7 @@ public class Game extends Application {
         HBox AIBox = new HBox();
         AIBox.getChildren().addAll(AILabel, AICount, start);
         AIBox.setSpacing(10);
-        AIBox.setLayoutX(820);
+        AIBox.setLayoutX(795);
         AIBox.setLayoutY(550);
 
         // Displays the player selection menu and title screen

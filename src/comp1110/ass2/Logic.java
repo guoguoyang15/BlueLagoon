@@ -74,64 +74,6 @@ public class Logic {
     }
 
     /**
-     * @author Zhang Zhining
-     * @param stateString
-     * @return
-     */
-    //Task 6
-    public static String distributeResources1(String stateString) {
-        //add a space at front to make sure that for every statement, the second char of the substring is the type of statement
-        //stateString = " " + stateString;
-        String[] statement = stateString.split(";");
-        String target = null;
-        for (int i = 0; i < statement.length - 1; i++) {
-            if (statement[i].startsWith(" s")) {
-                target = statement[i];
-                break;
-            }
-        }
-        //First use target to intercept a string starting with s
-        target = target.replace(" s ", "");
-        //Cut out the extraneous characters at the beginning
-        String[] stoneCircle = target.split(" ");
-        //Separating out sequential characters in a string
-        String[] random = new String[32];
-        //Also set up a new array of strings
-        Random r = new Random();
-        int[] a = new int[32];
-        int rand;
-        for (int i = 0; i < 32; i++) {
-            do {
-                rand = r.nextInt(32);
-                if (a[rand] == 0) {
-                    a[rand] = i;
-                    break;
-                }
-            } while (true);
-        }
-        for (int i = 0; i < 32; i++) {
-            random[i] = stoneCircle[a[i]];
-        }
-        // Randomize an array from 0 to 31 and record the new data into a new string
-        String C = random[0] + " " + random[1] + " " + random[2] + " " + random[3] + " " + random[4] + " " + random[5] + " ";
-        String B = random[6] + " " + random[7] + " " + random[8] + " " + random[9] + " " + random[10] + " " + random[11] + " ";
-        String W = random[12] + " " + random[13] + " " + random[14] + " " + random[15] + " " + random[16] + " " + random[17] + " ";
-        String P = random[18] + " " + random[19] + " " + random[20] + " " + random[21] + " " + random[22] + " " + random[23] + " ";
-        String S = random[24] + " " + random[25] + " " + random[26] + " " + random[27] + " " + random[28] + " " + random[29] + " " + random[30] + " " + random[31];
-        //Start with a string representation of the individual resources
-        String replaceString = " r C " + C + "B " + B + "W " + W + "P " + P + "S " + S;
-        //Direct string addition, first with a separate string resource declaration
-
-        for (int i = 0; i < statement.length; i++) {
-            if (statement[i].startsWith(" r")) {
-                stateString = stateString.replace(statement[i], replaceString);
-            }
-        }
-
-        return stateString;
-    }
-
-    /**
      * @author Zhou Linsheng
      * @param b
      * @param type
@@ -345,7 +287,7 @@ public class Logic {
                     while (!posStack.empty()) {
                         Coordinate g = posStack.pop();
                         component.add(g);
-                        List<Coordinate> adj = getAdjacentSpots(g, posList);
+                        List<Coordinate> adj = Spot.getAdjacentSpots(g, posList);
                         posStack.addAll(adj);
                         posList.removeAll(adj);
                     }
@@ -383,21 +325,6 @@ public class Logic {
         return points;
     }
 
-    /**
-     * @author Zhou Linsheng
-     * @param cord
-     * @param listSet
-     * @returna list of all adjacent position of a player given a certain spot
-     */
-    public static List<Coordinate> getAdjacentSpots(Coordinate cord, List<Coordinate> listSet) {
-        List<Coordinate> adj = new ArrayList<>();
-        for (Coordinate cc : listSet) {
-            if (Spot.ifAdjacent(cord.x, cord.y, cc.x, cc.y)) {
-                adj.add(cc);
-            }
-        }
-        return adj;
-    }
 
     /**
      * @author Zhou Linsheng
@@ -532,53 +459,6 @@ public class Logic {
         return scores;
     }
 
-    /**
-     * @author Zhou Linsheng
-     * @param b
-     * @return new phase string
-     */
-    //Task 12
-    public static String endPhase1(Board b) {
-        if (b.isPhase()) {
-            b.setPhase(false);
-            //Calculate current points of players
-            int[] points = calculateScores1(b);
-            for (int i = 0; i <= b.getPlayerNum() - 1; i++) {
-                b.getPlayers()[i].setScore(b.getPlayers()[i].getScore() + points[i]);
-                b.getPlayers()[i].setCoconut(0);
-                b.getPlayers()[i].setBamboo(0);
-                b.getPlayers()[i].setWater(0);
-                b.getPlayers()[i].setStone(0);
-                b.getPlayers()[i].setStatuette(0);
-            }
-            for (int j = 0; j <= b.getSize() - 1; j++) {
-                for (int k = 0; k <= b.getSize() - 1; k++) {
-                    if (b.getBoard()[j][k] != null) {
-                        if (b.getBoard()[j][k].occupiedByPlayer != 100) {
-                            if (b.getBoard()[j][k].settlerOrVillage == Spot.SettlerOrVillage.SETTLER) {
-                                b.getBoard()[j][k].occupiedByPlayer = 100;
-                                b.getBoard()[j][k].settlerOrVillage = Spot.SettlerOrVillage.NULL;
-                            }
-                            if (b.getBoard()[j][k].settlerOrVillage == Spot.SettlerOrVillage.VILLAGE && b.getBoard()[j][k].circle) {
-                                b.getBoard()[j][k].occupiedByPlayer = 100;
-                                b.getBoard()[j][k].settlerOrVillage = Spot.SettlerOrVillage.NULL;
-                            }
-                        }
-                    }
-                }
-            }
-            String s = b.toString();
-            return distributeResources1(s);
-
-        } else {
-            //Calculate current points of players
-            int[] points = calculateScores1(b);
-            for (int i = 0; i <= b.getPlayerNum() - 1; i++) {
-                b.getPlayers()[i].setScore(b.getPlayers()[i].getScore() + points[i]);
-            }
-        }
-        return b.toString();
-    }
 
     /**
      * Linsheng needs to overwrite redundant codes
@@ -594,8 +474,8 @@ public class Logic {
         String s = placePiece1(b, type, coordinate);
         b = new Board(s);
         if (isPhaseOver1(b)) {
-            String newphase=endPhase1(b);
-            b=new Board(newphase);
+            String newPhase = Board.endPhase(b);
+            b = new Board(newPhase);
         }
         for (int i = 0; i <= b.getPlayerNum() - 1; i++) {
             b.setTurn((turn + 1 + i) % b.getPlayerNum());

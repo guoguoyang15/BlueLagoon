@@ -1,5 +1,8 @@
 package comp1110.ass2;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Zhou Linsheng
  */
@@ -66,4 +69,19 @@ public class Spot {
         }
     }
 
+    /**
+     * @author Zhou Linsheng
+     * @param cord
+     * @param listSet
+     * @returna list of all adjacent position of a player given a certain spot
+     */
+    public static List<Coordinate> getAdjacentSpots(Coordinate cord, List<Coordinate> listSet) {
+        List<Coordinate> adj = new ArrayList<>();
+        for (Coordinate cc : listSet) {
+            if (Spot.ifAdjacent(cord.x, cord.y, cc.x, cc.y)) {
+                adj.add(cc);
+            }
+        }
+        return adj;
+    }
 }

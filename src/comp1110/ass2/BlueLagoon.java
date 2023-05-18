@@ -67,7 +67,7 @@ public class BlueLagoon {
      */
     //Zhou Linsheng finished first and Zhang Zhining completed Task 6 very late
     public static String distributeResources(String stateString) {
-        return Logic.distributeResources1(stateString);
+        return Resource.distributeResources(stateString);
     }
 
     /**
@@ -130,7 +130,7 @@ public class BlueLagoon {
      * @param stateString a string representing a game state
      * @return true if the state is at the end of either phase and false otherwise
      */
-    //Zhou Linsheng(u7630421) completes the following Task9
+    // Zhou Linsheng(u7630421) completes the following Task9
     public static boolean isPhaseOver(String stateString) {
         Board b=new Board(stateString);
         return Logic.isPhaseOver1(b);
@@ -147,7 +147,7 @@ public class BlueLagoon {
      * @param moveString  a string representing the current player's move
      * @return a new state string achieved by placing the move on the board
      */
-    //Zhou Linsheng(u7630421) completes Task 10
+    // Zhou Linsheng(u7630421) completes Task 10
     public static String placePiece(String stateString, String moveString) {
         Board b=new Board(stateString);
         char type=moveString.charAt(0);
@@ -298,8 +298,8 @@ public class BlueLagoon {
      */
     //Zhou Linsheng(u7630421) finished Task 12
     public static String endPhase(String stateString) {
-        Board b=new Board(stateString);
-        return Logic.endPhase1(b);
+        Board b = new Board(stateString);
+        return Board.endPhase(b);
     }
 
     /**
@@ -315,7 +315,7 @@ public class BlueLagoon {
      * @return a string representing the new state after the move is applied to the board
      */
     //Zhang Zhining's code is too redundant and less efficient
-    //Zhou Linsheng modified it so it's very simple and board class is introduced
+    //Zhou Linsheng modified it to be simpler and introduce Board class
     public static String applyMove(String stateString, String moveString) {
         if (isMoveValid(stateString, moveString)) {
             Board b=new Board(stateString);

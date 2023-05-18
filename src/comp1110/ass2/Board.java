@@ -1,4 +1,7 @@
 package comp1110.ass2;
+
+import static comp1110.ass2.Logic.calculateScores1;
+
 /**
 * @author Zhou Linsheng
  * */
@@ -100,45 +103,45 @@ public class Board {
         //Extract number of players on this board
         this.playerNum = Integer.parseInt(org[2]);
         if(playerNum == 2){
-            this.settlerLimit=30;
-        }else if(playerNum==3){
-            this.settlerLimit=25;
-        }else {
-            this.settlerLimit=20;
+            this.settlerLimit = 30;
+        } else if(playerNum == 3){
+            this.settlerLimit = 25;
+        } else {
+            this.settlerLimit = 20;
         }
 
         String[] state=statement[1].split(" ");
         //Extract phase of this game
-        this.phase=state[3].equals("E");
+        this.phase = state[3].equals("E");
         //Extract turn of current state
-        this.turn=Integer.parseInt(state[2]);
+        this.turn = Integer.parseInt(state[2]);
 
         //Calculate number of islands
         int numOfIslands=0;
-        for(int i=0;i<=statement.length-1;i++){
+        for(int i = 0; i <= statement.length - 1; i++){
             if(statement[i].startsWith(" i"))
                 numOfIslands++;
         }
-        this.islandNum=numOfIslands;
+        this.islandNum = numOfIslands;
 
 
         //Create array of weights of islands
-        int[] weightOfIslands=new int[numOfIslands];
+        int[] weightOfIslands = new int[numOfIslands];
         //Create array of players on this board
         Player[] p = new Player[playerNum];
         //Create an empty board first
-        Spot[][] spots=new Spot[size][size];
+        Spot[][] spots = new Spot[size][size];
         for (int i = 0; i <= size - 1; i++) {
             for (int j = 0; j <= size - 1; j++) {
-                if(i%2==0&&j==size-1){
-                    spots[i][j]=null;
+                if(i % 2 == 0 && j == size - 1){
+                    spots[i][j] = null;
                     continue;
                 }
                 spots[i][j] = new Spot();
             }
         }
 
-        int indexOfIslands=0;
+        int indexOfIslands = 0;
         //initialize land spots on the map
         for (int i = 0; i <= statement.length - 1; i++) {
             //when this statement is island string
@@ -159,19 +162,19 @@ public class Board {
 
             if(statement[i].startsWith(" s")){
                 String[] stoneString=statement[i].split(" ");
-                for(int f=0;f<= stoneString.length-1;f++){
+                for(int f = 0; f <= stoneString.length - 1; f++){
                     if(stoneString[f].contains(",")){
-                        String[] circle=stoneString[f].split(",");
-                        int stoneX=Integer.parseInt(circle[0]);
-                        int stoneY=Integer.parseInt(circle[1]);
-                        spots[stoneX][stoneY].circle=true;
+                        String[] circle = stoneString[f].split(",");
+                        int stoneX = Integer.parseInt(circle[0]);
+                        int stoneY = Integer.parseInt(circle[1]);
+                        spots[stoneX][stoneY].circle = true;
                     }
                 }
             }
             if(statement[i].startsWith(" r")){
-                String flag="";
-                String[] resourcesString=statement[i].split(" ");
-                for(int f=0;f<= resourcesString.length-1;f++){
+                String flag = "";
+                String[] resourcesString = statement[i].split(" ");
+                for(int f = 0; f <= resourcesString.length - 1; f++){
                     if(resourcesString[f].equals("C")){
                         flag="C";
                     } else if (resourcesString[f].equals("B")) {
@@ -182,23 +185,21 @@ public class Board {
                         flag="P";
                     }else if(resourcesString[f].equals("S")){
                         flag="S";
-                    }else {
                     }
                     if(resourcesString[f].contains(",")){
                         String[] circle=resourcesString[f].split(",");
                         int reX=Integer.parseInt(circle[0]);
                         int reY=Integer.parseInt(circle[1]);
-                        if(flag.equals("C")){
-                            spots[reX][reY].resources=Resource.COCONUT;
-                        }else if(flag.equals("B")){
-                            spots[reX][reY].resources=Resource.BAMBOO;
-                        }else if(flag.equals("W")){
-                            spots[reX][reY].resources=Resource.WATER;
-                        }else if(flag.equals("P")){
-                            spots[reX][reY].resources=Resource.PRECIOUSSTONE;
-                        }else if(flag.equals("S")){
-                            spots[reX][reY].resources=Resource.STATUETTE;
-                        }else {
+                        if (flag.equals("C")) {
+                            spots[reX][reY].resources = Resource.COCONUT;
+                        } else if(flag.equals("B")) {
+                            spots[reX][reY].resources = Resource.BAMBOO;
+                        } else if(flag.equals("W")) {
+                            spots[reX][reY].resources = Resource.WATER;
+                        } else if(flag.equals("P")) {
+                            spots[reX][reY].resources = Resource.PRECIOUSSTONE;
+                        } else if(flag.equals("S")) {
+                            spots[reX][reY].resources = Resource.STATUETTE;
                         }
                     }
                 }
@@ -241,12 +242,12 @@ public class Board {
                         Integer.parseInt(playerPositions[8]), settlerNum, villageNum, color);
             }
         }
-
-        this.weight=weightOfIslands;
+        this.weight = weightOfIslands;
         this.players = p;
-        this.board=spots;
+        this.board = spots;
     }
-    //Return the statestring representing this board
+
+    // Returns the game state representing this board
     public String toString(){
         String stateString="";
         //"a 13 2;"
@@ -259,7 +260,7 @@ public class Board {
         else{
             stateString+="S;";
         }
-        //Set up island strings
+        // Set up island strings
         for(int i=0;i<=islandNum-1;i++){
             stateString+=" i "+weight[i];
             //Iterator the board
@@ -272,7 +273,7 @@ public class Board {
             }
             stateString+=";";
         }
-        //Set up stone circle string
+        // Set up stone circle string
         stateString+=" s";
         for(int j=0;j<=size-1;j++){
             for(int k=0;k<=size-1;k++){
@@ -283,7 +284,7 @@ public class Board {
         }
 
         stateString+=";";
-        //Set up resources string
+        // Set up resources string
         stateString+=" r";
         stateString+=" C";
         for(int j=0;j<=size-1;j++){
@@ -351,6 +352,49 @@ public class Board {
         }
 
         return stateString;
+    }
+
+    // Ends the current phase if no more moves can be player or if all resources are captured
+    public static String endPhase(Board b) {
+        if (b.isPhase()) {
+            b.setPhase(false);
+            // Calculate current points of players
+            int[] points = calculateScores1(b);
+            for (int i = 0; i <= b.getPlayerNum() - 1; i++) {
+                b.getPlayers()[i].setScore(b.getPlayers()[i].getScore() + points[i]);
+                b.getPlayers()[i].setCoconut(0);
+                b.getPlayers()[i].setBamboo(0);
+                b.getPlayers()[i].setWater(0);
+                b.getPlayers()[i].setStone(0);
+                b.getPlayers()[i].setStatuette(0);
+            }
+            for (int j = 0; j <= b.getSize() - 1; j++) {
+                for (int k = 0; k <= b.getSize() - 1; k++) {
+                    if (b.getBoard()[j][k] != null) {
+                        if (b.getBoard()[j][k].occupiedByPlayer != 100) {
+                            if (b.getBoard()[j][k].settlerOrVillage == Spot.SettlerOrVillage.SETTLER) {
+                                b.getBoard()[j][k].occupiedByPlayer = 100;
+                                b.getBoard()[j][k].settlerOrVillage = Spot.SettlerOrVillage.NULL;
+                            }
+                            if (b.getBoard()[j][k].settlerOrVillage == Spot.SettlerOrVillage.VILLAGE && b.getBoard()[j][k].circle) {
+                                b.getBoard()[j][k].occupiedByPlayer = 100;
+                                b.getBoard()[j][k].settlerOrVillage = Spot.SettlerOrVillage.NULL;
+                            }
+                        }
+                    }
+                }
+            }
+            String s = b.toString();
+            return Resource.distributeResources(s);
+
+        } else {
+            // Calculate current points of players
+            int[] points = calculateScores1(b);
+            for (int i = 0; i <= b.getPlayerNum() - 1; i++) {
+                b.getPlayers()[i].setScore(b.getPlayers()[i].getScore() + points[i]);
+            }
+        }
+        return b.toString();
     }
 
 }

@@ -1,6 +1,6 @@
 package comp1110.ass2;
 
-import static comp1110.ass2.Logic.calculateScores1;
+import static comp1110.ass2.Score.calculateScores;
 
 /**
 * @author Zhou Linsheng
@@ -300,54 +300,54 @@ public class Board {
         stateString+=" B";
         for(int j=0;j<=size-1;j++){
             for(int k=0;k<=size-1;k++){
-                if(board[j][k]!=null&&board[j][k].resources==Resource.BAMBOO){
-                    stateString+=" "+j+","+k;
+                if(board[j][k] != null && board[j][k].resources==Resource.BAMBOO){
+                    stateString += " "+j+","+k;
                 }
             }
         }
-        stateString+=" W";
-        for(int j=0;j<=size-1;j++){
-            for(int k=0;k<=size-1;k++){
-                if(board[j][k]!=null&&board[j][k].resources==Resource.WATER){
-                    stateString+=" "+j+","+k;
+        stateString += " W";
+        for(int j = 0; j <= size - 1; j++){
+            for(int k = 0; k <= size - 1; k++){
+                if(board[j][k] != null && board[j][k].resources == Resource.WATER){
+                    stateString += " "+j+","+k;
                 }
             }
         }
         stateString+=" P";
-        for(int j=0;j<=size-1;j++){
-            for(int k=0;k<=size-1;k++){
-                if(board[j][k]!=null&&board[j][k].resources==Resource.PRECIOUSSTONE){
-                    stateString+=" "+j+","+k;
+        for(int j = 0; j <= size - 1; j++){
+            for(int k = 0; k <= size - 1; k++){
+                if(board[j][k] != null && board[j][k].resources == Resource.PRECIOUSSTONE){
+                    stateString += " "+j+","+k;
                 }
             }
         }
-        stateString+=" S";
-        for(int j=0;j<=size-1;j++){
-            for(int k=0;k<=size-1;k++){
-                if(board[j][k]!=null&&board[j][k].resources==Resource.STATUETTE){
-                    stateString+=" "+j+","+k;
+        stateString += " S";
+        for(int j = 0;j <= size-1; j++){
+            for(int k = 0;k <= size - 1; k++){
+                if(board[j][k] != null && board[j][k].resources == Resource.STATUETTE){
+                    stateString += " "+j+","+k;
                 }
             }
         }
         stateString+=";";
-        //Set up player strings
+        // Set up player strings
         for(int i=0;i<=playerNum-1;i++){
-            stateString+=" p "+i+" "+players[i].getScore()+" "+players[i].getCoconut()+" "+players[i].getBamboo()+" "+players[i].getWater()+" "+players[i].getStone()+" "+players[i].getStatuette();
-            stateString+=" S";
-            //Add settlers
-            for(int j=0;j<=size-1;j++){
-                for(int k=0;k<=size-1;k++){
-                    if(board[j][k]!=null&&board[j][k].occupiedByPlayer==i&&board[j][k].settlerOrVillage== Spot.SettlerOrVillage.SETTLER){
-                        stateString+=" "+j+","+k;
+            stateString += " p "+i+" "+players[i].getScore()+" "+players[i].getCoconut()+" "+players[i].getBamboo()+" "+players[i].getWater()+" "+players[i].getStone()+" "+players[i].getStatuette();
+            stateString += " S";
+            // Add settlers
+            for (int j = 0; j <= size-1; j++){
+                for(int k = 0; k <= size - 1; k++){
+                    if(board[j][k] != null && board[j][k].occupiedByPlayer == i && board[j][k].settlerOrVillage == Spot.SettlerOrVillage.SETTLER){
+                        stateString += " "+j+","+k;
                     }
                 }
             }
-            stateString+=" T";
-            //Add villages
-            for(int j=0;j<=size-1;j++){
-                for(int k=0;k<=size-1;k++){
-                    if(board[j][k]!=null&&board[j][k].occupiedByPlayer==i&&board[j][k].settlerOrVillage== Spot.SettlerOrVillage.VILLAGE){
-                        stateString+=" "+j+","+k;
+            stateString += " T";
+            // Add villages
+            for (int j = 0 ;j <= size - 1; j++){
+                for (int k = 0; k <= size - 1; k++){
+                    if (board[j][k] != null && board[j][k].occupiedByPlayer == i && board[j][k].settlerOrVillage == Spot.SettlerOrVillage.VILLAGE){
+                        stateString += " "+j+","+k;
                     }
                 }
             }
@@ -357,12 +357,81 @@ public class Board {
         return stateString;
     }
 
+    // @author Tyler Le
+    // Checks if a stateString is correctly formatted
+    public static boolean isStateStringWellFormed(String stateString) {
+        String[] parts = stateString.split(";");
+        // Separate strings into arrays of strings with the split method, using ";"
+        if (parts[0].matches("a\\s[0-9]*[1-9][0-9]*\\s[1-9]")) {
+            // Check if the game arrangement declaration is correct by means of regular expressions
+            if (parts[1].matches("\\sc\\s\\d\\s[E|S]")) {
+                for (int i = 2; i < parts.length; i++) {
+                    // Iterate through the array to check if it is correct
+                    if (parts[i].startsWith(" i")) {
+                        if (parts[i].matches("\\si\\s[0-9]*[1-9][0-9]*\\s(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})")) {
+                        } else {
+                            return false;
+                        }
+                    }
+                    // Checks if Stones Statement is formatted correctly.
+                    else if (parts[i].startsWith(" s")) {
+                        if (parts[i].matches("\\ss\\s(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})")) {
+                        } else {
+                            return false;
+                        }
+                    }
+                    // Checks if Unclaimed Resources and Statuettes Statement is formatted correctly.
+                    else if (parts[i].startsWith(" r")) {
+                        if (parts[i].matches("\\sr\\sC\\s(\\d{1,2},\\d{1,2}\\s)*B\\s(\\d{1,2},\\d{1,2}\\s)*W\\s(\\d{1,2},\\d{1,2}\\s)*P\\s(\\d{1,2},\\d{1,2}\\s)*S(\\s)??(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})*")) {
+                        } else {
+                            return false;
+                        }
+                    }
+                    // Checks if Player Statement is formatted correctly.
+                    else if (parts[i].startsWith(" p")) {
+                        if (parts[i].matches("\\sp\\s\\d\\s\\d{1,3}\\s(\\d\\s){5}S\\s(\\d{1,2},\\d{1,2}\\s)*T(\\s)??(\\d{1,2},\\d{1,2}\\s)*(\\d{1,2},\\d{1,2})*")) {
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        return false;
+                    }
+                }
+                // Returns false if any errors are detected.
+                return (stateString.endsWith(";"));
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    // Checks if a phase is over, either by no more resources on the board OR no more moves
+    public static boolean isPhaseOver(Board b) {
+        //Count the number of resources collected by all players
+        int allResources = 0;
+        for (int i = 0; i <= b.getPlayerNum() - 1; i++) {
+            allResources += b.getPlayers()[i].getBamboo() + b.getPlayers()[i].getCoconut() +
+                    b.getPlayers()[i].getWater() + b.getPlayers()[i].getStone();
+        }
+        boolean collectedAll = allResources == 24;
+        int noMoves = 0;
+        for (int i = 0; i <= b.getPlayerNum() - 1; i++) {
+            b.setTurn(i);
+            if (Move.generateAllValidMoves(b).size() == 0) {
+                noMoves++;
+            }
+        }
+        return collectedAll || noMoves == b.getPlayerNum();
+    }
+
     // Ends the current phase if no more moves can be player or if all resources are captured and then calculates scores
     public static String endPhase(Board b) {
         if (b.isPhase()) {
             b.setPhase(false);
             // Calculate current points of players
-            int[] points = calculateScores1(b);
+            int[] points = calculateScores(b);
             for (int i = 0; i <= b.getPlayerNum() - 1; i++) {
                 b.getPlayers()[i].setScore(b.getPlayers()[i].getScore() + points[i]);
                 b.getPlayers()[i].setCoconut(0);
@@ -392,7 +461,7 @@ public class Board {
 
         } else {
             // Calculate current points of players
-            int[] points = calculateScores1(b);
+            int[] points = calculateScores(b);
             for (int i = 0; i <= b.getPlayerNum() - 1; i++) {
                 b.getPlayers()[i].setScore(b.getPlayers()[i].getScore() + points[i]);
             }

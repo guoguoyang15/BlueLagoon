@@ -2,8 +2,6 @@ package comp1110.ass2;
 
 import java.util.*;
 
-import static comp1110.ass2.Logic.*;
-
 public class BlueLagoon {
     // The Game Strings for five maps have been created for you.
     // They have only been encoded for two players. However, they are
@@ -26,9 +24,9 @@ public class BlueLagoon {
      * @param stateString a string representing a game state
      * @return true if stateString is well-formed and false otherwise
      */
-    //Tyler completes Task3
+    // Tyler completes Task3
     public static boolean isStateStringWellFormed(String stateString) {
-        return Logic.isStateStringWellFormed1(stateString);
+        return Board.isStateStringWellFormed(stateString);
     }
 
     /**
@@ -40,11 +38,9 @@ public class BlueLagoon {
      * @param moveString a string representing a player's move
      * @return true if moveString is well-formed and false otherwise
      */
-    //Tyler completes Task 4
+    // Tyler completes Task 4
     public static boolean isMoveStringWellFormed(String moveString) {
-        // Written by Tyler
-        // Checks if Move string is properly formatted
-        return Logic.isMoveStringWellFormed1(moveString);
+        return Move.isMoveStringWellFormed(moveString);
     }
 
     /**
@@ -65,7 +61,7 @@ public class BlueLagoon {
      * @param stateString a string representing a game state without resources distributed
      * @return a string of the game state with resources randomly distributed
      */
-    //Zhou Linsheng finished first and Zhang Zhining completed Task 6 very late
+    // Zhou Linsheng finished first and Zhang Zhining completed Task 6 very late
     public static String distributeResources(String stateString) {
         return Resource.distributeResources(stateString);
     }
@@ -93,16 +89,16 @@ public class BlueLagoon {
      * @param moveString  a string representing the current player's move
      * @return true if the current player can make the move and false otherwise
      */
-    //Zhou Linsheng(u7630421) completes Task 7
+    // Zhou Linsheng(u7630421) completes Task 7
     public static boolean isMoveValid(String stateString, String moveString) {
-        Board b=new Board(stateString);
-        char type=moveString.charAt(0);
-        String[] moves=moveString.split(" ");
-        String[] XY=moves[1].split(",");
-        int x=Integer.parseInt(XY[0]);
-        int y=Integer.parseInt(XY[1]);
-        Coordinate coordinate=new Coordinate(x,y);
-        return (Logic.isMoveValid1(b,type,coordinate) && isMoveStringWellFormed(moveString));
+        Board b = new Board(stateString);
+        char type = moveString.charAt(0);
+        String[] moves = moveString.split(" ");
+        String[] XY = moves[1].split(",");
+        int x = Integer.parseInt(XY[0]);
+        int y = Integer.parseInt(XY[1]);
+        Coordinate coordinate = new Coordinate(x, y);
+        return (Move.isMoveValid (b, type, coordinate) && isMoveStringWellFormed(moveString));
     }
 
     /**
@@ -116,8 +112,8 @@ public class BlueLagoon {
      */
     //Zhou Linsheng(u7630421) completes Task8
     public static Set<String> generateAllValidMoves(String stateString) {
-        Board b=new Board(stateString);
-        return Logic.generateAllValidMoves1(b);
+        Board b = new Board(stateString);
+        return Move.generateAllValidMoves(b);
     }
 
     /**
@@ -132,8 +128,8 @@ public class BlueLagoon {
      */
     // Zhou Linsheng(u7630421) completes the following Task9
     public static boolean isPhaseOver(String stateString) {
-        Board b=new Board(stateString);
-        return Logic.isPhaseOver1(b);
+        Board b = new Board(stateString);
+        return Board.isPhaseOver(b);
     }
 
     /**
@@ -156,7 +152,7 @@ public class BlueLagoon {
         int x=Integer.parseInt(XY[0]);
         int y=Integer.parseInt(XY[1]);
         Coordinate coordinate=new Coordinate(x,y);
-        return Logic.placePiece1(b,type,coordinate);
+        return Move.placePiece(b,type,coordinate);
     }
 
     /**
@@ -177,8 +173,8 @@ public class BlueLagoon {
 
     //Zhou Linsheng(u7630421) completes all methods in Task 11
     public static int[] calculateTotalIslandsScore(String stateString) {
-        Board b=new Board(stateString);
-        return calculateTotalIslandsScore1(b);
+        Board b = new Board(stateString);
+        return Score.calculateTotalIslandsScore(b);
     }
 
     /**
@@ -201,7 +197,7 @@ public class BlueLagoon {
 
     public static int[] calculateIslandLinksScore(String stateString) {
         Board b=new Board(stateString);
-        return Logic.calculateIslandLinksScore1(b);
+        return Score.calculateIslandLinksScore(b);
         // FIXME Task 11
     }
 
@@ -228,7 +224,7 @@ public class BlueLagoon {
     //Zhou Linsheng(u7630421) completes the following function
     public static int[] calculateIslandMajoritiesScore(String stateString) {
         Board b=new Board(stateString);
-        return Logic.calculateIslandMajoritiesScore1(b);
+        return Score.calculateIslandMajoritiesScore(b);
         // FIXME Task 11
     }
 
@@ -258,7 +254,7 @@ public class BlueLagoon {
     //Zhou Linsheng(u7630421) completes the following function
     public static int[] calculateResourcesAndStatuettesScore(String stateString) {
         Board b=new Board(stateString);
-        return Logic.calculateResourcesAndStatuettesScore1(b);
+        return Score.calculateResourcesAndStatuettesScore(b);
          // FIXME Task 11
     }
 
@@ -276,7 +272,7 @@ public class BlueLagoon {
     // Zhou Linsheng (u7630421) completes the following function
     public static int[] calculateScores(String stateString) {
         Board b=new Board(stateString);
-        return Logic.calculateScores1(b);
+        return Score.calculateScores(b);
     }
 
     /**
@@ -325,7 +321,7 @@ public class BlueLagoon {
             int x=Integer.parseInt(XY[0]);
             int y=Integer.parseInt(XY[1]);
             Coordinate coordinate=new Coordinate(x,y);
-            return Logic.applyMove(b,type,coordinate);
+            return Move.applyMove(b,type,coordinate);
         }
         else {
             return stateString;
@@ -351,6 +347,6 @@ public class BlueLagoon {
         public static String generateAIMove (String stateString){
 
             Board b = new Board(stateString);
-            return Logic.generateAIMove1(b);
+            return Move.generateAIMove(b);
         }
     }

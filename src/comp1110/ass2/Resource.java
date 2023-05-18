@@ -61,7 +61,6 @@ public enum Resource {
                 stateString = stateString.replace(s, replaceString);
             }
         }
-
         return stateString;
     }
 }

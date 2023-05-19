@@ -107,16 +107,16 @@ public class Player {
         // Sets the color for each player number
         String playerColor = "";
         if (playerNumber == 0) {
-            playerColor = "Orange";
+            playerColor = "Pink";
         }
         else if (playerNumber == 1) {
-            playerColor = "Blue";
+            playerColor = "Crimson";
         }
         else if (playerNumber == 2) {
-            playerColor = "Green";
+            playerColor = "Purple";
         }
         else if (playerNumber == 3) {
-            playerColor = "Purple";
+            playerColor = "Yellow";
         }
         return new Player(playerNumber, score, coconut, bamboo,water,stone,statuette, settlers, villages, playerColor);
     }

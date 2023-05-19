@@ -6,7 +6,6 @@ import java.util.*;
  * This class deals with all matters related to score calculation.
  */
 public class Score {
-
     // Task 11 A, calculates points based on how many islands a player occupies
     public static int[] calculateTotalIslandsScore(Board b) {
         // Array of points in this part

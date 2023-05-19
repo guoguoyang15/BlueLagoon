@@ -20,11 +20,10 @@ public class BlueLagoon {
      * <p>
      * A description of the state string will be included in README.md
      * in an update of the project after D2B is complete.
-     * @author Tyler
+     * @author Tyler Le
      * @param stateString a string representing a game state
      * @return true if stateString is well-formed and false otherwise
      */
-    // Tyler completes Task3
     public static boolean isStateStringWellFormed(String stateString) {
         return Board.isStateStringWellFormed(stateString);
     }
@@ -34,11 +33,10 @@ public class BlueLagoon {
      * <p>
      * A description of the move string will be included in README.md
      * in an update of the project after D2B is complete.
-     * @author Tyler
+     * @author Tyler Le
      * @param moveString a string representing a player's move
      * @return true if moveString is well-formed and false otherwise
      */
-    // Tyler completes Task 4
     public static boolean isMoveStringWellFormed(String moveString) {
         return Move.isMoveStringWellFormed(moveString);
     }
@@ -61,7 +59,6 @@ public class BlueLagoon {
      * @param stateString a string representing a game state without resources distributed
      * @return a string of the game state with resources randomly distributed
      */
-    // Zhou Linsheng finished first and Zhang Zhining completed Task 6 very late
     public static String distributeResources(String stateString) {
         return Resource.distributeResources(stateString);
     }
@@ -89,7 +86,6 @@ public class BlueLagoon {
      * @param moveString  a string representing the current player's move
      * @return true if the current player can make the move and false otherwise
      */
-    // Zhou Linsheng(u7630421) completes Task 7
     public static boolean isMoveValid(String stateString, String moveString) {
         Board b = new Board(stateString);
         char type = moveString.charAt(0);
@@ -110,7 +106,6 @@ public class BlueLagoon {
      * @param stateString a string representing a game state
      * @return a set of strings representing all moves the current player can play
      */
-    //Zhou Linsheng(u7630421) completes Task8
     public static Set<String> generateAllValidMoves(String stateString) {
         Board b = new Board(stateString);
         return Move.generateAllValidMoves(b);
@@ -126,7 +121,6 @@ public class BlueLagoon {
      * @param stateString a string representing a game state
      * @return true if the state is at the end of either phase and false otherwise
      */
-    // Zhou Linsheng(u7630421) completes the following Task9
     public static boolean isPhaseOver(String stateString) {
         Board b = new Board(stateString);
         return Board.isPhaseOver(b);
@@ -143,7 +137,6 @@ public class BlueLagoon {
      * @param moveString  a string representing the current player's move
      * @return a new state string achieved by placing the move on the board
      */
-    // Zhou Linsheng(u7630421) completes Task 10
     public static String placePiece(String stateString, String moveString) {
         Board b=new Board(stateString);
         char type=moveString.charAt(0);
@@ -170,8 +163,6 @@ public class BlueLagoon {
      * @return an integer array containing the calculated "Islands" portion of
      * the score for each player
      */
-
-    //Zhou Linsheng(u7630421) completes all methods in Task 11
     public static int[] calculateTotalIslandsScore(String stateString) {
         Board b = new Board(stateString);
         return Score.calculateTotalIslandsScore(b);
@@ -194,7 +185,6 @@ public class BlueLagoon {
      * @return an integer array containing the calculated "Links" portion of
      * the score for each player
      */
-
     public static int[] calculateIslandLinksScore(String stateString) {
         Board b=new Board(stateString);
         return Score.calculateIslandLinksScore(b);
@@ -219,8 +209,6 @@ public class BlueLagoon {
      * @return an integer array containing the calculated "Majorities" portion
      * of the score for each player
      */
-
-    //Zhou Linsheng(u7630421) completes the following function
     public static int[] calculateIslandMajoritiesScore(String stateString) {
         Board b=new Board(stateString);
         return Score.calculateIslandMajoritiesScore(b);
@@ -249,7 +237,6 @@ public class BlueLagoon {
      * @return an integer array containing the calculated "Resources" and "Statuettes"
      * portions of the score for each player
      */
-    // Zhou Linsheng(u7630421) completes the following function
     public static int[] calculateResourcesAndStatuettesScore(String stateString) {
         Board b=new Board(stateString);
         return Score.calculateResourcesAndStatuettesScore(b);
@@ -266,7 +253,6 @@ public class BlueLagoon {
      * @param stateString a string representing a game state
      * @return an integer array containing the calculated scores for each player
      */
-    // Zhou Linsheng (u7630421) completes the following function
     public static int[] calculateScores(String stateString) {
         Board b = new Board(stateString);
         return Score.calculateScores(b);
@@ -289,7 +275,6 @@ public class BlueLagoon {
      * @param stateString a string representing a game state at the end of a phase
      * @return a string representing the new state achieved by following the end of phase rules
      */
-    // Zhou Linsheng(u7630421) finished Task 12
     public static String endPhase(String stateString) {
         Board b = new Board(stateString);
         return Board.endPhase(b);
@@ -302,7 +287,7 @@ public class BlueLagoon {
      * <p>
      * Advance current player to the next player in turn order that has a valid
      * move they can make.
-     * @author Zhang Zhining
+     * @author Zhang Zhining, Zhou Linsheng
      * @param stateString a string representing a game state
      * @param moveString  a string representing the current player's move
      * @return a string representing the new state after the move is applied to the board
@@ -334,7 +319,7 @@ public class BlueLagoon {
          * <p>
          * Your AI should perform better than randomly generating moves,
          * see how good you can make it!
-         * @author Zhou Linsheng
+         * @author Zhang Zhining, Zhou Linsheng
          * @param stateString a string representing a game state
          * @return a move string generated by an AI
          */

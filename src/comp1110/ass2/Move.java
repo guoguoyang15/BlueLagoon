@@ -7,7 +7,6 @@ import java.util.*;
  * This class deals with all things related to moves, including checking, generating and applying valid moves.
  * This class also includes the AI move maker.
  */
-
 public class Move {
     // @author Tyler Le
     // Checks if Move string is properly formatted

@@ -7,13 +7,13 @@ import javafx.scene.shape.Polygon;
  */
 public class Square extends Polygon {
     // Creates a square shape, later used in the Viewer class to create primitive board image
-    double x;
-    double y;
-    double side;
+    public double x;
+    public double y;
+    public double size;
     public Square(double x,double y, double side){
         this.x=x;
         this.y=y;
-        this.side=side;
+        this.size=side;
         setLayoutX(x);
         setLayoutY(y);
         getPoints().addAll(x-side,y-side,

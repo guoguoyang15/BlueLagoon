@@ -7,9 +7,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.transform.Translate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Tyler Le (all methods)
@@ -63,6 +68,30 @@ public class Game extends Application {
         Display boardImage = new Display();
         root.getChildren().addAll(boardImage.displayTiles(stateString));
 
+        //Add sample example of resources
+        for(int i=0;i<=4;i++){
+            Polygon polygon=new Polygon();
+            polygon.getPoints().addAll(600.0+50*i,500.0,
+                    600.0+50*i,530.0,
+                    630.0+50*i,530.0,
+                    630.0+50*i,500.0);
+            if(i==0){
+                polygon.setFill(Color.BROWN);
+            }else if(i==1){
+                polygon.setFill(Color.DARKGREEN);
+            }else if(i==2){
+                polygon.setFill(Color.CYAN);
+            }else if(i==3){
+                polygon.setFill(Color.GOLD);
+            }else {
+                polygon.setFill(Color.BLACK);
+            }
+            root.getChildren().add(polygon);
+        }
+        Text sample=new Text("Coconut  Bamboo  Water   P.Stone  Statuette  ");
+        sample.setX(590);
+        sample.setY(490);
+        root.getChildren().add(sample);
         // Calls phaseDisplay from Display class to show the phase and player to move
         phase = Display.phaseDisplay(stateString);
         root.getChildren().add(phase);
@@ -93,11 +122,9 @@ public class Game extends Application {
 
         // Calls scoreTable from Display class to make a table for the scores
         TableView scoreBoard = Display.scoreTable(stateString);
-        Translate tablePosition = new Translate(1000, 0);
+        Translate tablePosition = new Translate(580, 0);
         scoreBoard.getTransforms().add(tablePosition);
         root.getChildren().add(scoreBoard);
-        root.setLayoutX(15);
-        root.setLayoutY(25);
     }
 
     // Creates the various buttons and menus that the players can interact with
@@ -112,7 +139,7 @@ public class Game extends Application {
         HBox playerBox = new HBox();
         playerBox.getChildren().addAll(playerLabel, playerCount, selectPlayerCount);
         playerBox.setSpacing(10);
-        playerBox.setLayoutX(830);
+        playerBox.setLayoutX(330);
         playerBox.setLayoutY(520);
 
         // Creates the number of AI opponents selection
@@ -125,7 +152,7 @@ public class Game extends Application {
         HBox AIBox = new HBox();
         AIBox.getChildren().addAll(AILabel, AICount, start);
         AIBox.setSpacing(10);
-        AIBox.setLayoutX(795);
+        AIBox.setLayoutX(330);
         AIBox.setLayoutY(550);
 
         // Displays the player selection menu and title screen
@@ -149,8 +176,8 @@ public class Game extends Application {
         HBox moveBox = new HBox();
         moveBox.getChildren().addAll(moveLabel, villageOrSettler, xPosition, yPosition, play);
         moveBox.setSpacing(10);
-        moveBox.setLayoutX(1000);
-        moveBox.setLayoutY(670);
+        moveBox.setLayoutX(500);
+        moveBox.setLayoutY(600);
 
         // Adds the row and column labels for the move menus
         Label rowLabel = new Label("Row:");
@@ -158,15 +185,15 @@ public class Game extends Application {
         HBox labelBox = new HBox();
         labelBox.getChildren().addAll(rowLabel, colLabel);
         labelBox.setSpacing(27);
-        labelBox.setLayoutX(1305);
-        labelBox.setLayoutY(650);
+        labelBox.setLayoutX(770);
+        labelBox.setLayoutY(580);
 
         // Adds the restart button to restart the game
         Button restart = new Button("Restart");
         HBox restartBox = new HBox();
         restartBox.getChildren().add(restart);
-        restartBox.setLayoutX(1820);
-        restartBox.setLayoutY(0);
+        restartBox.setLayoutX(1000);
+        restartBox.setLayoutY(650);
 
         // After # of Players is chosen, make choice for # of AIs appear
         selectPlayerCount.setOnAction(e -> {

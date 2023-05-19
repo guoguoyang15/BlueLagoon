@@ -1,5 +1,7 @@
 package comp1110.ass2.gui;
 import comp1110.ass2.*;
+import comp1110.ass2.shapes.Hexagon;
+import comp1110.ass2.shapes.Square;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -7,6 +9,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import java.util.ArrayList;
@@ -20,10 +25,12 @@ import java.util.List;
 public class Display {
     // @author Zhang Zhining and Zhou Linsheng
     // Displays images of the tiles
-    public List<ImageView> displayTiles(String stateString) {
+    public List<Shape> displayTiles(String stateString) {
         Board b = new Board(stateString);
         List<ImageView> imageViews = new ArrayList<>();
-
+        List<Polygon> tileList=new ArrayList<>();
+        List<Circle> villageList=new ArrayList<>();
+        List<Shape> shapes=new ArrayList<>();
         int rand = 0;
         Image[] land = new Image[18];
         Image[] circle = new Image[6];
@@ -104,21 +111,25 @@ public class Display {
             for (int j = 0; j <= b.getSize() - 1; j++) {
                 if (b.getBoard()[i][j] != null) {
                     ImageView imageView = new ImageView();
+                    Hexagon hexagon;
                     if (i % 2 == 0) {
-                        imageView.setX(34.64 + 69.28 * j);
+                        hexagon=new Hexagon(43.25+43.25*j,37.5*i+25,25);
                     } else {
-                        imageView.setX(69.28 * j);
+                        hexagon=new Hexagon(21.625+43.25*j,37.5*i+25,25);
                     }
                     imageView.setY(60 * i);
                     if (b.getBoard()[i][j].spotType == 1)
                     {
                         rand += 7;
                         imageView.setImage(land[rand % 18]);
+                        hexagon.setFill(Color.LIGHTGREEN);
                     } else {
                         rand += 11;
                         imageView.setImage(ocean[rand % 12]);
+                        hexagon.setFill(Color.BLUE);
                     }
-                    imageViews.add(imageView);
+//                    imageViews.add(imageView);
+                    tileList.add(hexagon);
                 }
             }
         }
@@ -131,13 +142,16 @@ public class Display {
                     if (b.getBoard()[i][j].circle) {
                         ImageView imageView = new ImageView();
                         imageView.setImage(circle[rand % 6]);
+                        Hexagon hexagon;
                         if (i % 2 == 0) {
-                            imageView.setX(34.64 + 69.28 * j);
+                            hexagon=new Hexagon(43.25+43.25*j,37.5*i+25,20);
                         } else {
-                            imageView.setX(69.28 * j);
+                            hexagon=new Hexagon(21.625+43.25*j,37.5*i+25,20);
                         }
                         imageView.setY(60 * i);
-                        imageViews.add(imageView);
+//                        imageViews.add(imageView);
+                        hexagon.setFill(Color.LIGHTGRAY);
+                        tileList.add(hexagon);
                     }
                 }
             }
@@ -149,25 +163,38 @@ public class Display {
                 if (b.getBoard()[i][j] != null) {
                     if (b.getBoard()[i][j].resources != Resource.NULL) {
                         ImageView imageView = new ImageView();
+                        Polygon square=new Polygon();
                         if (i % 2 == 0) {
-                            imageView.setX(34.64 + 69.28 * j);
-                            imageView.setY(60 * i);
+                            square.getPoints().addAll(30.75+43.25*j,12.5+37.5*i,
+                                    30.75+43.25*j,37.5+37.5*i,
+                                    55.75+43.25*j,37.5+37.5*i,
+                                    55.75+43.25*j,12.5+37.5*i
+                                    );
                         } else {
-                            imageView.setX(69.28 * j);
-                            imageView.setY(60 * i);
+                            square.getPoints().addAll(9.125+43.25*j,12.5+37.5*i,
+                                    9.125+43.25*j,37.5+37.5*i,
+                                    34.125+43.25*j,37.5+37.5*i,
+                                    34.125+43.25*j,12.5+37.5*i
+                                    );
                         }
                         if (b.getBoard()[i][j].resources == Resource.COCONUT) {
                             imageView.setImage(coconuts);
+                            square.setFill(Color.BROWN);
                         } else if (b.getBoard()[i][j].resources == Resource.BAMBOO) {
                             imageView.setImage(bamboo);
+                            square.setFill(Color.DARKGREEN);
                         } else if (b.getBoard()[i][j].resources == Resource.WATER) {
                             imageView.setImage(water);
+                            square.setFill(Color.CYAN);
                         } else if (b.getBoard()[i][j].resources == Resource.PRECIOUSSTONE) {
                             imageView.setImage(precious_stones);
+                            square.setFill(Color.GOLD);
                         } else {
                             imageView.setImage(statuettes);
+                            square.setFill(Color.BLACK);
                         }
-                        imageViews.add(imageView);
+//                        imageViews.add(imageView);
+                        tileList.add(square);
                     }
                 }
             }
@@ -178,39 +205,72 @@ public class Display {
             for (int j = 0; j <= b.getSize() - 1; j++) {
                 if (b.getBoard()[i][j] != null && b.getBoard()[i][j].occupiedByPlayer != 100) {
                     ImageView imageView = new ImageView();
-                    if (i % 2 == 0) {
-                        imageView.setX(34.64 + 69.28 * j);
-                        imageView.setY(60 * i);
-                    } else {
-                        imageView.setX(69.28 * j);
-                        imageView.setY(60 * i);
-                    }
+//                    if (i % 2 == 0) {
+//                        imageView.setX(34.64 + 69.28 * j);
+//                        imageView.setY(60 * i);
+//                    } else {
+//                        imageView.setX(69.28 * j);
+//                        imageView.setY(60 * i);
+//                    }
                     if (b.getBoard()[i][j].settlerOrVillage == Spot.SettlerOrVillage.SETTLER) {
+                        Polygon triangle=new Polygon();
+                        if(i%2==0){
+                            triangle.getPoints().addAll(43.25+43.25*j,5.0+37.5*i,
+                                    58.25+43.25*j,37.5+37.5*i,
+                                    28.25+43.25*j,37.5+37.5*i
+                                    );
+                        }else {
+                            triangle.getPoints().addAll(21.625+43.25*j,5.0+37.5*i,
+                                    6.625+43.25*j,37.5+37.5*i,
+                                    36.625+43.25*j,37.5+37.5*i
+                            );
+                        }
                         if (b.getBoard()[i][j].occupiedByPlayer == 0) {
                             imageView.setImage(settlers[0]);
+                            triangle.setFill(Color.PINK);
                         } else if (b.getBoard()[i][j].occupiedByPlayer == 1) {
                             imageView.setImage(settlers[1]);
+                            triangle.setFill(Color.CRIMSON);
                         } else if (b.getBoard()[i][j].occupiedByPlayer == 2) {
                             imageView.setImage(settlers[2]);
+                            triangle.setFill(Color.PURPLE);
                         } else {
                             imageView.setImage(settlers[3]);
+                            triangle.setFill(Color.YELLOW);
                         }
+                        tileList.add(triangle);
                     } else {
+                        Circle circle1=new Circle();
+                        if(i%2==0){
+                            circle1.setCenterX(43.25+43.25*j);
+                        }else {
+                            circle1.setCenterX(21.625+43.25*j);
+                        }
+                        circle1.setCenterY(25+37.5*i);
+                        circle1.setRadius(15);
                         if (b.getBoard()[i][j].occupiedByPlayer == 0) {
                             imageView.setImage(villages[0]);
+                            circle1.setFill(Color.PINK);
                         } else if (b.getBoard()[i][j].occupiedByPlayer == 1) {
                             imageView.setImage(villages[1]);
+                            circle1.setFill(Color.CRIMSON);
                         } else if (b.getBoard()[i][j].occupiedByPlayer == 2) {
                             imageView.setImage(villages[2]);
+                            circle1.setFill(Color.PURPLE);
                         } else {
                             imageView.setImage(villages[3]);
+                            circle1.setFill(Color.YELLOW);
                         }
+                        villageList.add(circle1);
                     }
-                    imageViews.add(imageView);
+//                    imageViews.add(imageView);
+
                 }
             }
         }
-        return imageViews;
+        shapes.addAll(tileList);
+        shapes.addAll(villageList);
+        return shapes;
     }
 
     // @author Tyler Le
@@ -220,7 +280,7 @@ public class Display {
         TableView scores = new TableView();
 
         // Creates each individual column and the Value Factories to set the value of each cell in the column
-        TableColumn<Player, Integer> column1 = new TableColumn<>("Player #");
+        TableColumn<Player, Integer> column1 = new TableColumn<>("Player");
         column1.setCellValueFactory(new PropertyValueFactory<>("playerNumber"));
 
         TableColumn<Player, Integer> column2 = new TableColumn<>("Score");
@@ -235,16 +295,16 @@ public class Display {
         TableColumn<Player, Integer> column5 = new TableColumn<>("Water");
         column5.setCellValueFactory(new PropertyValueFactory<>("water"));
 
-        TableColumn<Player, Integer> column6 = new TableColumn<>("P. Stone");
+        TableColumn<Player, Integer> column6 = new TableColumn<>("P.Stone");
         column6.setCellValueFactory(new PropertyValueFactory<>("stone"));
 
-        TableColumn<Player, Integer> column7 = new TableColumn<>("Statuettes");
+        TableColumn<Player, Integer> column7 = new TableColumn<>("Statuette");
         column7.setCellValueFactory(new PropertyValueFactory<>("statuette"));
 
-        TableColumn<Player, Integer> column8 = new TableColumn<>("Settlers");
+        TableColumn<Player, Integer> column8 = new TableColumn<>("Settler");
         column8.setCellValueFactory(new PropertyValueFactory<>("settlers"));
 
-        TableColumn<Player, Integer> column9 = new TableColumn<>("Villages");
+        TableColumn<Player, Integer> column9 = new TableColumn<>("Village");
         column9.setCellValueFactory(new PropertyValueFactory<>("villages"));
 
         TableColumn<Player, String> column10 = new TableColumn<>("Color");
@@ -282,8 +342,8 @@ public class Display {
         }
         info += "Player "+b.getTurn()+" to move.";
         Text phase = new Text(info);
-        phase.setX(1000);
-        phase.setY(640);
+        phase.setX(500);
+        phase.setY(550);
         return phase;
     }
 
@@ -294,8 +354,8 @@ public class Display {
         Text[] rows = new Text[b.getSize()];
         for(int i = 0; i <= rows.length - 1; i++){
             rows[i]=new Text(""+ i);
-            rows[i].setX(920);
-            rows[i].setY(61*i + 40);
+            rows[i].setX(570);
+            rows[i].setY(37.5*i +23);
         }
         return rows;
     }
@@ -311,11 +371,11 @@ public class Display {
                 } else {
                     coordinates[i][j] = new Text(""+ j);
                     if (i % 2 == 0){
-                        coordinates[i][j].setX(65 + 69.28*j);
+                        coordinates[i][j].setX(39 + 43.25*j);
                     } else {
-                        coordinates[i][j].setX(30 + 69.28*j);
+                        coordinates[i][j].setX(17 + 43.25*j);
                     }
-                    coordinates[i][j].setY(75 + 60*i);
+                    coordinates[i][j].setY(45 + 37.5*i);
                 }
             }
         }
@@ -334,11 +394,11 @@ public class Display {
                     if(b.getBoard()[i][j].spotType == 1){
                         weights[i][j] = new Text("("+b.getWeight()[b.getBoard()[i][j].island]+")");
                         if (i % 2 == 0){
-                            weights[i][j].setX(65 + 69.28*j);
+                            weights[i][j].setX(37+ 43.25*j);
                         } else {
-                            weights[i][j].setX(30 + 69.28*j);
+                            weights[i][j].setX(15 + 43.25*j);
                         }
-                        weights[i][j].setY(35 + 60*i);
+                        weights[i][j].setY(37.5*i+23);
                     } else {
                         weights[i][j] = null;
                     }
@@ -354,10 +414,10 @@ public class Display {
         Board b = new Board(stateString);
         if (!b.isPhase() && BlueLagoon.generateAllValidMoves(stateString).size() == 0) {
             Text winner = new Text("Player " + Player.findWinner(stateString) + " has won!");
-            winner.setX(1000);
-            winner.setY(770);
+            winner.setX(200);
+            winner.setY(500);
             winner.setFill(Color.DARKGREEN);
-            winner.setFont(Font.font("Serif", 60));
+            winner.setFont(Font.font("Serif"));
             return winner;
         }
         else {
@@ -374,8 +434,8 @@ public class Display {
 
         HBox titleBox = new HBox();
         titleBox.getChildren().add(title);
-        titleBox.setLayoutX(590);
-        titleBox.setLayoutY(400);
+        titleBox.setLayoutX(200);
+        titleBox.setLayoutY(300);
 
         return titleBox;
     }
@@ -388,8 +448,8 @@ public class Display {
 
         HBox badMoveBox = new HBox();
         badMoveBox.getChildren().add(badMove);
-        badMoveBox.setLayoutX(1000);
-        badMoveBox.setLayoutY(720);
+        badMoveBox.setLayoutX(500);
+        badMoveBox.setLayoutY(620);
 
         return badMoveBox;
     }
@@ -401,8 +461,8 @@ public class Display {
 
         HBox badSetupBox = new HBox();
         badSetupBox.getChildren().add(badSetup);
-        badSetupBox.setLayoutX(695);
-        badSetupBox.setLayoutY(600);
+        badSetupBox.setLayoutX(330);
+        badSetupBox.setLayoutY(500);
 
         return badSetupBox;
     }

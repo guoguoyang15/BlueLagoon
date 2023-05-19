@@ -19,6 +19,7 @@ declaration: >-
 class:
    - Board.java
    - Score.java
+   - BoardTest / IsPosInIndexTest
 
 # I wish to submit the following methods as entirely my own (remove this if
 # you want to just submit classes):

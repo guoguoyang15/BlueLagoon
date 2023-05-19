@@ -18,6 +18,7 @@ declaration: >-
 class:
    - Player.java
    - Game.java
+   - FindWinnerTest / GetStatsTest / InitializeGameTest
 
 # I wish to submit the following methods as entirely my own (remove this if
 # you want to just submit classes):

@@ -21,11 +21,37 @@ declaration: >-
 # Add as many "url+licence+comment" entries as necessary
 # (or remove it altogether if you haven't used any external assets)
 assets:
-  - comment: Blue Lagoon tile images
+  - comment: Blue Lagoon tile images taken from Blue Lagoon board game
     url: https://www.google.com/url?sa=i&url=https%3A%2F%2Fwhatsericplaying.com%2F2018%2F12%2F10%2Fblue-lagoon%2F&psig=AOvVaw38iTCzHMeuxuAys_PqlgB4&ust=1684498455808000&source=images&cd=vfe&ved=0CA8QjhxqFwoTCLjk9fLr_v4CFQAAAAAdAAAAABAE
-    url: Photo shoot from Blue Lagoon board game
     licence: CC-BY-NC-SA
 
+  - comment: Blue Lagoon settler piece asset
+    url: https://geekdad.com/2018/07/explore-and-settle-the-blue-lagoon/
+    licence: All Rights Reserved
+
+  - comment: Blue Lagoon village piece asset
+    url: https://www.51yuansu.com/sc/lerkmxaqgg.html
+    licence: All Rights Reserved
+
+  - comment: Coconut resource in GUI
+    url: https://90sheji.com/sucai/16510181.html
+    licence: All Rights Reserved
+
+  - comment: Bamboo resource in GUI
+    url: http://m.huanghelou.cc/post/14574.html
+    licence: All Rights Reserved
+
+  - comment: Water resource in GUI
+    url: https://www.jianbihua.com/photo_21256
+    licence: All Rights Reserved
+
+  - comment: Precious stone resource in GUI
+    url: https://weili.ooopic.com/weili_26636481.html
+    licence: All Rights Reserved
+
+  - comment: Statuette resource in GUI
+    url: https://image.baidu.com/search/detail?ct=503316480&z=0&ipn=d&word=%E7%9F%B3%E5%83%8F%E5%8D%A1%E9%80%9A&step_word=&hs=0&pn=8&spn=0&di=7214885350366248961&pi=0&rn=1&tn=baiduimagedetail&is=0%2C0&istype=2&ie=utf-8&oe=utf-8&in=&cl=2&lm=-1&st=-1&cs=3115328757%2C781087179&os=4233921174%2C2642262905&simid=4198686670%2C834800632&adpicid=0&lpn=0&ln=1774&fr=&fmq=1683810370709_R&fm=result&ic=&s=undefined&hd=&latest=&copyright=&se=&sme=&tab=0&width=&height=&face=undefined&ist=&jit=&cg=&oriquery=&objurl=https:%2F%2Fku.90sjimg.com%2Felement_origin_min_pic%2F16%2F10%2F09%2F1857fa1e57aae71.jpg&fromurl=ippr_z2C%24qAzdH3FAzdH3Flafij3t_z%26e3Bv54AzdH3Ff7vwtAzdH3F8mc8a8b8_z%26e3Bip4s&gsm=1e&rpstart=0&rpnum=0&islist=&querylist=&nojc=undefined&dyTabStr=MCwxLDYsMyw1LDQsMiw3LDgsOQ%3D%3D
+    licence: All Rights Reserved
 
 # Sign *your* name and uids here. (Remove entries if you have fewer
 # than three members.)

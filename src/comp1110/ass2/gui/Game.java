@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -88,10 +89,25 @@ public class Game extends Application {
             }
             root.getChildren().add(polygon);
         }
-        Text sample=new Text("Coconut  Bamboo  Water   P.Stone  Statuette  ");
+        Text sample=new Text("Coconut  Bamboo  Water   P.Stone  Statuette        Settler        Village");
         sample.setX(590);
         sample.setY(490);
         root.getChildren().add(sample);
+
+        Polygon tri=new Polygon();
+        tri.getPoints().addAll(900.0,500.0,
+                885.0,532.5,
+                915.0,532.5);
+        tri.setFill(Color.CRIMSON);
+        root.getChildren().add(tri);
+
+        Circle c=new Circle();
+        c.setRadius(15);
+        c.setCenterX(960);
+        c.setCenterY(515);
+        c.setFill(Color.YELLOW);
+        root.getChildren().add(c);
+
         // Calls phaseDisplay from Display class to show the phase and player to move
         phase = Display.phaseDisplay(stateString);
         root.getChildren().add(phase);

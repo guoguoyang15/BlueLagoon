@@ -415,7 +415,7 @@ public class Display {
         if (!b.isPhase() && BlueLagoon.generateAllValidMoves(stateString).size() == 0) {
             Text winner = new Text("Player " + Player.findWinner(stateString) + " has won!");
             winner.setX(200);
-            winner.setY(500);
+            winner.setY(600);
             winner.setFill(Color.DARKGREEN);
             winner.setFont(Font.font("Serif"));
             return winner;

@@ -374,8 +374,8 @@ public class Display {
 
         HBox titleBox = new HBox();
         titleBox.getChildren().add(title);
-        titleBox.setLayoutX(590);
-        titleBox.setLayoutY(400);
+        titleBox.setLayoutX(210);
+        titleBox.setLayoutY(200);
 
         return titleBox;
     }
@@ -398,11 +398,10 @@ public class Display {
     public static HBox badSetupScreen() {
         Text badSetup = new Text("Error: Number of AI opponents cannot be equal to or greater than total number of players");
         badSetup.setFill(Color.RED);
-
         HBox badSetupBox = new HBox();
         badSetupBox.getChildren().add(badSetup);
-        badSetupBox.setLayoutX(695);
-        badSetupBox.setLayoutY(600);
+        badSetupBox.setLayoutX(315);
+        badSetupBox.setLayoutY(380);
 
         return badSetupBox;
     }

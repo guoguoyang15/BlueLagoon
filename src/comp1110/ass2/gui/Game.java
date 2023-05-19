@@ -96,8 +96,10 @@ public class Game extends Application {
         Translate tablePosition = new Translate(1000, 0);
         scoreBoard.getTransforms().add(tablePosition);
         root.getChildren().add(scoreBoard);
-        root.setLayoutX(15);
-        root.setLayoutY(25);
+        root.setLayoutX(-270);
+        root.setLayoutY(-50);
+        root.setScaleX(0.7);
+        root.setScaleY(0.7);
     }
 
     // Creates the various buttons and menus that the players can interact with
@@ -112,8 +114,8 @@ public class Game extends Application {
         HBox playerBox = new HBox();
         playerBox.getChildren().addAll(playerLabel, playerCount, selectPlayerCount);
         playerBox.setSpacing(10);
-        playerBox.setLayoutX(830);
-        playerBox.setLayoutY(520);
+        playerBox.setLayoutX(450);
+        playerBox.setLayoutY(320);
 
         // Creates the number of AI opponents selection
         Label AILabel = new Label("Select Number of AI Opponents:");
@@ -125,8 +127,8 @@ public class Game extends Application {
         HBox AIBox = new HBox();
         AIBox.getChildren().addAll(AILabel, AICount, start);
         AIBox.setSpacing(10);
-        AIBox.setLayoutX(795);
-        AIBox.setLayoutY(550);
+        AIBox.setLayoutX(415);
+        AIBox.setLayoutY(350);
 
         // Displays the player selection menu and title screen
         controls.getChildren().addAll(playerBox, Display.titleScreen());
@@ -145,9 +147,10 @@ public class Game extends Application {
         yPosition.getItems().addAll("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12");
         yPosition.setValue("0");
 
+        Button random = new Button("random");
         Button play = new Button("Play");
         HBox moveBox = new HBox();
-        moveBox.getChildren().addAll(moveLabel, villageOrSettler, xPosition, yPosition, play);
+        moveBox.getChildren().addAll(moveLabel, villageOrSettler, xPosition, yPosition, play,random);
         moveBox.setSpacing(10);
         moveBox.setLayoutX(1000);
         moveBox.setLayoutY(670);
@@ -165,8 +168,8 @@ public class Game extends Application {
         Button restart = new Button("Restart");
         HBox restartBox = new HBox();
         restartBox.getChildren().add(restart);
-        restartBox.setLayoutX(1820);
-        restartBox.setLayoutY(0);
+        restartBox.setLayoutX(1650);
+        restartBox.setLayoutY(-35);
 
         // After # of Players is chosen, make choice for # of AIs appear
         selectPlayerCount.setOnAction(e -> {
@@ -235,6 +238,21 @@ public class Game extends Application {
         controls.getChildren().clear();
         controls.getChildren().addAll(playerBox, Display.titleScreen());
         root.getChildren().add(controls);
+        root.setScaleX(1);
+        root.setScaleY(1);
+        root.setLayoutX(0);
+        root.setLayoutY(0);
+        });
+
+        // Restarts the game if "restart" is pressed
+        random.setOnAction(e -> {
+            boardString = BlueLagoon.applyMove(boardString, BlueLagoon.generateAIMove(boardString));
+            root.getChildren().clear();
+            root.getChildren().add(controls);
+            root.getChildren().remove(phase);
+            root.getChildren().remove(restartBox);
+            root.getChildren().add(restartBox);
+            displayState(boardString);
         });
     }
 

@@ -147,10 +147,9 @@ public class Game extends Application {
         yPosition.getItems().addAll("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12");
         yPosition.setValue("0");
 
-        Button random = new Button("random");
         Button play = new Button("Play");
         HBox moveBox = new HBox();
-        moveBox.getChildren().addAll(moveLabel, villageOrSettler, xPosition, yPosition, play,random);
+        moveBox.getChildren().addAll(moveLabel, villageOrSettler, xPosition, yPosition, play);
         moveBox.setSpacing(10);
         moveBox.setLayoutX(1000);
         moveBox.setLayoutY(670);
@@ -242,17 +241,6 @@ public class Game extends Application {
         root.setScaleY(1);
         root.setLayoutX(0);
         root.setLayoutY(0);
-        });
-
-        // Restarts the game if "restart" is pressed
-        random.setOnAction(e -> {
-            boardString = BlueLagoon.applyMove(boardString, BlueLagoon.generateAIMove(boardString));
-            root.getChildren().clear();
-            root.getChildren().add(controls);
-            root.getChildren().remove(phase);
-            root.getChildren().remove(restartBox);
-            root.getChildren().add(restartBox);
-            displayState(boardString);
         });
     }
 

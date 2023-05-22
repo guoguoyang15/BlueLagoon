@@ -14,6 +14,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.transform.Translate;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -292,7 +293,16 @@ public class Game extends Application {
                 displayState(boardString);
 //                Clear the prompt effect if already activated
             } else {
-//                Otherwise highlight all the places you can go
+                if (isHint) {
+                    isHint = false;
+                    root.getChildren().clear();
+                    root.getChildren().add(controls);
+                    root.getChildren().remove(phase);
+                    root.getChildren().remove(restartBox);
+                    root.getChildren().add(restartBox);
+                    displayState(boardString);
+                }
+                //                Otherwise highlight all the places you can go
                 isTips = true;
                 List<ImageView> imageViews = new ArrayList<>();
                 Image land = new Image(getClass().getResourceAsStream("/image/Highlight.gif"), 69.28, 80, false, false);
@@ -314,6 +324,8 @@ public class Game extends Application {
                     }
                 }
                 root.getChildren().addAll(imageViews);
+
+
             }
         });
 
@@ -329,6 +341,16 @@ public class Game extends Application {
                 root.getChildren().add(restartBox);
                 displayState(boardString);
             } else {
+                if(isTips)
+                {
+                    isTips=false;
+                    root.getChildren().clear();
+                    root.getChildren().add(controls);
+                    root.getChildren().remove(phase);
+                    root.getChildren().remove(restartBox);
+                    root.getChildren().add(restartBox);
+                    displayState(boardString);
+                }
 //                Highlight's most recommended move
                 isHint = true;
                 String hintMove = BlueLagoon.generateAIMove(boardString);

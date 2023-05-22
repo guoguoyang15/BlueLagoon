@@ -31,7 +31,6 @@ public class Display {
         Image[] settlers = new Image[4];
         Image[] villages = new Image[4];
         Image bamboo, coconuts, precious_stones, statuettes, water;
-
         // Background images
         Image background = new Image(getClass().getResourceAsStream("/image/background.png"), 1000, 800, false, false);
         // Land tile images
@@ -286,7 +285,7 @@ public class Display {
         phase.setX(1000);
         phase.setY(450);
 
-        // 设置字体样式，将字体大小增加一倍
+        // Set the font style to double the font size
         double fontSize = phase.getFont().getSize() * 2.5;
         phase.setFont(Font.font(phase.getFont().getFamily(), fontSize));
 

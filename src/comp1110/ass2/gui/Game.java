@@ -218,7 +218,6 @@ public class Game extends Application {
                 root.getChildren().addAll(Display.badMoveScreen());
                 root.getChildren().add(controls);
             }
-
             // If it's the AI's turn next, then trigger AI moves until it's the next human player's turn
             if (new Board(boardString).getTurn() >= Integer.parseInt(playerCount.getValue()) - Integer.parseInt(AICount.getValue())) {
                 for (int i = 0; i < Integer.parseInt(AICount.getValue()); i++) {

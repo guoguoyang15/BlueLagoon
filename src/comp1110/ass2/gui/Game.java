@@ -154,6 +154,7 @@ public class Game extends Application {
         moveBox.setLayoutX(1000);
         moveBox.setLayoutY(670);
 
+
         // Adds the row and column labels for the move menus
         Label rowLabel = new Label("Row:");
         Label colLabel = new Label("Column:");
@@ -242,6 +243,7 @@ public class Game extends Application {
         root.setLayoutX(0);
         root.setLayoutY(0);
         });
+
     }
 
     @Override

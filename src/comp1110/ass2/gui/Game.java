@@ -6,13 +6,21 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.transform.Translate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 /**
- * @author Tyler Le (all methods)
+ * @author Tyler Le,Zhang Zhining
  * This class synthesizes all other classes to generate the underlying game logic and creates the GUI for the game.
  */
 
@@ -29,6 +37,9 @@ public class Game extends Application {
     private String pieceType;
     private String boardString;
     private Text phase;
+    private boolean isTips = false;
+    private boolean isHint = false;
+
 
     public static String initializeGame(int n) {
         // Initializes the starting game state
@@ -78,7 +89,6 @@ public class Game extends Application {
                 }
             }
         }
-
         // Calls weightDisplay from Display class to show the island values on each tile
         for (int i = 0; i < b.getSize(); i++) {
             for (int j = 0; j < b.getSize(); j++) {
@@ -96,80 +106,120 @@ public class Game extends Application {
         Translate tablePosition = new Translate(1000, 0);
         scoreBoard.getTransforms().add(tablePosition);
         root.getChildren().add(scoreBoard);
-        root.setLayoutX(-270);
+        root.setLayoutX(-250);
         root.setLayoutY(-50);
-        root.setScaleX(0.7);
-        root.setScaleY(0.7);
+        root.setScaleX(.72);
+        root.setScaleY(.72);
     }
 
     // Creates the various buttons and menus that the players can interact with
     public void gameControls() {
+        Font font = Font.font("Arial", 20);  // Customised fonts and sizes
         // Creates the number of players selection menu
         Label playerLabel = new Label("Select Number of Players:");
+        double startSize = playerLabel.getFont().getSize() * 2;
+        Font startFont = new Font(startSize);
+        playerLabel.setFont(startFont);
         playerCount = new ChoiceBox<>();
+        playerCount.setStyle("-fx-font: " + font.getSize() + "px \"" + font.getName() + "\";");
+        //Adjust the buttons to the appropriate size
         playerCount.getItems().addAll("2", "3", "4");
         playerCount.setValue("2");
         Button selectPlayerCount = new Button("Select");
+        selectPlayerCount.setStyle("-fx-font: " + font.getSize() + "px \"" + font.getName() + "\";");
 
         HBox playerBox = new HBox();
         playerBox.getChildren().addAll(playerLabel, playerCount, selectPlayerCount);
         playerBox.setSpacing(10);
-        playerBox.setLayoutX(450);
+        playerBox.setLayoutX(325);
         playerBox.setLayoutY(320);
 
         // Creates the number of AI opponents selection
         Label AILabel = new Label("Select Number of AI Opponents:");
+        AILabel.setFont(startFont);
         AICount = new ChoiceBox<>();
+        AICount.setStyle("-fx-font: " + font.getSize() + "px \"" + font.getName() + "\";");
         AICount.getItems().addAll("0", "1", "2", "3");
         AICount.setValue("0");
         Button start = new Button("Start Game");
+        start.setStyle("-fx-font: " + font.getSize() + "px \"" + font.getName() + "\";");
 
         HBox AIBox = new HBox();
         AIBox.getChildren().addAll(AILabel, AICount, start);
         AIBox.setSpacing(10);
-        AIBox.setLayoutX(415);
-        AIBox.setLayoutY(350);
+        AIBox.setLayoutX(280);
+        AIBox.setLayoutY(400);
 
         // Displays the player selection menu and title screen
         controls.getChildren().addAll(playerBox, Display.titleScreen());
 
         // Creates menu for entering moves
-        Label moveLabel = new Label("Choose the piece and position:");
+        Label word1 = new Label("PIECE                    ROW↓          COLUMN→");
+        double fontSize = word1.getFont().getSize() * 1.5;
+        Font labelFont = new Font(fontSize);
+        word1.setFont(labelFont);
         villageOrSettler = new ChoiceBox<>();
         villageOrSettler.getItems().addAll("Settler", "Village");
         villageOrSettler.setValue("Settler");
 
+        villageOrSettler.setStyle("-fx-font: " + font.getSize() + "px \"" + font.getName() + "\";");
+
         xPosition = new ChoiceBox<>();
+        xPosition.setStyle("-fx-font: " + font.getSize() + "px \"" + font.getName() + "\";");
         xPosition.getItems().addAll("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12");
         xPosition.setValue("0");
 
+
         yPosition = new ChoiceBox<>();
+        yPosition.setStyle("-fx-font: " + font.getSize() + "px \"" + font.getName() + "\";");
         yPosition.getItems().addAll("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12");
         yPosition.setValue("0");
 
         Button play = new Button("Play");
+        play.setStyle("-fx-font: " + font.getSize() * 2 + "px \"" + font.getName() + "\";");
+        play.setLayoutX(300);
         HBox moveBox = new HBox();
-        moveBox.getChildren().addAll(moveLabel, villageOrSettler, xPosition, yPosition, play);
-        moveBox.setSpacing(10);
+        HBox underMoveBox = new HBox();
+        underMoveBox.getChildren().addAll(word1);
+        underMoveBox.setSpacing(50);
+        underMoveBox.setLayoutX(1030);
+        underMoveBox.setLayoutY(530);
+        moveBox.getChildren().addAll(villageOrSettler, xPosition, yPosition, play);
+        moveBox.setSpacing(50);
         moveBox.setLayoutX(1000);
-        moveBox.setLayoutY(670);
-
-
-        // Adds the row and column labels for the move menus
-        Label rowLabel = new Label("Row:");
-        Label colLabel = new Label("Column:");
-        HBox labelBox = new HBox();
-        labelBox.getChildren().addAll(rowLabel, colLabel);
-        labelBox.setSpacing(27);
-        labelBox.setLayoutX(1305);
-        labelBox.setLayoutY(650);
+        moveBox.setLayoutY(480);
+//        Show all pieces you can move
+        Button tips = new Button("Tips");
+        tips.setStyle("-fx-font: " + font.getSize() * 1.5 + "px \"" + font.getName() + "\";");
+        HBox helpBox = new HBox();
+        helpBox.getChildren().add(tips);
+        helpBox.setSpacing(10);
+        helpBox.setLayoutX(1000);
+        helpBox.setLayoutY(600);
+//        Giving the most recommended move of the moment
+        Button hint = new Button("Hint");
+        hint.setStyle("-fx-font: " + font.getSize() * 1.5 + "px \"" + font.getName() + "\";");
+        HBox hintBox = new HBox();
+        hintBox.getChildren().add(hint);
+        hintBox.setLayoutX(1450);
+        hintBox.setLayoutY(600);
+//        A random hand, provided the rules are met
+        Button randomInput = new Button("Random move");
+        randomInput.setStyle("-fx-font: " + font.getSize() * 1.5 + "px \"" + font.getName() + "\";");
+        HBox randomBox = new HBox();
+        randomBox.getChildren().add(randomInput);
+        randomBox.setSpacing(10);
+        randomBox.setLayoutX(1150);
+        randomBox.setLayoutY(600);
 
         // Adds the restart button to restart the game
         Button restart = new Button("Restart");
+        restart.setStyle("-fx-font: " + font.getSize() * 1.5 + "px \"" + font.getName() + "\";");
         HBox restartBox = new HBox();
         restartBox.getChildren().add(restart);
-        restartBox.setLayoutX(1650);
-        restartBox.setLayoutY(-35);
+        restartBox.setLayoutX(1500);
+        restartBox.setLayoutY(800);
+
 
         // After # of Players is chosen, make choice for # of AIs appear
         selectPlayerCount.setOnAction(e -> {
@@ -184,13 +234,12 @@ public class Game extends Application {
                 controls.getChildren().clear();
                 controls.getChildren().addAll(playerBox, AIBox, Display.titleScreen());
                 controls.getChildren().add(Display.badSetupScreen());
-            }
-            else {
+            } else {
                 // If AIs < Players then begin the game
                 controls.getChildren().clear();
                 boardString = BlueLagoon.distributeResources(initializeGame(Integer.parseInt(playerCount.getValue())));
                 displayState(boardString);
-                controls.getChildren().addAll(moveBox, labelBox);
+                controls.getChildren().addAll(moveBox, underMoveBox, helpBox, randomBox, hintBox);
                 root.getChildren().add(restartBox);
             }
         });
@@ -207,12 +256,12 @@ public class Game extends Application {
                 pieceType = "S";
             }
             String move = pieceType + " " + xPos + "," + yPos;
-
             // Makes "invalid move" text if player enters an invalid move
             if (BlueLagoon.isMoveValid(boardString, move)) {
                 boardString = BlueLagoon.applyMove(boardString, move);
                 root.getChildren().clear();
                 root.getChildren().add(controls);
+
             } else {
                 root.getChildren().clear();
                 root.getChildren().addAll(Display.badMoveScreen());
@@ -230,17 +279,106 @@ public class Game extends Application {
             root.getChildren().add(restartBox);
             displayState(boardString);
         });
+        //With the isMoveValid function, determine where the next move is reasonable and then prompt the player with a highlighted gif
+        tips.setOnAction(e -> {
+//            Determine what state the button is in
+            if (isTips) {
+                isTips = false;
+                root.getChildren().clear();
+                root.getChildren().add(controls);
+                root.getChildren().remove(phase);
+                root.getChildren().remove(restartBox);
+                root.getChildren().add(restartBox);
+                displayState(boardString);
+//                Clear the prompt effect if already activated
+            } else {
+//                Otherwise highlight all the places you can go
+                isTips = true;
+                List<ImageView> imageViews = new ArrayList<>();
+                Image land = new Image(getClass().getResourceAsStream("/image/Highlight.gif"), 69.28, 80, false, false);
+                for (int x = 0; x < 13; x++) {
+                    for (int y = 0; y < 13; y++) {
+                        String move = "S " + y + "," + x;
+                        if (BlueLagoon.isMoveValid(boardString, move)) {
+                            ImageView imageView = new ImageView();
+                            imageView.setImage(land);
+                            if (y % 2 == 0) {
+                                imageView.setX(34.64 + 69.28 * x);
+                                imageView.setY(60 * y);
+                            } else {
+                                imageView.setX(69.28 * x);
+                                imageView.setY(60 * y);
+                            }
+                            imageViews.add(imageView);
+                        }
+                    }
+                }
+                root.getChildren().addAll(imageViews);
+            }
+        });
 
-        // Restarts the game if "restart" is pressed
+        hint.setOnAction(e -> {
+            //            Determine what state the button is in
+
+            if (isHint) {
+                isHint = false;
+                root.getChildren().clear();
+                root.getChildren().add(controls);
+                root.getChildren().remove(phase);
+                root.getChildren().remove(restartBox);
+                root.getChildren().add(restartBox);
+                displayState(boardString);
+            } else {
+//                Highlight's most recommended move
+                isHint = true;
+                String hintMove = BlueLagoon.generateAIMove(boardString);
+                String[] one = hintMove.split(" ");
+                String[] two = one[1].split(",");
+                int x = Integer.parseInt(two[1]);
+                int y = Integer.parseInt(two[0]);
+                Image land = new Image(getClass().getResourceAsStream("/image/Hint.gif"), 69.28, 80, false, false);
+                ImageView imageView = new ImageView();
+                imageView.setImage(land);
+                if (y % 2 == 0) {
+                    imageView.setX(34.64 + 69.28 * x);
+                    imageView.setY(60 * y);
+                } else {
+                    imageView.setX(69.28 * x);
+                    imageView.setY(60 * y);
+                }
+                root.getChildren().add(imageView);
+            }
+        });
+
+        randomInput.setOnAction(e -> {
+//            Call the method and pick a random one from all the places you can go
+            Random r = new Random();
+            Set<String> validMoves = BlueLagoon.generateAllValidMoves(boardString);
+            String[] array = validMoves.toArray(new String[validMoves.size()]);
+            String move = array[r.nextInt(array.length)];
+            boardString = BlueLagoon.applyMove(boardString, move);
+            root.getChildren().clear();
+            root.getChildren().add(controls);
+            if (new Board(boardString).getTurn() >= Integer.parseInt(playerCount.getValue()) - Integer.parseInt(AICount.getValue())) {
+                for (int i = 0; i < Integer.parseInt(AICount.getValue()); i++) {
+                    triggerAI(Integer.parseInt(AICount.getValue()));
+                }
+            }
+            root.getChildren().remove(phase);
+            root.getChildren().remove(restartBox);
+            root.getChildren().add(restartBox);
+            displayState(boardString);
+
+        });
         restart.setOnAction(e -> {
-        root.getChildren().clear();
-        controls.getChildren().clear();
-        controls.getChildren().addAll(playerBox, Display.titleScreen());
-        root.getChildren().add(controls);
-        root.setScaleX(1);
-        root.setScaleY(1);
-        root.setLayoutX(0);
-        root.setLayoutY(0);
+            root.getChildren().clear();
+            controls.getChildren().clear();
+            controls.getChildren().addAll(playerBox, Display.titleScreen());
+            root.getChildren().add(controls);
+            root.setScaleX(1);
+            root.setScaleY(1);
+            root.setLayoutX(0);
+            root.setLayoutY(0);
         });
 
     }
@@ -254,5 +392,7 @@ public class Game extends Application {
         gameControls();
         stage.setScene(scene1);
         stage.show();
+
     }
 }
+

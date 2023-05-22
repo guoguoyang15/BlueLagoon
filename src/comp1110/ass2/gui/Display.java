@@ -223,6 +223,7 @@ public class Display {
         TableColumn<Player, Integer> column1 = new TableColumn<>("Player #");
         column1.setCellValueFactory(new PropertyValueFactory<>("playerNumber"));
 
+
         TableColumn<Player, Integer> column2 = new TableColumn<>("Score");
         column2.setCellValueFactory(new PropertyValueFactory<>("score"));
 
@@ -272,7 +273,7 @@ public class Display {
 
     // @author Zhou Linsheng
     // Generates the phase and player to move text
-    public static Text phaseDisplay (String stateString) {
+    public static Text phaseDisplay(String stateString) {
         Board b = new Board(stateString);
         String info = "";
         if (b.isPhase()) {
@@ -280,10 +281,15 @@ public class Display {
         } else {
             info += "Settlement Phase      ";
         }
-        info += "Player "+b.getTurn()+" to move.";
+        info += "Player " + b.getTurn() + " to move.";
         Text phase = new Text(info);
         phase.setX(1000);
-        phase.setY(640);
+        phase.setY(450);
+
+        // 设置字体样式，将字体大小增加一倍
+        double fontSize = phase.getFont().getSize() * 2.5;
+        phase.setFont(Font.font(phase.getFont().getFamily(), fontSize));
+
         return phase;
     }
 
@@ -385,11 +391,12 @@ public class Display {
         // Creates "invalid move" text
         Text badMove = new Text("Error: invalid move");
         badMove.setFill(Color.RED);
-
+        double fontSize = badMove.getFont().getSize() * 3;
+        badMove.setFont(Font.font(fontSize));
         HBox badMoveBox = new HBox();
         badMoveBox.getChildren().add(badMove);
         badMoveBox.setLayoutX(1000);
-        badMoveBox.setLayoutY(720);
+        badMoveBox.setLayoutY(550);
 
         return badMoveBox;
     }

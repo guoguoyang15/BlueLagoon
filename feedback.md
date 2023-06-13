@@ -1,5 +1,5 @@
 ---
-mark: 15.325000000000001
+mark: 16.075
 
 section_marks:
   c1-checksum: 0.25
@@ -16,7 +16,7 @@ section_marks:
   c2-compliance: 0.5
   c3-authorship: 0.75
   c4-git: 0.75
-  c5-runs-from-jar: 0
+  c5-runs-from-jar: 0.75
   c6-task-3-4-6-7-8: 2
   c7-task-9-10-11-12-13: 3
   c8-task-14-basic-game: 3
